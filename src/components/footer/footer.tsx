@@ -14,8 +14,8 @@ const Footer: React.FC = () => (
     </div>
     <div className="bottom">
       <p>
-        4GL Ltd, 29 Oldfield Rd, Windermere, Cumbria, LA23 2AZ. Company
-        Registration No. 08777171
+        4GL (Brand owned by Bowe IO Ltd), 29 Oldfield Rd, Windermere, Cumbria,
+        LA23 2AZ. Company No: 08777171 VAT: 203914240
       </p>
     </div>
   </div>
