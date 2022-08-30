@@ -12,6 +12,7 @@ import profile4 from '../../assets/team/saad.png'
 import profile5 from '../../assets/team/krishna.png'
 import profile6 from '../../assets/team/Ivor.jpg'
 import profile7 from '../../assets/team/allan.jpeg'
+import profile8 from '../../assets/team/bena.jpeg'
 
 interface Props {
   location: Location
@@ -165,6 +166,22 @@ const About: React.FC<Props> = ({ location }: Props) => {
             <p className="profile-text ">
               When not creating actual SAS Apps, Allan is typically working on
               the tools, team, framework, and community that supports SAS Apps.
+            </p>
+          </div>
+          <div className="profile col-lg-4 col-md-6 m-auto">
+            <div className="image-wrapper">
+              <img
+                src={profile8}
+                className="profileImage"
+                alt="Allan Bowe"
+                title="Allan Bowe - Founder"
+              />
+            </div>
+            <p className="profile-name">Georgina Hall</p>
+            <p className="profile-heading">CFO</p>
+            <p className="profile-text ">
+              Judicious and pragmatic, Georgina provides an honest and
+              principled approach in all facets of financial management.
             </p>
           </div>
         </div>
