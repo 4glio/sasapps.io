@@ -13,6 +13,7 @@ import profile5 from '../../assets/team/krishna.png'
 import profile6 from '../../assets/team/Ivor.jpg'
 import profile7 from '../../assets/team/allan.jpeg'
 import profile8 from '../../assets/team/bena.jpeg'
+import profile9 from '../../assets/team/george.jpeg'
 
 interface Props {
   location: Location
@@ -151,7 +152,22 @@ const About: React.FC<Props> = ({ location }: Props) => {
               SAS services faster than you can say PROC SPELL
             </p>
           </div>
-
+          <div className="profile col-lg-4 col-md-6 m-auto">
+            <div className="image-wrapper">
+              <img
+                src={profile9}
+                className="profileImage"
+                alt="George Bowe"
+                title="George Bowe - Founder"
+              />
+            </div>
+            <p className="profile-name">George Bowe</p>
+            <p className="profile-heading">CEO</p>
+            <p className="profile-text ">
+              Strategically minded and carefully candid, George leads with
+              impeccable ethics and audacious authenticity.
+            </p>
+          </div>
           <div className="profile col-lg-4 col-md-6 m-auto">
             <div className="image-wrapper">
               <img
@@ -173,8 +189,8 @@ const About: React.FC<Props> = ({ location }: Props) => {
               <img
                 src={profile8}
                 className="profileImage"
-                alt="Allan Bowe"
-                title="Allan Bowe - Founder"
+                alt="Georgina Hall"
+                title="Georgina Hall - CFO"
               />
             </div>
             <p className="profile-name">Georgina Hall</p>
