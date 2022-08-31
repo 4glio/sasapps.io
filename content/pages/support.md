@@ -83,13 +83,14 @@ The following items are assumed:
 
 Support is aimed towards the resolution, or identifying the resolution steps, in order to fix issues in relation to SAS Apps.  For instance, if an app stops working, we will jump on a call and guide you through the diagnostics.  We may find that the app failed due to a missing table entry.  We can help you discover the necessary attributes of that entry.  But we would not design / build / test / deploy a DI Studio ETL job to plug the gap - that would be a development task.
 
-Typical out-of-scope support activities then would be:
+Typical out-of-scope _support_ activities then would be:
 
 * Formal Training - although we'd explain how the app works, or why it breaks, or help you with a SASjs issue.
 * Data Quality - although we can explain how the app could be improved to address data quality issues
 * Data Engineering - this is nearly always classed as a development activity
 * Platform Unavailability - but we identify / help to confirm the outage
 * Permissions Issues - but we can describe them
+* Testing & Deployment
 * Hardware Issues
 * Acts of God
 * New features
