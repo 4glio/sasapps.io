@@ -104,7 +104,7 @@
 //   transform: rotate(60deg);
 // }
 
-$qty: 8; //number of childs
+$qty: 10; // Number of team member + 1
 $step: $qty * 30;
 
 @for $i from 0 through $qty - 1 {
@@ -136,12 +136,15 @@ $step: $qty * 30;
   left: 17px;
   top: 12px;
 }
-.profile:last-child .image-wrapper:before {
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  transform: rotate(270deg);
-  left: 1px;
+.profile:nth-child(7) .image-wrapper:before {
+  left: 14px;
+  top: 18px;
+}
+.profile:nth-child(8) .image-wrapper:before {
+  left: 8px;
   top: 20px;
+}
+.profile:nth-child(9) .image-wrapper:before {
+  left: 1px;
+  top: 18px;
 }
