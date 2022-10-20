@@ -38,6 +38,6 @@ ALL work has some impact on the environment and we have a duty to manage that im
 
 ## Responsible Trading
 
-_Building and maintaining the highest standards amongst our partners_
+_Building and maintaining the highest standards amongst our partners and suppliers_
 
-We are committed to maintaining high standards amongst our partners. We oppose the exploitation of workers and we will not tolerate forced labour, or labour which involves physical, verbal or psychological harassment, or intimidation of any kind. We will [not accept human trafficking](/slavery-statement/) or the exploitation of children and young people in our business and undertake all reasonable and practical steps to ensure that these standards are maintained.
+We are committed to maintaining high standards amongst our partners and suppliers. We oppose the exploitation of workers and we will not tolerate forced labour, or labour which involves physical, verbal or psychological harassment, or intimidation of any kind. We will [not accept human trafficking](/slavery-statement/) or the exploitation of children and young people in our business and undertake all reasonable and practical steps to ensure that these standards are maintained.

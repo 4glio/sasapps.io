@@ -12,6 +12,7 @@ const Footer: React.FC = () => (
       <a href="/blog/">Blog</a>
       <a href="/slavery-statement/">Slavery Statement</a>
       <a href="/csr-policy/">CSR Policy</a>
+      <a href="/ethics-policy/">Ethics Policy</a>
     </div>
     <div className="bottom">
       <p>
