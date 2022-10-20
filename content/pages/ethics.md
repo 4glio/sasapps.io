@@ -34,7 +34,7 @@ We treat each person with civility, understanding and respect.  We do not unlawf
 
 We promote a multicultural organisation that embraces a diversity of perspectives, opinions, ideas, backgrounds and experiences.  We strive to be accepting and respectful of our differences and treat each member of the organisation with dignity and respect.
 
-### Freedom of Expression
+### Freedom of Expression
 
 We exercise and defend our freedom of expression within an atmosphere of open and tolerant dialogue and listen respectfully to the views of others.
 
@@ -46,7 +46,7 @@ We value life in its variety and unity, and we promote a sustainable environment
 
 We encourage a life of service – a life of compassion and justice, civic participation, and service to worthy causes and global community.
 
-### Honesty
+### Honesty
 
 We are committed to being truthful and trustworthy.  Lying, cheating, theft and fraud are not tolerated.
 
@@ -54,17 +54,17 @@ We are committed to being truthful and trustworthy.  Lying, cheating, theft and 
 
 We observe and respect the confidentiality rights of all members of the organisation, and this duty continues even after we are no longer affiliated with the organisation.  This right of confidentiality applies to all professional, financial, health-related, personnel, or other non-public information protected either by law or by 4GL policy.  However, the right does not preclude the consensual release of information or the disclosure of information within the organisation when there is a legitimate need for its disclosure.  Email or other uses of 4GL servers or computer networks are for business purposes only and are not presumed confidential.
 
-### Respect for company resources
+### Respect for company resources
 
 We exercise due care and responsible stewardship in using company resources.  We follow proper security practices and prepare tests and documentation for our deliverables  In reporting on the use of company resources, we do not hide, conceal, or mislead; and we promptly report such misconduct when it is discovered.
 
-### Avoiding Conflicts of Interest and Commitment
+### Avoiding Conflicts of Interest and Commitment
 
 We do not have direct or indirect interests or commitments, financial or otherwise, which conflict with the proper discharge of our duties to the company.  The primary professional allegiance of all employees lies with 4GL and the advancement of its mission.  We do not solicit or accept any gift, service, or favor that might reasonably influence the discharge of our duties or that we know or should know is being offered with the intent to influence our official conduct.  We do not accept other employment or engage in business or professional activities outside of the company when such work might reasonably cause real or apparent conflicts of interest or conflicts of commitment (except with prior agreement).  We do not transact business in our official capacity with any business entity of which we, or a member of our family,  are an officer, agent, or member, or in which we own a substantial interest without the explicit prior knowledge and approval of a 4GL Director.  We disclose potential conflicts of interest to the appropriate supervisor or manager as soon as possible after we realise that a conflict may have arisen.
 
 ### Comply with Legal and Professional obligations
 
-We comply with all appropriate laws and conform to the highest standards of professional conduct.  We transact company business in compliance with all applicable laws, regulations, and university policies and procedures.  We do not misrepresent our status or authority in our dealings with others.  To the extent that we belong to professions that are governed by standards specific to the profession, we adhere to such professional standards.  We conduct ourselves in accordance with the highest professional principles for client work, especially in terms of Transparency, Data Security, Expectation Management, and Quality of Deliverables.
+We comply with all appropriate laws and conform to the highest standards of professional conduct.  We transact company business in compliance with all applicable laws, regulations, and company policies and procedures.  We do not misrepresent our status or authority in our dealings with others.  To the extent that we belong to professions that are governed by standards specific to the profession, we adhere to such professional standards.  We conduct ourselves in accordance with the highest professional principles for client work, especially in terms of Transparency, Data Security, Expectation Management, and Quality of Deliverables.
 
 ### Reporting Violations of the Code
 
