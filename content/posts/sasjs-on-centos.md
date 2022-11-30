@@ -90,6 +90,9 @@ sudo certbot certonly --standalone
 # update the paths below according to the actual domain!
 mkdir /opt/certificates
 ln -s /etc/letsencrypt/live/YOURDOMAIN.com /opt/certificates
+cd /etc/letsencrypt/live/YOURDOMAIN.com
+cp fullchain.pem /opt/certificates/fullchain.pem
+cp privkey.pem /opt/certificates/privkey.pem
 chgrp -R sas /opt/certificates
 chmod -R 755 /opt/certificates
 ```
