@@ -16,8 +16,8 @@ const Footer: React.FC = () => (
     </div>
     <div className="bottom">
       <p>
-        Bowe IO Ltd, 29 Oldfield Rd, Windermere, Cumbria, England, LA23 2AZ.
-        Company No: 08777171 VAT: 203914240
+        Bowe IO Ltd (4GL Apps), 29 Oldfield Rd, Windermere, Cumbria, England,
+        LA23 2AZ. Company No: 08777171 VAT: 203914240
       </p>
     </div>
   </div>
