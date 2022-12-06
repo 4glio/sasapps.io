@@ -41,7 +41,7 @@ Data Controller leverages the access engines of SAS to provide native engine sup
 
 By running Data Controller for SAS® on Azure, it is easier for users to get started and deploy due to the power of the combined technologies providing even greater flexibility and scalability.
 
-"We are excited to be both a SAS and a Microsoft partner and to help business users self-manage their cloud-based reference data" stated Allan Bowe, Head of SAS Apps at Analytium Group.
+"We are excited to be both a SAS and a Microsoft partner and to help business users self-manage their cloud-based reference data" stated <a rel="me" href="https://social.4gl.io/@allan">Allan Bowe</a>, Head of SAS Apps at Analytium Group.
 
 "Through Microsoft Azure Marketplace, customers around the world can easily find, buy, and deploy partner solutions they can trust, all certified and optimized to run on Azure," said Sajan Parihar, Senior Director, Microsoft Azure Platform at Microsoft Corp. "We're happy to welcome Analytium Group's solution to the growing Azure Marketplace ecosystem."
 
