@@ -23,7 +23,7 @@ const HTML: React.FC<Props> = ({
       <body>
         <div id="___gatsby" dangerouslySetInnerHTML={{ __html: body }} />
         {postBodyComponents}
-        <a style="display:none" rel="me" href="https://social.4gl.io/@allan">
+        <a className="hidden" rel="me" href="https://social.4gl.io/@allan">
           Mastodon
         </a>
       </body>
