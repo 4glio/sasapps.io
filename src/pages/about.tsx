@@ -180,8 +180,12 @@ const About: React.FC<Props> = ({ location }: Props) => {
             <p className="profile-name">Allan Bowe</p>
             <p className="profile-heading">Founder</p>
             <p className="profile-text ">
-              When not creating actual SAS Apps, Allan is typically working on
-              the tools, team, framework, and community that supports SAS Apps.
+              When not creating actual SAS Apps,{' '}
+              <a rel="me" href="https://social.4gl.io/@allan">
+                Allan
+              </a>{' '}
+              is typically working on the tools, team, framework, and community
+              that supports SAS Apps.
             </p>
           </div>
           <div className="profile col-lg-4 col-md-6 m-auto">
