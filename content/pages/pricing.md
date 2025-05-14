@@ -17,9 +17,10 @@ Our SAS developers have experience with NodeJS, DevOps, GIT, and browser Dev Too
 
 Our JS (TypeScript) developers are familiar with Viya REST APIs, SAS 9 Stored Processes, SAS Authentication mechanisms, and SAS deployments.
 
-* Principal SAS Consultant - 1200 EUR per day
-* Senior SAS Developer - 1000 EUR per day
-* Junior SAS Developer - 600 EUR per day
+* Principal SAS (+ AF/SCL) Consultant - 1400 EUR per day
+* Principal SAS Consultant - 1250 EUR per day
+* Senior SAS Developer - 1100 EUR per day
+* Junior SAS Developer - 650 EUR per day
 
 * Principal JS Consultant - 1000 EUR per day
 * Senior JS Developer - 800 EUR per day
@@ -39,7 +40,7 @@ Details of the support plan (SLAs etc) are available [here](/support).
 
 |Plan|App Source|SASjs|Annual EUR|
 |---|---|---|---|---|
-|A|SAS Apps|✅|5k|
+|A|SAS Apps|✅|6k|
 |B|Customer|✅|10k|
 |C|Customer|❌|15k|
 
