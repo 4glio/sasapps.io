@@ -33,6 +33,26 @@ All of our apps make use of the SASjs framework, being designed to accelerate an
 
 A SASjs web app comprises of a _frontend_ (static web content) that uses the SASjs _adapter_ to invoke the _backend_ (SAS code in Viya Jobs).
 
+```mermaid
+
+graph TD;
+subgraph Backend Development
+  C(Backend - SAS Code in Viya Jobs);
+  C -->|Runs on| H(SPRE);
+
+  H -->|Uses| sc(SASjs Core);
+  sc -->|Performs| I(Server Logic and Data Processing);
+end
+subgraph Frontend Development
+  A(Frontend - Static Web Content on SAS Drive)
+  A-->|Runs on| ub(Browser);
+  ub-->|Uses| B(SASjs Adapter);
+  B -->|Performs| fl(Client Logic and Data Visualisation);
+end
+
+
+```
+
 ## Frontend Development
 
 The web app is built locally, on the developers laptop, often using mocked responses to simulate a real Viya server.  Typically we build using the React framework, over this [baseline repository](https://github.com/sasjs/react-seed-app).  Regardless of the framework, the build outputs (those that are actually deployed to SAS)
