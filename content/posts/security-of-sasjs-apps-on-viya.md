@@ -55,7 +55,7 @@ end
 
 ## Frontend Development
 
-The web app is built locally, on the developers laptop, often using mocked responses to simulate a real Viya server.  Typically we build using the React framework, over this [baseline repository](https://github.com/sasjs/react-seed-app).  Regardless of the framework, the build outputs (those that are actually deployed to SAS)
+The web app is built locally, on the developers laptop, often using mocked responses to simulate a real Viya server.  Typically we build using the React framework, over this [baseline repository](https://github.com/sasjs/react-seed-app).
 
 Here are some of the steps taken to improve security at build time:
 
@@ -100,9 +100,9 @@ There are two ways to deploy a SASjs app on Viya:
 1.  Using the SASjs CLI directly
 2.  Using a SAS Deployment Program (generated using the CLI)
 
-To use the CLI process, perform a [sasjs auth](https://cli.sasjs.io/auth/) followed by a [sasjs servicepack deploy](https://cli.sasjs.io/servicepack).  This will require a client/secret pair, and is performed from a laptop / pipeline.
+To use the CLI process, perform a [sasjs auth](https://cli.sasjs.io/auth/) followed by a [sasjs servicepack deploy](https://cli.sasjs.io/servicepack).  This will require a client/secret pair, and is performed from a laptop / pipeline.  The deploy process makes exclusive use of standard Viya APIs, and will create the necessary folders / deploy the Jobs and frontend Files.
 
-The SAS deployment program approach simply requires running the code in SAS Studio (after adjusting the appLoc as desired).  The file can be very big, as it will contain the entire frontend, as well as all the SAS services.
+The SAS deployment program approach simply requires running the code in SAS Studio (after adjusting the appLoc as desired).  The file can be very big, as it will contain the entire frontend, as well as all the SAS services.  Each Job and frontend File are deployed one by one using the Viya APIs, called by SAS code.  No client/secret is required, as the SAS session will make use of the `oauth_bearer=sas_services` setting in proc http.  The deployment macros are listed [here](https://core.sasjs.io/dir_f3c9615c6d389fd64e9075885fcd8e6e.html).
 
 
 ## Production Environment
@@ -116,7 +116,7 @@ Once in Production, a SASjs app benefits from a number of protections:
  - **NOXCMD** by default
 - **No filesystem dependency for SAS code**. The SASjs compilation process ensures that every job is fully self-contained - so is not vulnerable to changes on the filesystem.
 - **No internet dependency**.  Apps are always designed to work without external dependencies such as fonts, images etc.
-- Uses **standard Viya APIs**.  These include:
+- Makes exclusive use of **standard Viya APIs**.  These include:
   - `DELETE /compute/sessions/${id}`
   - `GET /compute/contexts`
   - `GET /compute/sessions/${id}/jobs/${id}`
