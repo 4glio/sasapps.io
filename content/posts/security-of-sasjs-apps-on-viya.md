@@ -5,12 +5,27 @@ layout: POST
 path: /security-of-4GL-web-apps-on-viya
 description: A security review of a typical 4GL Web App on Viya
 category: Viya
-featuredImage: ../assets/sasjs_server.png
+featuredImage: ../assets/security_viya.png
 tags:
   - Viya
   - SASjs
   - SAS Admin
   - SAS
+diagram:
+  graph TD;
+  subgraph Backend Development
+    C(Backend - SAS Code in Viya Jobs);
+    C -->|Runs on| H(SPRE);
+
+    H -->|Uses| sc(SASjs Core);
+    sc -->|Performs| I(Server Logic and Data Processing);
+  end
+  subgraph Frontend Development
+    A(Frontend - Static Web Content on SAS Drive)
+    A-->|Runs on| ub(Browser);
+    ub-->|Uses| B(SASjs Adapter);
+    B -->|Performs| fl(Client Logic and Data Visualisation);
+  end
 ---
 
 What is a 4GL Web App and does it meet the standards of our Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical 4GL App, deployed to a standard (Viya 2025.xx) platform.
@@ -33,25 +48,9 @@ All of our apps make use of the SASjs framework, being designed to accelerate an
 
 A SASjs web app comprises of a _frontend_ (static web content) that uses the SASjs _adapter_ to invoke the _backend_ (SAS code in Viya Jobs).
 
-```mermaid
 
-graph TD;
-subgraph Backend Development
-  C(Backend - SAS Code in Viya Jobs);
-  C -->|Runs on| H(SPRE);
+![](../assets/security_architecture.png)
 
-  H -->|Uses| sc(SASjs Core);
-  sc -->|Performs| I(Server Logic and Data Processing);
-end
-subgraph Frontend Development
-  A(Frontend - Static Web Content on SAS Drive)
-  A-->|Runs on| ub(Browser);
-  ub-->|Uses| B(SASjs Adapter);
-  B -->|Performs| fl(Client Logic and Data Visualisation);
-end
-
-
-```
 
 ## Frontend Development
 
