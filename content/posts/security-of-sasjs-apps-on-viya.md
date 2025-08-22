@@ -50,7 +50,7 @@ What is a SASjs Web App and how does it integrate with a SAS Viya data platform?
 
 ## Introduction
 
-4GL is a boutique SAS Web App development agency with a singular focus of building web apps on SAS platforms.  We also migrate legacy SAS 9 STP Web Apps to Viya, and have delivered multiple (successful) AF/SCL modernisations.
+4GL is a boutique SAS Web App development agency who have had a singular focus of building web apps on SAS platforms for 10+ years.  We also migrate legacy SAS 9 STP Web Apps to Viya, and have delivered multiple (successful) AF/SCL modernisations.
 
 When not working on customer projects, we are extending our own products - [Data Controller](https://datacontroller.io) (a data ingestion tool for SAS) and SASjs.
 
@@ -161,10 +161,12 @@ Once in Production, a SASjs app benefits from a number of protections:
   - `POST /compute/sessions/${id}/jobs`
   - `POST /jobExecution/jobs`
 
+## Summary
 
-To summarise, the SASjs web apps we produce are always:
+The SASjs web apps we produce are always:
 
- - Appropriately licenced (no copyleft components)
+ - Appropriately licenced - no copyleft components
+ - Contained entirely in a standard Viya install
  - Version controlled
  - Easy to deploy
  - Documented
@@ -172,4 +174,4 @@ To summarise, the SASjs web apps we produce are always:
  - Tested
  - Secure
 
-
+Do [reach out](/contact) for further information, or clarifications on the build / deployment process.
