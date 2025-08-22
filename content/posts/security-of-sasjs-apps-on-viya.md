@@ -1,9 +1,9 @@
 ---
-title: Security of 4GL Web Apps on Viya
+title: SASjs Web Apps on Viya
 date: 2025-08-19T09:00:00.000Z
 layout: POST
-path: /security-of-4GL-web-apps-on-viya
-description: A security review of a typical 4GL Web App on Viya
+path: /sasjs-web-apps-on-viya
+description: A review of a typical SASjs Web App on Viya
 category: Viya
 featuredImage: ../assets/security_viya.png
 tags:
@@ -46,19 +46,19 @@ diagram2:
       ```
 ---
 
-What is a 4GL Web App and does it meet the standards of our Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical 4GL App, deployed to a standard (Viya 2025.xx) platform.
+What is a SASjs Web App and how does it integrate with a SAS Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical SASjs Web App, deployed to a standard (Viya 2025.xx) platform.
 
 ## Introduction
 
 4GL is a boutique SAS Web App development agency with a singular focus of building web apps on SAS platforms.  We also migrate legacy SAS 9 STP Web Apps to Viya, and have delivered multiple (successful) AF/SCL modernisations.
 
-When not working on customer projects, we are extending our own products - Data Controller (a data ingestion tool for SAS) and SASjs.
+When not working on customer projects, we are extending our own products - [Data Controller](https://datacontroller.io) (a data ingestion tool for SAS) and SASjs.
 
 SASjs is both a set of open-source tools as well as an _opinionated framework_ for the deployment and delivery of web applications on SAS platforms.  The core components are:
 
- - SASjs Core - a SAS macro library
- - SASjs Adapter - a Javascript library
- - SASjs CLI - a commandline tool for testing, linting, compilations, and deployments
+ - SASjs [Core](https://github.com/sasjs/core) - a SAS macro library
+ - SASjs [Adapter](https://github.com/sasjs/adapter) - a Javascript library
+ - SASjs [CLI](https://github.com/sasjs/cli) - a commandline tool for testing, linting, compilations, and deployments
 
 All of our apps make use of the SASjs framework, being designed to accelerate and de-risk web app development projects.
 
@@ -102,7 +102,7 @@ Here are some of the steps taken to improve security at build time:
 
 ## Backend Development
 
-The backend for a SASjs app is a series of self-contained Viya Jobs, containing regular SAS code, running on SPRE.  These jobs perform the backend logic and data processing needs of the frontend app.
+The backend for a SASjs Viya web app is a series of self-contained Viya Jobs, containing regular SAS code, running on SPRE.  These jobs perform the backend logic and data processing needs of the frontend app.
 
 The SASjs framework ensures that all jobs are documented (as macros must be listed in the header in order to be compiled) and organised by reference to a central [configuration file](https://cli.sasjs.io/sasjsconfig/).
 
@@ -162,8 +162,9 @@ Once in Production, a SASjs app benefits from a number of protections:
   - `POST /jobExecution/jobs`
 
 
-To summarise, the apps we produce for the Viya platform are:
+To summarise, the SASjs web apps we produce are always:
 
+ - Appropriately licenced (no copyleft components)
  - Version controlled
  - Easy to deploy
  - Documented
@@ -171,4 +172,4 @@ To summarise, the apps we produce for the Viya platform are:
  - Tested
  - Secure
 
-In addition, the [tooling](https://github.com/sasjs) we use is 100% MIT open source.
+
