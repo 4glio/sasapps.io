@@ -25,18 +25,17 @@ diagram:
     ub -->|Performs| fl(Client Logic and Data Visualisation);
     fl-->|Uses| B(SASjs Adapter);
   end
+
 diagram2:
     |
+      ---
+      ```mermaid
       sequenceDiagram
 
-      participant SAS_Drive as SAS Drive
+      participant SAS_Drive as SAS Drive <br> Web Content<br>inc. SASjs Adapter
       actor Browser
-      participant SAS_Job_Execution as SAS JES
-      participant SPRE as SPRE
-
-      Note over SAS_Job_Execution: SAS Jobs <br>inc. SASjs Core
-      Note over SAS_Drive: Static Web Content <br> inc. SASjs Adapter
-
+      participant SAS_Job_Execution as SAS JES<br>SAS Jobs<br>inc. SASjs Core
+      participant SPRE as SPRE<br>in Compute Context
       Browser->>SAS_Drive: HTTP GET<br> /index.html
       SAS_Drive-->>Browser: HTML/JS/CSS
 
@@ -44,6 +43,7 @@ diagram2:
       SAS_Job_Execution-->>SPRE: Execute Job
       SPRE-->>SAS_Job_Execution: Return results
       SAS_Job_Execution-->>Browser: Return results
+      ```
 ---
 
 What is a 4GL Web App and does it meet the standards of our Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical 4GL App, deployed to a standard (Viya 2025.xx) platform.
