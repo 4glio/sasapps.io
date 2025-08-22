@@ -12,37 +12,40 @@ tags:
   - SAS Admin
   - SAS
 diagram:
-  graph TD;
-  subgraph Backend Development
-    C(Backend - SAS Code in Viya Jobs);
-    C -->|Runs on| H(SPRE);
-    H -->|Performs| I(Server Logic and Data Processing);
-    I -->|Uses| sc(SASjs Core);
-  end
-  subgraph Frontend Development
-    A(Frontend - Static Web Content on SAS Drive)
-    A-->|Runs on| ub(Browser);
-    ub -->|Performs| fl(Client Logic and Data Visualisation);
-    fl-->|Uses| B(SASjs Adapter);
-  end
-
+    |
+      ---
+      ```mermaid
+      graph TD;
+      subgraph Backend
+        C(SAS Code in Viya Jobs);
+        C -->|Runs on| H(SPRE);
+        H -->|Performs| I(Server Logic &<br> Data Processing);
+        I -->|Uses| sc(SASjs Core);
+      end
+      subgraph Frontend
+        A(Static Files on SAS Drive)
+        A-->|Runs on| ub(Browser);
+        ub -->|Performs| fl(Client Logic & <br> Data Visualisation);
+        fl-->|Uses| B(SASjs Adapter);
+      end
+      ```
 diagram2:
     |
       ---
       ```mermaid
       sequenceDiagram
-
-      participant SAS_Drive as SAS Drive <br> Web Content<br>inc. SASjs Adapter
+      participant SAS_Drive as SAS Drive <br> (Web Content)
       actor Browser
-      participant SAS_Job_Execution as SAS JES<br>SAS Jobs<br>inc. SASjs Core
-      participant SPRE as SPRE<br>in Compute Context
+      participant SAS_Job_Execution as SAS JES<br>(SAS Jobs)
+      participant SPRE as SPRE<br>(Compute Context)
       Browser->>SAS_Drive: HTTP GET<br> /index.html
       SAS_Drive-->>Browser: HTML/JS/CSS
-
-      Browser->>SAS_Job_Execution: Trigger SAS Job<br> (via API)
-      SAS_Job_Execution-->>SPRE: Execute Job
-      SPRE-->>SAS_Job_Execution: Return results
-      SAS_Job_Execution-->>Browser: Return results
+      Note over Browser: Invoke SASjs<br> Adapter + app<br>JS logic
+      Browser->>SAS_Job_Execution: Trigger Job<br> (via API)
+      SAS_Job_Execution-->>SPRE: Execute<br> Job
+      Note over SPRE: Invoke SASjs <br>core + app<br> SAS logic
+      SPRE-->>SAS_Job_Execution: Return<br> results
+      SAS_Job_Execution-->>Browser: Return <br>results
       ```
 ---
 
