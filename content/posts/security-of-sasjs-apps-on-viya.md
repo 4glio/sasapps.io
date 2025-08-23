@@ -1,9 +1,9 @@
 ---
-title: SASjs Web Apps on Viya
+title: SASjs Web Apps on SAS Viya
 date: 2025-08-19T09:00:00.000Z
 layout: POST
-path: /sasjs-web-apps-on-viya
-description: A review of a typical SASjs Web App on Viya
+path: /sasjs-web-apps-on-sas-viya
+description: A review of a typical SASjs Web App on SAS Viya
 category: Viya
 featuredImage: ../assets/security_viya.png
 tags:
@@ -49,7 +49,7 @@ diagram2:
       ```
 ---
 
-What is a SASjs Web App and how does it integrate with a SAS Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical SASjs Web App, deployed to a standard (Viya 2025.xx) platform.
+What is a SASjs Web App and how does it integrate with a SAS Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical SASjs Web App, deployed to a standard SAS Viya 2025 instance.
 
 ## Introduction
 
