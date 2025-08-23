@@ -51,6 +51,8 @@ diagram2:
 
 What is a SASjs Web App and how does it integrate with a SAS Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical SASjs Web App, deployed to a standard SAS Viya 2025 instance.
 
+![](../assets/security_viya.png)
+
 ## Introduction
 
 4GL is a boutique software company with a singular focus on building browser-based applications for SAS platforms. Along with greenfield developments we offer migration of existing SAS 9 Web Apps to Viya, and modernisation of legacy SAS AF/SCL desktop applications.

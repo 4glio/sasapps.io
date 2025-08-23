@@ -40,7 +40,7 @@ const About: React.FC<Props> = ({ location }: Props) => {
         <p className="custom-text">
           The SAS Apps team have been together (in various forms) since 2018.{' '}
           <br /> We built the SASjs Framework, Data Controller for SAS, and
-          Sasensei.com - not to mention, numerous customer projects. <br /> You
+          the SCL Transcoding Kit - plus numerous customer projects. <br /> You
           can engage us through your preferred SAS partner, or contact us
           directly.
         </p>
