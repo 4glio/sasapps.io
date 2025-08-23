@@ -55,7 +55,7 @@ What is a SASjs Web App and how does it integrate with a SAS Viya data platform?
 
 ## Introduction
 
-4GL is a boutique software company with a singular focus on building browser-based applications for SAS platforms. Along with greenfield developments we offer migration of existing SAS 9 Web Apps to Viya, and modernisation of legacy SAS AF/SCL desktop applications.
+4GL is a boutique software company with a singular focus on building browser-based applications for SAS platforms. Alongside greenfield development we specialise in the migration of SAS 9 Web Apps to Viya, and modernisation of legacy SAS AF/SCL desktop applications.
 
 When not working on customer projects, we are extending our own products - [Data Controller](https://datacontroller.io) (a data ingestion tool for SAS) and SASjs.
 
