@@ -12,18 +12,24 @@ previewImg: '../assets/ts-dev.png'
 
 ## Role Description
 
-This is a full-time remote role for a UK Based, SC cleared, Senior TypeScript Developer. The Senior TypeScript Developer will be responsible for developing and maintaining web applications and other bespoke interfaces on SAS platforms. This includes working on migration projects, modernising legacy applications, utilising the SASjs framework, and ensuring the best practices in TypeScript development and DevOps.
+This is a full-time remote role for a UK Based, SC cleared, Senior TypeScript Developer. The Senior TypeScript Developer will be responsible for developing and maintaining web applications and other bespoke interfaces on SAS platforms. This includes working on migration projects, modernising legacy applications, utilising the SASjs framework, and ensuring best practice in TypeScript development and DevOps.
 
 
 ## Qualifications
 
 * Strong proficiency in TypeScript and JavaScript
-* Experience with web application development and API integration
-* Familiarity with SAS development and migration projects
+* 5+ years experience with web application development
 * Proficient in DevOps practices and tools
 * Excellent problem-solving skills and attention to detail
-* Effective communication skills and ability to work in a remote team
-* Experience with legacy application modernisation is a plus
-* Bachelor's degree in Computer Science, Engineering, Mathematics, or a related field
+* Effective communication skills
+* Bachelor's degree in Computer Science, Engineering, Mathematics, or related field
 * UK Based
 * SC Clearance
+
+Please contact recruitment@4gl.io with the subject "I AM UK BASED" and the following info:
+
+ - Your hourly rate, in GBP
+ - A copy of your CV
+ - Link to your github (or equivalent) and linkedin profile
+
+
