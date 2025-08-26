@@ -36,7 +36,7 @@ This is a full-time remote role for a UK Based, SC cleared, Senior TypeScript De
 Please contact recruitment@4gl.io with the subject "I AM UK BASED" and the following info:
 
  - Your hourly rate, in GBP
- - A copy of your CV
- - Link to your github (or equivalent) and linkedin profile
+ - A link to your CV
+ - Links to your github (or equivalent) and linkedin profile (or equivalent)
 
 
