@@ -1,9 +1,16 @@
 ---
-title: Projects
+title: Typescript Dev, Contract Basis
 path: /ts-dev/
 description: This is a full-time remote role for a UK Based, SC cleared, Senior TypeScript Developer.
-previewImg: '../assets/ts-dev.png'
+featuredImage: ../assets/ts-dev.png
+date: 2026-08-26T09:00:00.000Z
+layout: POST
+category: Recruitment
+tags:
+  - Typescript
+  - Recruitment
 ---
+
 
 ## About Us
 
