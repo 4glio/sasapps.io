@@ -2,7 +2,7 @@
 title: Typescript Dev, Contract Basis
 path: /ts-dev/
 description: This is a full-time remote role for a UK Based, SC cleared, Senior TypeScript Developer.
-featuredImage: ../assets/ts-dev.png
+previewImg: ../assets/ts-dev.png
 date: 2026-08-26T09:00:00.000Z
 layout: POST
 category: Recruitment
@@ -11,11 +11,11 @@ tags:
   - Recruitment
 ---
 
-
 ## About Us
 
 4GL Apps combines the power of SAS 4GL with the flexibility of open source to deliver bespoke interface development, migration, and modernisation services. Our offerings include web applications and APIs across major SAS platforms, and modernisation of legacy SAS/AF applications. Our innovative products, such as SASjs, Data Controller, and AF/SCL Transcoding Kit, enhance SAS DevOps, app development, and data management.
 
+![](../assets/ts-dev.png)
 
 ## Role Description
 
