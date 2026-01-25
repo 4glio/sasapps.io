@@ -9,8 +9,7 @@ import LinkButton from '../components/button/link-button'
 import dcLogo from '../../assets/products/dc-logo.svg'
 import dcName from '../../assets/products/dc-name.svg'
 import jsLogo from '../../assets/products/js-logo.png'
-import sasenseiLogo from '../../assets/products/sasensei-logo.svg'
-import sasenseiName from '../../assets/products/sasensei-name.svg'
+import afsclLogo from '../../assets/products/afscl.png'
 
 interface Props {
   location: Location
@@ -70,22 +69,17 @@ export const ProductItems: React.FC = () => (
     <div className="col-md-6 col-xl-4">
       <div className="card">
         <img
-          src={sasenseiLogo}
-          alt="SASensei"
+          src={afsclLogo}
+          alt="AF/SCL"
           style={{ width: '176px', height: '160px' }}
         />
-        <img
-          src={sasenseiName}
-          alt="SASSenSei"
-          style={{ width: '176px', height: '31px' }}
-        />
-        <h3> SASensei</h3>
-        <p>Global SAS Challenge Platform with over 5000 SAS players</p>
-        <a className="service-link" href="https://sasensei.com">
-          https://sasensei.com
+        <h3> AF / SCL Kit</h3>
+        <p>Migration tooling for rapid modernisation of monolithic AF / SCL apps</p>
+        <a className="service-link" href="https://slides.sasjs.io/af/">
+          https://4gl.io/af
         </a>
         <div className="wrapper">
-          <LinkButton path={'https://sasensei.com'} label="Find Out More" />
+          <LinkButton path={'https://slides.sasjs.io/af/'} label="Find Out More" />
         </div>
       </div>
     </div>
