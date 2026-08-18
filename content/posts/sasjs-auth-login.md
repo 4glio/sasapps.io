@@ -13,6 +13,8 @@ tags:
   - SAS Admin
 ---
 
+![SASjs CLI Auth Login](../assets/sasjs-auth-login.jpeg)
+
 The SASjs CLI has always required a registered OAuth client and secret to authenticate against SAS Viya. If you are a developer who just wants to run a SAS program from the command line, getting an administrator to register an OAuth client for you is friction you do not need. The new `sasjs auth login` command removes that barrier - you log in with your regular SAS username and password, and the CLI handles the rest.
 
 ## What it does
