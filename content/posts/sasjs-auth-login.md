@@ -42,7 +42,7 @@ Under the hood, `sasjs auth login` does the following:
 3. **Token persistence** - saves the access token and refresh token to the same locations as the existing `sasjs auth` flow: `.env.[target name]` for local targets, `~/.sasjsrc` for global targets.
 4. **Automatic refresh** - when the access token is close to expiry, the CLI silently refreshes it using the stored refresh token (again via the `sas.cli` client). No client/secret is needed for the refresh either.
 
-Viya refresh tokens are single-use and rotate on every refresh. The CLI persists the rotated pair automatically after every refresh - including refreshes that happen inside long-running job executions - so you never end up with a stale refresh token.
+Viya refresh tokens are single-use and rotate on every refresh. The CLI persists the rotated pair automatically after every refresh - so the next CLI invocation always reads the latest valid pair, and you never end up with a stale refresh token.
 
 ## Quick start
 
