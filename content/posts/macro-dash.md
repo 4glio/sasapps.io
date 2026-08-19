@@ -1,5 +1,5 @@
 ---
-title: Macro Dash - A SAS-Powered Game on SASjs
+title: Macro Dash - a SAS Powered Platformer
 date: 2026-08-19T09:00:00.000Z
 layout: POST
 path: /macro-dash
