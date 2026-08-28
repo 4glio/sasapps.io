@@ -67,3 +67,46 @@ Not only do we have the bitter-sweet experience of many successful (and some not
 Plus multiple [Seed Apps](https://github.com/sasjs/seed_apps) to quick start your development journey.
 
 #sasviya #sashackathon #sasprogramming #sassoftware
+
+<!--
+LinkedIn version (paste as first comment under the LinkedIn post):
+
+A short list of constraints to consider as a #SAS App Developer!
+
+* SAS runs on both Windows and Linux - so always use "/" in filepaths
+* The SAS 9 url may not be /SASStoredProcess/do (it could be do3)
+* Encoding in SAS 9 in Europe is frequently WLATIN(X) not UTF-8
+* PROC JSON doesn't handle invalid chars or special missings
+* The SAS 9 home directory may not be under `/User Folders/`
+* There are three primary flavours of SAS - Viya, EBI, Base
+* The OS library in LUA is disabled in Viya 4 but not 3.5
+* Avoid in-line and external JS/CSS to meet strict CSP
+* Accessibility considerations / Lighthouse scores
+* endsas can kill the entire STP server in 9.4m3
+* Invisible characters embedded in .sas programs
+* The SAS 9 home directory might be read-only
+* RunAsTask fixes Job performance in Viya
+* Most large environments run -NOXCMD
+* Lack of multibridge connections
+* Options missing='' fun & games
+* Many sites implement LOCKDOWN
+* Breaking changes in Viya APIs
+* Support for very old browsers
+* How to prevent code injection
+* Handling SASLogon with MFA
+
+If you are embarking on a SAS App Development project, as a customer or SAS Partner, my team is available for support.
+
+Not only do we have the bitter-sweet experience of many successful (and not so successful) project deliveries, we can equip you with some serious tooling. All of which is MIT open source and free for commercial use:
+
+* SASjs CLI - DevOps, Documentation & Testing
+* SASjs Core - Macros for all flavours of SAS
+* SASjs Lint - Quality check your SAS code
+* SASjs Server - Build Apps on Base SAS
+* SASjs Adapter - JS connectivity library
+* SASjs VS Code Extension - IDE tools (now on the FOSS VSCodium app store)
+
+Plus multiple Seed Apps to quick start your development journey.
+
+#sasviya #sashackathon #sasprogramming #sassoftware
+-->
