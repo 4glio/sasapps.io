@@ -25,7 +25,7 @@ Scene: a SAS application developer at the centre, calmly typing on a laptop, sur
 Keep the developer and laptop in the central square (safe for 1:1 crop). Outer left/right thirds croppable background only. Suitable as a blog/feed cover image.
 -->
 
-# Constraints to Consider as a SAS App Developer
+# 21 Constraints to Consider as a SAS App Developer
 
 SAS is a powerful platform - but if you're building apps on it, the real world has a habit of introducing constraints you didn't plan for. Here's a short list, earned the hard way across many project deliveries, to consider before you write a single line of code:
 
@@ -53,11 +53,11 @@ SAS is a powerful platform - but if you're building apps on it, the real world h
 
 ## We can help
 
-If you are embarking on a SAS App Development project, as a customer or SAS Partner, my team is available for support.
+If you are embarking on a SAS App Development project, as a customer or SAS Partner, our team is available for support.
 
 Not only do we have the bitter-sweet experience of many successful (and some not so successful) project deliveries, we can equip you with some serious dev tooling. All of which is MIT open source and free for commercial use:
 
-* [SASjs VS Code Extension](https://open-vsx.org/extension/SASjs/sasjs-for-vscode) - IDE tools
+* [SASjs Skills](https://github.com/sasjs/skills) - Agent skills for SAS & SASjs
 * [SASjs Lint](https://cli.sasjs.io/lint) - Quality check your SAS code
 * [SASjs Core](https://core.sasjs.io) - Macros for all flavours of SAS
 * [SASjs CLI](https://cli.sasjs.io) - DevOps, Documentation & Testing
@@ -99,7 +99,7 @@ If you are embarking on a SAS App Development project, as a customer or SAS Part
 
 Not only do we have the bitter-sweet experience of many successful (and not so successful) project deliveries, we can equip you with some serious tooling. All of which is MIT open source and free for commercial use:
 
-* SASjs VS Code Extension - IDE tools (now on the FOSS VSCodium app store)
+* SASjs Skills - Agent skills for SAS & SASjs
 * SASjs CLI - DevOps, Documentation & Testing
 * SASjs Core - Macros for all flavours of SAS
 * SASjs Lint - Quality check your SAS code
