@@ -63,6 +63,32 @@ a[href^='tel']::before {
   color: $aquamarine;
 }
 
+.blog-tabs {
+  margin-bottom: 30px;
+
+  .nav-link {
+    color: $gray-600;
+    font-weight: 500;
+
+    &:hover {
+      color: $gray-800;
+    }
+
+    &.active {
+      color: $gray-800;
+      font-weight: 600;
+      border-bottom: 2px solid $gray-800;
+    }
+  }
+}
+
+.feed-item {
+  .feed-read-more {
+    font-size: $font-size-sm;
+    font-weight: 500;
+  }
+}
+
 .blog-grid-item {
   border-radius: 10px;
   overflow: hidden;

@@ -5,6 +5,8 @@ const _ = require('lodash')
 const PostTemplate = path.resolve('./src/templates/template.tsx')
 const PageTemplate = path.resolve('./src/templates/markdownPageTemplate.tsx')
 const tagTemplate = path.resolve('./src/templates/tags.tsx')
+const feedPostTemplate = path.resolve('./src/templates/feed/feed-post.tsx')
+const feedListTemplate = path.resolve('./src/templates/feed/feed-list.tsx')
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage, createRedirect } = actions
@@ -23,9 +25,8 @@ exports.createPages = ({ graphql, actions }) => {
   })
 
   return new Promise((resolve, reject) => {
-    resolve(
-      graphql(
-        `
+    graphql(
+      `
           {
             allFile(filter: { extension: { regex: "/md|tsx/" } }, limit: 1000) {
               edges {
@@ -49,7 +50,8 @@ exports.createPages = ({ graphql, actions }) => {
             }
           }
         `
-      ).then(({ errors, data }) => {
+    )
+      .then(({ errors, data }) => {
         if (errors) {
           console.log(errors)
           reject(errors)
@@ -90,8 +92,151 @@ exports.createPages = ({ graphql, actions }) => {
             },
           })
         })
+
+        // -------------------------------------------------------------------
+        // Feed section (short-form updates) - mirrors datacontroller.io
+        // -------------------------------------------------------------------
+        return graphql(
+          `
+            {
+              allMarkdownRemark(
+                sort: { frontmatter: { date: DESC } }
+                limit: 1000
+                filter: { fileAbsolutePath: { regex: "/content/feed/" } }
+              ) {
+                nodes {
+                  id
+                  frontmatter {
+                    title
+                    path
+                    date(formatString: "YYYY")
+                    tags
+                  }
+                }
+                tagsGroup: group(field: { frontmatter: { tags: SELECT } }) {
+                  name: fieldValue
+                  totalCount
+                }
+              }
+            }
+          `
+        )
       })
-    )
+      .then(({ errors, data: feedData }) => {
+        if (errors) {
+          console.log(errors)
+          reject(errors)
+        }
+
+        const postsPerPage = 6
+        const feedPosts = feedData.allMarkdownRemark.nodes
+        const feedTags = feedData.allMarkdownRemark.tagsGroup
+        const feedTagsFrequent = [...feedTags]
+          .sort((a, b) => b.totalCount - a.totalCount)
+          .slice(0, 10)
+        const feedRecentPosts = feedPosts.slice(0, 10).map((p) => ({
+          path: p.frontmatter.path,
+          title: p.frontmatter.title
+        }))
+        const feedArchives = {}
+        feedPosts.forEach((d) => {
+          if (feedArchives[d.frontmatter.date] == null)
+            feedArchives[d.frontmatter.date] = 0
+          feedArchives[d.frontmatter.date]++
+        })
+
+        const feedContext = {
+          archives: feedArchives,
+          recentPosts: feedRecentPosts,
+          tags: feedTagsFrequent
+        }
+
+        // Individual feed post pages
+        feedPosts.forEach((post) => {
+          createPage({
+            path: post.frontmatter.path,
+            component: feedPostTemplate,
+            context: {
+              path: post.frontmatter.path,
+              ...feedContext
+            }
+          })
+        })
+
+        // Feed index pages (paginated)
+        const feedNumPages = Math.ceil(feedPosts.length / postsPerPage)
+        Array.from({ length: feedNumPages }).forEach((_, i) => {
+          createPage({
+            path: i === 0 ? `/blog/feed` : `/blog/feed/page/${i + 1}`,
+            component: feedListTemplate,
+            context: {
+              page: 'index',
+              ...feedContext,
+              filter: { fileAbsolutePath: { regex: '/content/feed/' } },
+              limit: postsPerPage,
+              skip: i * postsPerPage,
+              numPages: feedNumPages,
+              currentPage: i + 1
+            }
+          })
+        })
+
+        // Year archive pages
+        for (const year in feedArchives) {
+          const count = feedArchives[year]
+          const numPagesOfYear = Math.ceil(count / postsPerPage)
+          Array.from({ length: numPagesOfYear }).forEach((_, i) => {
+            createPage({
+              path:
+                i === 0
+                  ? `/blog/feed/${year}/`
+                  : `/blog/feed/${year}/page/${i + 1}`,
+              component: feedListTemplate,
+              context: {
+                page: 'year',
+                ...feedContext,
+                filter: {
+                  frontmatter: { date: { gte: year, lt: `${year}-z` } },
+                  fileAbsolutePath: { regex: '/content/feed/' }
+                },
+                limit: postsPerPage,
+                skip: i * postsPerPage,
+                numPages: numPagesOfYear,
+                currentPage: i + 1,
+                year
+              }
+            })
+          })
+        }
+
+        // Category (tag) pages
+        feedTags.forEach((tag) => {
+          const count = tag.totalCount
+          const numPagesOfTag = Math.ceil(count / postsPerPage)
+          Array.from({ length: numPagesOfTag }).forEach((__, i) => {
+            const tagPath = `/blog/feed/category/${_.kebabCase(tag.name)}/`
+            createPage({
+              path: i === 0 ? tagPath : `${tagPath}page/${i + 1}`,
+              component: feedListTemplate,
+              context: {
+                page: 'category',
+                ...feedContext,
+                filter: {
+                  frontmatter: { tags: { in: [tag.name] } },
+                  fileAbsolutePath: { regex: '/content/feed/' }
+                },
+                limit: postsPerPage,
+                skip: i * postsPerPage,
+                numPages: numPagesOfTag,
+                currentPage: i + 1,
+                tag: tag.name
+              }
+            })
+          })
+        })
+
+        resolve()
+      })
   })
 }
 

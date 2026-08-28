@@ -5,6 +5,7 @@ import Post from './post/post'
 import Meta from '../components/meta/meta'
 import Layout from '../components/layout/layout'
 import Breadcrum from '../components/breadcrum/breadcrum'
+import { getSrc } from 'gatsby-plugin-image'
 import { PostByPath } from '../../types/graphql-types'
 
 interface Props {
@@ -15,8 +16,8 @@ interface Props {
 const Template: React.FC<Props> = ({ data, location }: Props) => {
   const title = data.post?.frontmatter?.title || ''
   const description = data.post?.frontmatter?.description || ''
-  let featuredImg = data.post?.frontmatter.featuredImage.childImageSharp.fixed
-  if (!featuredImg) featuredImg = { src: '' }
+  const featuredImage = data.post?.frontmatter?.featuredImage
+  const featuredImgSrc = featuredImage ? getSrc(featuredImage) || '' : ''
 
   return (
     <div>
@@ -25,7 +26,7 @@ const Template: React.FC<Props> = ({ data, location }: Props) => {
           title={title}
           site={data.site?.meta}
           prependtitle={false}
-          previewImg={featuredImg.src}
+          previewImg={featuredImgSrc}
           customDescription={description}
         />
         <Breadcrum
@@ -64,9 +65,7 @@ export const pageQuery = graphql`
         title
         featuredImage {
           childImageSharp {
-            fixed(width: 400) {
-              ...GatsbyImageSharpFixed
-            }
+            gatsbyImageData(width: 400)
           }
         }
         path

@@ -1,20 +1,19 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es2022: true,
     node: true,
   },
+  parser: '@typescript-eslint/parser',
   extends: [
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/react',
   ],
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'prettier'],
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2022,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
@@ -22,10 +21,11 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: {
-      version: '16.13.0',
+      version: '18.3',
     },
   },
 }

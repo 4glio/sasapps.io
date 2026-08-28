@@ -1,7 +1,6 @@
-import { graphql } from 'gatsby'
-import { Link } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import React from 'react'
-import Img from 'gatsby-image'
+import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import { BlogIndexQuery } from '../../types/graphql-types'
 import { siteMetadata } from '../../gatsby-config'
@@ -13,6 +12,32 @@ interface Props {
   data: BlogIndexQuery
   location: Location
 }
+
+interface TabsProps {
+  location: Location
+  active: 'articles' | 'feed'
+}
+
+export const BlogTabs: React.FC<TabsProps> = ({ location, active }) => (
+  <ul className="nav nav-tabs justify-content-center blog-tabs">
+    <li className="nav-item">
+      <Link
+        className={`nav-link ${active === 'articles' ? 'active' : ''}`}
+        to="/blog"
+      >
+        Articles
+      </Link>
+    </li>
+    <li className="nav-item">
+      <Link
+        className={`nav-link ${active === 'feed' ? 'active' : ''}`}
+        to="/blog/feed"
+      >
+        Feed
+      </Link>
+    </li>
+  </ul>
+)
 
 const BlogIndex: React.FC<Props> = ({ data, location }: Props) => {
   const posts = data.remark.posts
@@ -37,16 +62,24 @@ const BlogIndex: React.FC<Props> = ({ data, location }: Props) => {
           You&apos;ve reached the front page for the latest news and updates in
           the world of 4GL SAS Apps.
         </p>
+        <BlogTabs location={location} active="articles" />
         <div className="row justify-content-md-center">
           {posts.map((data, i) => {
             const frontmatter = data.post?.frontmatter
             const path = frontmatter?.path || ''
-            const featuredImg = frontmatter?.featuredImage.childImageSharp
+            const featuredImage = frontmatter?.featuredImage
+              ? getImage(frontmatter.featuredImage)
+              : undefined
             return (
               <div className="col-md-6 col-xl-4" key={i}>
                 <div className="blog-grid-item">
                   <Link to={path} title={frontmatter?.title}>
-                    <Img fluid={featuredImg.fluid} alt={frontmatter?.title} />
+                    {featuredImage && (
+                      <GatsbyImage
+                        image={featuredImage}
+                        alt={frontmatter?.title || ''}
+                      />
+                    )}
                   </Link>
                   <div className="content">
                     <Link style={{ boxShadow: 'none' }} to={path}>
@@ -73,7 +106,7 @@ export const pageQuery = graphql`
   query BlogIndexQuery {
     remark: allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/content/posts/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       posts: edges {
         post: node {
@@ -81,9 +114,7 @@ export const pageQuery = graphql`
             title
             featuredImage {
               childImageSharp {
-                fluid(maxWidth: 500) {
-                  ...GatsbyImageSharpFluid
-                }
+                gatsbyImageData(width: 500)
               }
             }
             path

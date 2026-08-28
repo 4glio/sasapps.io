@@ -31,6 +31,13 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        path: `${__dirname}/content/feed/`,
+        name: `feed`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
         path: `${__dirname}/content/assets`,
         name: `assets`,
       },
@@ -67,6 +74,59 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) =>
+              allMarkdownRemark.nodes.map((node) => ({
+                title: node.frontmatter.title,
+                description: node.frontmatter.description || '',
+                date: node.frontmatter.date,
+                url: site.siteMetadata.siteUrl + node.frontmatter.path,
+                guid: site.siteMetadata.siteUrl + node.frontmatter.path,
+                categories: node.frontmatter.tags || [],
+                custom_elements: [{ 'content:encoded': node.html }]
+              })),
+            query: `
+              {
+                allMarkdownRemark(
+                  sort: { frontmatter: { date: DESC } }
+                  filter: {
+                    fileAbsolutePath: { regex: "/content/(posts|feed)//" }
+                  }
+                ) {
+                  nodes {
+                    html
+                    frontmatter {
+                      title
+                      description
+                      date
+                      path
+                      tags
+                    }
+                  }
+                }
+              }
+            `,
+            output: '/rss.xml',
+            title: 'SAS Apps - Blog & Feed'
+          }
+        ]
+      }
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: 'SASApps - Unleash Your Analytics',
@@ -85,14 +145,6 @@ module.exports = {
         cache_busting_mode: 'none',
       },
     },
-    {
-      resolve: 'gatsby-plugin-offline',
-      options: {
-        workboxConfig: {
-          globPatterns: ['**/*'],
-        },
-      },
-    },
     // {
     //   resolve: 'gatsby-plugin-matomo',
     //   options: {
@@ -109,10 +161,10 @@ module.exports = {
     },
     'gatsby-plugin-catch-links',
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-image',
     'gatsby-plugin-sass',
     'gatsby-plugin-sharp',
     'gatsby-plugin-sitemap',
-    'gatsby-plugin-twitter',
     'gatsby-plugin-typescript',
     'gatsby-transformer-sharp',
   ],
