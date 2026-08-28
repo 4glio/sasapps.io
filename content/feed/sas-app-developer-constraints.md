@@ -3,7 +3,7 @@ title: 'Constraints to Consider as a SAS App Developer'
 date: 2026-08-28T11:00:00.000Z
 layout: POST
 path: /sas-app-developer-constraints
-description: Twenty hard-won lessons for anyone building apps on SAS - from filepath separators and WLATIN encodings to LOCKDOWN, -NOXCMD and MFA. Based on many successful (and not so successful) project deliveries.
+description: Twenty One hard-won lessons for anyone building apps on SAS - from filepath separators and WLATIN encodings to LOCKDOWN, -NOXCMD and MFA. Based on many successful (and some not so successful) project deliveries.
 category: SAS Apps
 featuredImage: ../assets/sas-app-developer-constraints.jpeg
 tags:
@@ -35,33 +35,34 @@ SAS is a powerful platform - but if you're building apps on it, the real world h
 * PROC JSON doesn't handle invalid chars or special missings
 * The SAS 9 home directory may not be under `/User Folders/`
 * There are three primary flavours of SAS - Viya, EBI, Base
-* Metadata may live in a different repository to Foundation
 * The OS library in LUA is disabled in Viya 4 but not 3.5
 * Avoid in-line and external JS/CSS to meet strict CSP
+* Accessibility considerations / Lighthouse scores
+* endsas can kill the entire STP server in 9.4m3
+* Invisible characters embedded in .sas programs
 * The SAS 9 home directory might be read-only
+* RunAsTask fixes Job performance in Viya
 * Most large environments run -NOXCMD
-* endsas can kill the STP server in 9.4m3
-* Some sites implement LOCKDOWN
-* Options missing='' fun & games
 * Lack of multibridge connections
-* Accessibility considerations
-* Options lrecl is 256 in WPS
-* SASLogon with MFA
-* Very old browsers
-* No admin rights
+* Options missing='' fun & games
+* Many sites implement LOCKDOWN
+* Breaking changes in Viya APIs
+* Support for very old browsers
+* How to prevent code injection
+* Handling SASLogon with MFA
 
 ## We can help
 
 If you are embarking on a SAS App Development project, as a customer or SAS Partner, my team is available for support.
 
-Not only do we have the bitter-sweet experience of many successful (and not so successful) project deliveries, we can equip you with some serious tooling. All of which is MIT open source and free for commercial use:
+Not only do we have the bitter-sweet experience of many successful (and some not so successful) project deliveries, we can equip you with some serious dev tooling. All of which is MIT open source and free for commercial use:
 
 * [SASjs CLI](https://cli.sasjs.io) - DevOps, Documentation & Testing
 * [SASjs Core](https://core.sasjs.io) - Macros for all flavours of SAS
 * [SASjs Lint](https://cli.sasjs.io/lint) - Quality check your SAS code
 * [SASjs Server](https://server.sasjs.io) - Build Apps on Base SAS
 * [SASjs Adapter](https://adapter.sasjs.io) - JS connectivity library
-* [SASjs VS Code Extension](https://marketplace.visualstudio.com/items?itemName=SASjs.sasjs-for-vscode) - IDE tools
+* [SASjs VS Code Extension](https://open-vsx.org/extension/SASjs/sasjs-for-vscode) - IDE tools
 
 Plus multiple [Seed Apps](https://github.com/sasjs/seed_apps) to quick start your development journey.
 
