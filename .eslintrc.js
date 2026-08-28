@@ -22,6 +22,12 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'react/react-in-jsx-scope': 'off',
+    'react/no-unknown-property': [
+      'error',
+      {
+        ignore: ['rules', 'no-reload'], // kwes.io form properties
+      },
+    ],
   },
   settings: {
     react: {

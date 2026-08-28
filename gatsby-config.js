@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 module.exports = {
   siteMetadata: {
     title: 'SAS Apps - Unleash Your Analytics',
@@ -97,7 +97,7 @@ module.exports = {
                 url: site.siteMetadata.siteUrl + node.frontmatter.path,
                 guid: site.siteMetadata.siteUrl + node.frontmatter.path,
                 categories: node.frontmatter.tags || [],
-                custom_elements: [{ 'content:encoded': node.html }]
+                custom_elements: [{ 'content:encoded': node.html }],
               })),
             query: `
               {
@@ -121,10 +121,10 @@ module.exports = {
               }
             `,
             output: '/rss.xml',
-            title: 'SAS Apps - Blog & Feed'
-          }
-        ]
-      }
+            title: 'SAS Apps - Blog & Feed',
+          },
+        ],
+      },
     },
     {
       resolve: `gatsby-plugin-manifest`,

@@ -14,11 +14,10 @@ interface Props {
 }
 
 interface TabsProps {
-  location: Location
   active: 'articles' | 'feed'
 }
 
-export const BlogTabs: React.FC<TabsProps> = ({ location, active }) => (
+export const BlogTabs: React.FC<TabsProps> = ({ active }) => (
   <ul className="nav nav-tabs justify-content-center blog-tabs">
     <li className="nav-item">
       <Link
@@ -62,7 +61,7 @@ const BlogIndex: React.FC<Props> = ({ data, location }: Props) => {
           You&apos;ve reached the front page for the latest news and updates in
           the world of 4GL SAS Apps.
         </p>
-        <BlogTabs location={location} active="articles" />
+        <BlogTabs active="articles" />
         <div className="row justify-content-md-center">
           {posts.map((data, i) => {
             const frontmatter = data.post?.frontmatter

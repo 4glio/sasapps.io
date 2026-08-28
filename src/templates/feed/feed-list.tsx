@@ -13,8 +13,7 @@ import './feed-list.scss'
 import type { FeedListQuery } from '../../../types/graphql-types'
 import type { FeedPageContext } from './sidebar'
 
-interface Props
-  extends PageProps<FeedListQuery, FeedPageContext> {
+interface Props extends PageProps<FeedListQuery, FeedPageContext> {
   location: Location
 }
 
@@ -78,7 +77,7 @@ const FeedListTemplate: React.FC<Props> = ({
         <p className="text-center">
           Short-form updates and announcements from the world of 4GL SAS Apps.
         </p>
-        <BlogTabs location={location} active="feed" />
+        <BlogTabs active="feed" />
         <div className="row">
           <div className="col-md-8">
             {posts.map(({ post }, i) => {
@@ -93,9 +92,7 @@ const FeedListTemplate: React.FC<Props> = ({
                   >
                     {frontmatter?.title}
                   </Link>
-                  <time dateTime={frontmatter?.date}>
-                    {frontmatter?.date}
-                  </time>
+                  <time dateTime={frontmatter?.date}>{frontmatter?.date}</time>
                   <p>{frontmatter?.description}</p>
                   <Link className="feed-read-more" to={path}>
                     Read more →

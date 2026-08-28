@@ -74,12 +74,17 @@ export const ProductItems: React.FC = () => (
           style={{ width: '176px', height: '160px' }}
         />
         <h3> AF / SCL Kit</h3>
-        <p>Migration tooling for rapid modernisation of monolithic AF / SCL apps</p>
+        <p>
+          Migration tooling for rapid modernisation of monolithic AF / SCL apps
+        </p>
         <a className="service-link" href="https://slides.sasjs.io/af/">
           https://4gl.io/af
         </a>
         <div className="wrapper">
-          <LinkButton path={'https://slides.sasjs.io/af/'} label="Find Out More" />
+          <LinkButton
+            path={'https://slides.sasjs.io/af/'}
+            label="Find Out More"
+          />
         </div>
       </div>
     </div>

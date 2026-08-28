@@ -39,10 +39,9 @@ const About: React.FC<Props> = ({ location }: Props) => {
         <h3 className="custom-heading">Our Team</h3>
         <p className="custom-text">
           The SAS Apps team have been together (in various forms) since 2018.{' '}
-          <br /> We built the SASjs Framework, Data Controller for SAS, and
-          the SCL Transcoding Kit - plus numerous customer projects. <br /> You
-          can engage us through your preferred SAS partner, or contact us
-          directly.
+          <br /> We built the SASjs Framework, Data Controller for SAS, and the
+          SCL Transcoding Kit - plus numerous customer projects. <br /> You can
+          engage us through your preferred SAS partner, or contact us directly.
         </p>
         <div className="row">
           <div className="profile col-lg-4 col-md-6">

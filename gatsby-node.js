@@ -25,32 +25,30 @@ exports.createPages = ({ graphql, actions }) => {
   })
 
   return new Promise((resolve, reject) => {
-    graphql(
-      `
-          {
-            allFile(filter: { extension: { regex: "/md|tsx/" } }, limit: 1000) {
-              edges {
-                node {
-                  id
-                  name: sourceInstanceName
-                  path: absolutePath
-                  remark: childMarkdownRemark {
-                    id
-                    frontmatter {
-                      path
-                    }
-                  }
+    graphql(`
+      {
+        allFile(filter: { extension: { regex: "/md|tsx/" } }, limit: 1000) {
+          edges {
+            node {
+              id
+              name: sourceInstanceName
+              path: absolutePath
+              remark: childMarkdownRemark {
+                id
+                frontmatter {
+                  path
                 }
               }
             }
-            tagsGroup: allMarkdownRemark(limit: 1000) {
-              group(field: frontmatter___tags) {
-                fieldValue
-              }
-            }
           }
-        `
-    )
+        }
+        tagsGroup: allMarkdownRemark(limit: 1000) {
+          group(field: frontmatter___tags) {
+            fieldValue
+          }
+        }
+      }
+    `)
       .then(({ errors, data }) => {
         if (errors) {
           console.log(errors)
@@ -96,31 +94,29 @@ exports.createPages = ({ graphql, actions }) => {
         // -------------------------------------------------------------------
         // Feed section (short-form updates) - mirrors datacontroller.io
         // -------------------------------------------------------------------
-        return graphql(
-          `
-            {
-              allMarkdownRemark(
-                sort: { frontmatter: { date: DESC } }
-                limit: 1000
-                filter: { fileAbsolutePath: { regex: "/content/feed/" } }
-              ) {
-                nodes {
-                  id
-                  frontmatter {
-                    title
-                    path
-                    date(formatString: "YYYY")
-                    tags
-                  }
-                }
-                tagsGroup: group(field: { frontmatter: { tags: SELECT } }) {
-                  name: fieldValue
-                  totalCount
+        return graphql(`
+          {
+            allMarkdownRemark(
+              sort: { frontmatter: { date: DESC } }
+              limit: 1000
+              filter: { fileAbsolutePath: { regex: "/content/feed/" } }
+            ) {
+              nodes {
+                id
+                frontmatter {
+                  title
+                  path
+                  date(formatString: "YYYY")
+                  tags
                 }
               }
+              tagsGroup: group(field: { frontmatter: { tags: SELECT } }) {
+                name: fieldValue
+                totalCount
+              }
             }
-          `
-        )
+          }
+        `)
       })
       .then(({ errors, data: feedData }) => {
         if (errors) {
@@ -136,7 +132,7 @@ exports.createPages = ({ graphql, actions }) => {
           .slice(0, 10)
         const feedRecentPosts = feedPosts.slice(0, 10).map((p) => ({
           path: p.frontmatter.path,
-          title: p.frontmatter.title
+          title: p.frontmatter.title,
         }))
         const feedArchives = {}
         feedPosts.forEach((d) => {
@@ -148,7 +144,7 @@ exports.createPages = ({ graphql, actions }) => {
         const feedContext = {
           archives: feedArchives,
           recentPosts: feedRecentPosts,
-          tags: feedTagsFrequent
+          tags: feedTagsFrequent,
         }
 
         // Individual feed post pages
@@ -158,8 +154,8 @@ exports.createPages = ({ graphql, actions }) => {
             component: feedPostTemplate,
             context: {
               path: post.frontmatter.path,
-              ...feedContext
-            }
+              ...feedContext,
+            },
           })
         })
 
@@ -176,8 +172,8 @@ exports.createPages = ({ graphql, actions }) => {
               limit: postsPerPage,
               skip: i * postsPerPage,
               numPages: feedNumPages,
-              currentPage: i + 1
-            }
+              currentPage: i + 1,
+            },
           })
         })
 
@@ -197,14 +193,14 @@ exports.createPages = ({ graphql, actions }) => {
                 ...feedContext,
                 filter: {
                   frontmatter: { date: { gte: year, lt: `${year}-z` } },
-                  fileAbsolutePath: { regex: '/content/feed/' }
+                  fileAbsolutePath: { regex: '/content/feed/' },
                 },
                 limit: postsPerPage,
                 skip: i * postsPerPage,
                 numPages: numPagesOfYear,
                 currentPage: i + 1,
-                year
-              }
+                year,
+              },
             })
           })
         }
@@ -223,14 +219,14 @@ exports.createPages = ({ graphql, actions }) => {
                 ...feedContext,
                 filter: {
                   frontmatter: { tags: { in: [tag.name] } },
-                  fileAbsolutePath: { regex: '/content/feed/' }
+                  fileAbsolutePath: { regex: '/content/feed/' },
                 },
                 limit: postsPerPage,
                 skip: i * postsPerPage,
                 numPages: numPagesOfTag,
                 currentPage: i + 1,
-                tag: tag.name
-              }
+                tag: tag.name,
+              },
             })
           })
         })
