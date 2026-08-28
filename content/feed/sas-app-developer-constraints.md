@@ -33,8 +33,8 @@ SAS is a powerful platform - but if you're building apps on it, the real world h
 * The SAS 9 url may not be /SASStoredProcess/do (it could be do3)
 * Encoding in SAS 9 in Europe is frequently WLATIN(X) not UTF-8
 * PROC JSON doesn't handle invalid chars or special missings
-* The SAS 9 home directory may not be under `/User Folders/`
 * There are three primary flavours of SAS - Viya, EBI, Base
+* Editing .html in Studio can affect the headers - use JES
 * The OS library in LUA is disabled in Viya 4 but not 3.5
 * Avoid in-line and external JS/CSS to meet strict CSP
 * Accessibility considerations / Lighthouse scores
@@ -57,12 +57,12 @@ If you are embarking on a SAS App Development project, as a customer or SAS Part
 
 Not only do we have the bitter-sweet experience of many successful (and some not so successful) project deliveries, we can equip you with some serious dev tooling. All of which is MIT open source and free for commercial use:
 
-* [SASjs CLI](https://cli.sasjs.io) - DevOps, Documentation & Testing
-* [SASjs Core](https://core.sasjs.io) - Macros for all flavours of SAS
-* [SASjs Lint](https://cli.sasjs.io/lint) - Quality check your SAS code
-* [SASjs Server](https://server.sasjs.io) - Build Apps on Base SAS
-* [SASjs Adapter](https://adapter.sasjs.io) - JS connectivity library
 * [SASjs VS Code Extension](https://open-vsx.org/extension/SASjs/sasjs-for-vscode) - IDE tools
+* [SASjs Lint](https://cli.sasjs.io/lint) - Quality check your SAS code
+* [SASjs Core](https://core.sasjs.io) - Macros for all flavours of SAS
+* [SASjs CLI](https://cli.sasjs.io) - DevOps, Documentation & Testing
+* [SASjs Adapter](https://adapter.sasjs.io) - JS connectivity library
+* [SASjs Server](https://server.sasjs.io) - Build Apps on Base SAS
 
 Plus multiple [Seed Apps](https://github.com/sasjs/seed_apps) to quick start your development journey.
 
@@ -71,14 +71,14 @@ Plus multiple [Seed Apps](https://github.com/sasjs/seed_apps) to quick start you
 <!--
 LinkedIn version (paste as first comment under the LinkedIn post):
 
-A short list of constraints to consider as a #SAS App Developer!
+21 constraints to consider as a #SAS App Developer!
 
 * SAS runs on both Windows and Linux - so always use "/" in filepaths
 * The SAS 9 url may not be /SASStoredProcess/do (it could be do3)
 * Encoding in SAS 9 in Europe is frequently WLATIN(X) not UTF-8
 * PROC JSON doesn't handle invalid chars or special missings
-* The SAS 9 home directory may not be under `/User Folders/`
 * There are three primary flavours of SAS - Viya, EBI, Base
+* Editing .html in Studio can affect the headers - use JES
 * The OS library in LUA is disabled in Viya 4 but not 3.5
 * Avoid in-line and external JS/CSS to meet strict CSP
 * Accessibility considerations / Lighthouse scores
@@ -99,12 +99,12 @@ If you are embarking on a SAS App Development project, as a customer or SAS Part
 
 Not only do we have the bitter-sweet experience of many successful (and not so successful) project deliveries, we can equip you with some serious tooling. All of which is MIT open source and free for commercial use:
 
+* SASjs VS Code Extension - IDE tools (now on the FOSS VSCodium app store)
 * SASjs CLI - DevOps, Documentation & Testing
 * SASjs Core - Macros for all flavours of SAS
 * SASjs Lint - Quality check your SAS code
-* SASjs Server - Build Apps on Base SAS
 * SASjs Adapter - JS connectivity library
-* SASjs VS Code Extension - IDE tools (now on the FOSS VSCodium app store)
+* SASjs Server - Build Apps on Base SAS
 
 Plus multiple Seed Apps to quick start your development journey.
 
