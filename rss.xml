@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[SAS Apps - Blog & Feed]]></title><description><![CDATA[Custom Interfaces to the world's most powerful Analytics Platform]]></description><link>http://github.com/dylang/node-rss</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 28 Aug 2026 13:31:50 GMT</lastBuildDate><item><title><![CDATA[Constraints to Consider as a SAS App Developer]]></title><description><![CDATA[Twenty One hard-won lessons for anyone building apps on SAS - from filepath separators and WLATIN encodings to LOCKDOWN, -NOXCMD and MFA. Based on many successful (and some not so successful) project deliveries.]]></description><link>https://sasapps.io/sas-app-developer-constraints</link><guid isPermaLink="false">https://sasapps.io/sas-app-developer-constraints</guid><category><![CDATA[SAS]]></category><category><![CDATA[SAS Viya]]></category><category><![CDATA[SASjs]]></category><category><![CDATA[App Development]]></category><pubDate>Fri, 28 Aug 2026 11:00:00 GMT</pubDate><content:encoded>&lt;!--
+Image prompt (regenerate with routstr-genimg.py):
+
+Generate a 16:9 landscape flat-design illustration for a B2B developer blog cover, 1200x627.
+
+Style: dark navy background, teal/green and orange accents, clean flat vector illustration, professional but lightly humorous. Minimal text, no logos, no watermarks.
+
+Scene: a SAS application developer at the centre, calmly typing on a laptop, surrounded by a ring of constraint-themed obstacles closing in from the edges: a padlocked server rack (LOCKDOWN), a shield with &quot;MFA&quot; on it, a broken file path with backslashes, a jar labelled &quot;WLATIN&quot; with letters spilling out, a padlock on a command prompt (-NOXCMD), a very old web browser window, and a wheelchair-accessibility icon. A green tick/checkmark glows above the developer&apos;s laptop showing the app shipping anyway.
+
+Keep the developer and laptop in the central square (safe for 1:1 crop). Outer left/right thirds croppable background only. Suitable as a blog/feed cover image.
+--&gt;
+&lt;h1&gt;21 Constraints to Consider as a SAS App Developer&lt;/h1&gt;
+&lt;p&gt;SAS is a powerful platform - but if you’re building apps on it, the real world has a habit of introducing constraints you didn’t plan for. Here’s a short list, earned the hard way across many project deliveries, to consider before you write a single line of code:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SAS runs on both Windows and Linux - so always use ”/” in filepaths&lt;/li&gt;
+&lt;li&gt;The SAS 9 url may not be /SASStoredProcess/do (it could be do3)&lt;/li&gt;
+&lt;li&gt;Encoding in SAS 9 in Europe is frequently WLATIN(X) not UTF-8&lt;/li&gt;
+&lt;li&gt;PROC JSON doesn’t handle invalid chars or special missings&lt;/li&gt;
+&lt;li&gt;There are three primary flavours of SAS - Viya, EBI, Base&lt;/li&gt;
+&lt;li&gt;Editing .html in Studio can affect the headers - use JES&lt;/li&gt;
+&lt;li&gt;The OS library in LUA is disabled in Viya 4 but not 3.5&lt;/li&gt;
+&lt;li&gt;Avoid in-line and external JS/CSS to meet strict CSP&lt;/li&gt;
+&lt;li&gt;Accessibility considerations / Lighthouse scores&lt;/li&gt;
+&lt;li&gt;endsas can kill the entire STP server in 9.4m3&lt;/li&gt;
+&lt;li&gt;Invisible characters embedded in .sas programs&lt;/li&gt;
+&lt;li&gt;The SAS 9 home directory might be read-only&lt;/li&gt;
+&lt;li&gt;RunAsTask fixes Job performance in Viya&lt;/li&gt;
+&lt;li&gt;Most large environments run -NOXCMD&lt;/li&gt;
+&lt;li&gt;Lack of multibridge connections&lt;/li&gt;
+&lt;li&gt;Options missing=” fun &amp;#x26; games&lt;/li&gt;
+&lt;li&gt;Many sites implement LOCKDOWN&lt;/li&gt;
+&lt;li&gt;Breaking changes in Viya APIs&lt;/li&gt;
+&lt;li&gt;Support for very old browsers&lt;/li&gt;
+&lt;li&gt;How to prevent code injection&lt;/li&gt;
+&lt;li&gt;Handling SASLogon with MFA&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;We can help&lt;/h2&gt;
+&lt;p&gt;If you are embarking on a SAS App Development project, as a customer or SAS Partner, our team is available for support.&lt;/p&gt;
+&lt;p&gt;Not only do we have the bitter-sweet experience of many successful (and some not so successful) project deliveries, we can equip you with some serious dev tooling. All of which is MIT open source and free for commercial use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/sasjs/skills&quot;&gt;SASjs Skills&lt;/a&gt; - Agent skills for SAS &amp;#x26; SASjs&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cli.sasjs.io/lint&quot;&gt;SASjs Lint&lt;/a&gt; - Quality check your SAS code&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://core.sasjs.io&quot;&gt;SASjs Core&lt;/a&gt; - Macros for all flavours of SAS&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cli.sasjs.io&quot;&gt;SASjs CLI&lt;/a&gt; - DevOps, Documentation &amp;#x26; Testing&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://adapter.sasjs.io&quot;&gt;SASjs Adapter&lt;/a&gt; - JS connectivity library&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://server.sasjs.io&quot;&gt;SASjs Server&lt;/a&gt; - Build Apps on Base SAS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Plus multiple &lt;a href=&quot;https://github.com/sasjs/seed_apps&quot;&gt;Seed Apps&lt;/a&gt; to quick start your development journey.&lt;/p&gt;
+&lt;p&gt;#sasviya #sashackathon #sasprogramming #sassoftware&lt;/p&gt;
+&lt;!--
+LinkedIn version (paste as first comment under the LinkedIn post):
+
+21 constraints to consider as a #SAS App Developer!
+
+* SAS runs on both Windows and Linux - so always use &quot;/&quot; in filepaths
+* The SAS 9 url may not be /SASStoredProcess/do (it could be do3)
+* Encoding in SAS 9 in Europe is frequently WLATIN(X) not UTF-8
+* PROC JSON doesn&apos;t handle invalid chars or special missings
+* There are three primary flavours of SAS - Viya, EBI, Base
+* Editing .html in Studio can affect the headers - use JES
+* The OS library in LUA is disabled in Viya 4 but not 3.5
+* Avoid in-line and external JS/CSS to meet strict CSP
+* Accessibility considerations / Lighthouse scores
+* endsas can kill the entire STP server in 9.4m3
+* Invisible characters embedded in .sas programs
+* The SAS 9 home directory might be read-only
+* RunAsTask fixes Job performance in Viya
+* Most large environments run -NOXCMD
+* Lack of multibridge connections
+* Options missing=&apos;&apos; fun &amp; games
+* Many sites implement LOCKDOWN
+* Breaking changes in Viya APIs
+* Support for very old browsers
+* How to prevent code injection
+* Handling SASLogon with MFA
+
+If you are embarking on a SAS App Development project, as a customer or SAS Partner, my team is available for support.
+
+Not only do we have the bitter-sweet experience of many successful (and not so successful) project deliveries, we can equip you with some serious tooling. All of which is MIT open source and free for commercial use:
+
+* SASjs Skills - Agent skills for SAS &amp; SASjs
+* SASjs CLI - DevOps, Documentation &amp; Testing
+* SASjs Core - Macros for all flavours of SAS
+* SASjs Lint - Quality check your SAS code
+* SASjs Adapter - JS connectivity library
+* SASjs Server - Build Apps on Base SAS
+
+Plus multiple Seed Apps to quick start your development journey.
+
+#sasviya #sashackathon #sasprogramming #sassoftware
+--&gt;</content:encoded></item><item><title><![CDATA[Macro Dash - a SAS Powered Platformer]]></title><description><![CDATA[Macro Dash is a free, open-source platformer built with the SASjs framework. Play it at dash.sasjs.io, or deploy it to your own SAS Viya, SAS 9 or SASjs Server instance with a single command.]]></description><link>https://sasapps.io/macro-dash</link><guid isPermaLink="false">https://sasapps.io/macro-dash</guid><category><![CDATA[SASjs]]></category><category><![CDATA[SAS]]></category><category><![CDATA[Viya]]></category><category><![CDATA[SAS Apps]]></category><category><![CDATA[Open Source]]></category><pubDate>Wed, 19 Aug 2026 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 92.5531914893617%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAIAAAAf7rriAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC20lEQVR42nWU2U/bQBCHA81lOz5z2Tlsr+3YickBSRqIcx/gXIRASAuiQi09pFbqYx94QPSh/b87dhKUPiB9Wo929zcz690ZDyFZhFwPuRAuIdnCxFpIPjlbfqaUOtjEdslBdAGVZHkIqYGLHVxsY2Ibd+hgqSaXncbLN1LlWji4Y9AYT7cIseMgdQil6yA3HHG0PDKvZwfX8+JqkVvOssupcTnJrc7zN0t5YRuruboYSfOBPB/KF0NpNEiarVS+FTFPcdHysLkBLiA8oREJDRdUgEioOI8wXgaCvIQJMiagDTwKcnKQkxi9Byl7aH3oZ1QiZuAxA4saYPhZ3c9mXoUDNFofOGJK61OoIVr3ydotAAat9X207A87m15B3YjhA/sw4RDjS7hwiCcrWDzvZ9X/doOjF3bFTNaG3RhfwPhiIKz7aMnPKmtNIJwJuIaPkWHeC1Cb1Y04UlzwlVu+eifU7inU8jHK+lSAl0ZeVvNxGVJ8G0i3itVK+aS6HykFOGUb2Th1IkQMF32dGxj7jCKZjXC6EAwrVGbA5efx4lQ4uiDEEx8L4qF75szgDZmCfLyU+AIkuYcnUO1KaX1MVFaR4lX86F0wXtgLRr1k2kulKa0H78TD5c/pTG+H7nbs0obNFRbhwiJauoyWrriczThLfVrvxUrn8Eg9fP2TNv+jTp/V2e//mALPyuTJYewyfUaTJzR+0uZ/E81vWKrmIdUuZdiUfkYbgL0Lkx3tYDO5iVB/iB69p/UzUus7kUNKJ938yldvsXQNTx+/BpashlA7M3kUju+DQhl+m1MYENacPsrdHzhqEbLllMsOoa0Rr31INr4QqM0ezMTeTzprg0coyTpjjuEy1s7gAkJyE0YX15drp6wHsfM9mKjAETT7F4xrseUmtlZaJGpFjC5vdmO5biR3KhhDwRxEsx1SaW/cOR6bL83A2gWqFFoK6QI5kwByZvBt93DZdJJ/0BalFptndL4AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Macro Dash&quot;
+        title=&quot;&quot;
+        src=&quot;/static/74c7234ce3901c8300ef383b68c88762/1d69c/macro-dash.png&quot;
+        srcset=&quot;/static/74c7234ce3901c8300ef383b68c88762/4dcb9/macro-dash.png 188w,
+/static/74c7234ce3901c8300ef383b68c88762/5ff7e/macro-dash.png 375w,
+/static/74c7234ce3901c8300ef383b68c88762/1d69c/macro-dash.png 750w,
+/static/74c7234ce3901c8300ef383b68c88762/e4374/macro-dash.png 927w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://dash.sasjs.io&quot;&gt;Macro Dash&lt;/a&gt; is a free, open-source platformer built with the SASjs framework. You are the DATA stepper: bounce through the WORK library, stomp ERRORs and WARNINGs, collect ampersands, grab the FORMAT 10.2 mushroom for super jumps, and get your report to the portal before the job runs out of steam. One run, all levels - amps, health and the speedrun clock carry over. Finish with 0 ERRORs and 0 WARNINGs for the clean-log stamp, then put your SYSUSERID on the dashboard.&lt;/p&gt;
+&lt;p&gt;Play it right now: &lt;strong&gt;&lt;a href=&quot;https://dash.sasjs.io&quot;&gt;dash.sasjs.io&lt;/a&gt;&lt;/strong&gt;. It runs on desktop (arrows/WASD, Space to jump, hold Shift to RUN) and mobile (on-screen controls) - the repo is at &lt;a href=&quot;https://github.com/sasjs/macro-dash&quot;&gt;github.com/sasjs/macro-dash&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 77.6595744680851%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAIAAACZeshMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACYElEQVR42oWTS2/TQBSFhyaxEz/H7zTxc+w4dpM0T+edOKalm5aGFkVAFkgsWCIQSAjKDkQFQgIWLNggseCHMklVQSlVpU/Wtc85vuM7Y0Bbw8sQhUgLk2T+iChGlDX4R+XQGEiNk3dfAG0OLtJn7ZFSO8jXD8LRQgnmgrNDmf2/PZw9AnLjycu3AAZ7vL9zgWBvs7NQGkd8uK+3l3LlkLtoEINbKWPy9PV7wJgRISBS8kmptMZLc0aK0dNskYB2ii2mOT0D7XMV4+ckL1XsP3vzEdBGJwMdQiwRokcILqkESnOB0bpLFk2l2lxp34flXZwnpLVHLGVFd2OzdyksuoRczrfvFjpHhWihBuNC+9AYLkUc5q8PexnBpUSTUy1WsVHYgJrNqxZe/5l6TRhDyj6gLa8+e3FyChjc0D/veV34bCpp6EpmvdxK8PzIdZL8k78qLLgp3mHylYI/0IOhiiK7GuvBCH9LBqLVRK4Ir95KqaFg1CWrZWyNMWg7saqxYrehXuf12n8HFmUEhIWcGvJGUyuNoNGSnZ6M+tBsy3ZPtDqqN5SdLpWvkHIZO7OSt1HA+/wB0MVWmjPxqnD/NG8REiIVlNXcrOJmVTenebjI5b2MiFUbbxi2kdDa2OyuOuMDwDr4rE/OELZisTaTm4lQxUUsNWZCBV9jGMw4d8qVEs6LBT+5URyffv0B2NJNoXaHdWcMmjBoyjhT2p7S1pSxV+B6/SSmjD6DYmf3eb77kLUHANY+f/8F8E24/0raPqb0iDbxHze4DGX2xOptqX5sTB5rnQda5x5Qok/ffv4GYImGw3ZxycAAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Macro Dash (repo)&quot;
+        title=&quot;&quot;
+        src=&quot;/static/a8351118e974ba89aeaea249334ae97a/1d69c/macro-dash-repo.png&quot;
+        srcset=&quot;/static/a8351118e974ba89aeaea249334ae97a/4dcb9/macro-dash-repo.png 188w,
+/static/a8351118e974ba89aeaea249334ae97a/5ff7e/macro-dash-repo.png 375w,
+/static/a8351118e974ba89aeaea249334ae97a/1d69c/macro-dash-repo.png 750w,
+/static/a8351118e974ba89aeaea249334ae97a/1cfc2/macro-dash-repo.png 900w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;But it is not really a game&lt;/h2&gt;
+&lt;p&gt;Behind the pixels, Macro Dash is a working demonstration of how to craft and deploy &lt;strong&gt;data-powered web apps on SAS&lt;/strong&gt; - the same architecture behind production applications like &lt;a href=&quot;https://datacontroller.io&quot;&gt;Data Controller&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;A frontend&lt;/strong&gt; (plain HTML/JS canvas, strict CSP, no framework) streamed directly from SAS - no separate web tier to build, secure or maintain.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Backend services written in SAS&lt;/strong&gt; (&lt;code class=&quot;language-text&quot;&gt;sasjs/services/&lt;/code&gt;) that receive tables from the browser, run SAS code, and return JSON. The game uses three: &lt;code class=&quot;language-text&quot;&gt;configure&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;getscores&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;savescore&lt;/code&gt; - a complete, persistent, server-side leaderboard.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;One codebase, every flavour of SAS&lt;/strong&gt;: deploy to SAS Viya, SAS 9 EBI or &lt;a href=&quot;https://github.com/sasjs/server&quot;&gt;SASjs Server&lt;/a&gt; with a single command (&lt;code class=&quot;language-text&quot;&gt;sasjs cbd&lt;/code&gt;), using &lt;a href=&quot;https://github.com/sasjs/cli&quot;&gt;@sasjs/cli&lt;/a&gt; and the &lt;a href=&quot;https://github.com/sasjs/core&quot;&gt;@sasjs/core&lt;/a&gt; macro library.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Graceful degradation&lt;/strong&gt;: with no backend reachable, the game falls back to localStorage mode (personal best, no leaderboard) - the same pattern you want in resilient production apps.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you can build this, you can build a data capture form, an approvals workflow, a parameter manager or a reporting portal on your own SAS platform. The design decisions are documented in &lt;code class=&quot;language-text&quot;&gt;PLAN.md&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;AGENTS.md&lt;/code&gt;; the services are deliberately small and readable.&lt;/p&gt;
+&lt;h2&gt;Deploy to SAS Viya in one line - no install&lt;/h2&gt;
+&lt;p&gt;Every release ships a single self-contained deploy script - &lt;code class=&quot;language-text&quot;&gt;macro-dash-viya.sas&lt;/code&gt; - that streams the frontend and installs the backend services straight onto the SAS Files Service. No Node, no &lt;code class=&quot;language-text&quot;&gt;@sasjs/cli&lt;/code&gt;, no build step: run it from SAS Studio, SAS Enterprise Guide, or any batch SAS session.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sas&quot;&gt;&lt;pre class=&quot;language-sas&quot;&gt;&lt;code class=&quot;language-sas&quot;&gt;&lt;span class=&quot;token macro-keyword keyword&quot;&gt;%let&lt;/span&gt; apploc&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;your&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;viya&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;folder&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;filename&lt;/span&gt; md url &lt;span class=&quot;token string&quot;&gt;&quot;https://github.com/sasjs/macro-dash/releases/latest/download/macro-dash-viya.sas&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token macro-keyword keyword&quot;&gt;%inc&lt;/span&gt; md&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That is the whole deployment. Set &lt;code class=&quot;language-text&quot;&gt;apploc&lt;/code&gt; to wherever you want the app to live on the Files Service (it is created if it does not exist), and the script does the rest: uploads the streamed &lt;code class=&quot;language-text&quot;&gt;MacroDash.html&lt;/code&gt; + assets, registers the &lt;code class=&quot;language-text&quot;&gt;configure&lt;/code&gt; / &lt;code class=&quot;language-text&quot;&gt;getscores&lt;/code&gt; / &lt;code class=&quot;language-text&quot;&gt;savescore&lt;/code&gt; services, and prints the app URL when done:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;SAS Viya base&gt;/SASJobExecution?_FILE=/your/viya/folder/services/MacroDash.html&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Open that URL and the game loads. On first visit you get an in-game &lt;strong&gt;configuration screen&lt;/strong&gt; - pick a results folder for the leaderboard (a physical folder SAS can write &lt;code class=&quot;language-text&quot;&gt;scores.sas7bdat&lt;/code&gt; to), optionally choose the compute context and a &lt;code class=&quot;language-text&quot;&gt;runAsTask&lt;/code&gt; / &lt;code class=&quot;language-text&quot;&gt;useComputeApi&lt;/code&gt; execution mode, and submit. The &lt;code class=&quot;language-text&quot;&gt;configure&lt;/code&gt; service writes &lt;code class=&quot;language-text&quot;&gt;settings.sas&lt;/code&gt; into your apploc and flips &lt;code class=&quot;language-text&quot;&gt;configured=&quot;true&quot;&lt;/code&gt; in the streamed &lt;code class=&quot;language-text&quot;&gt;MacroDash.html&lt;/code&gt;, so every subsequent load skips setup and the leaderboard is live for everyone.&lt;/p&gt;
+&lt;h2&gt;Deploy from source / to other platforms&lt;/h2&gt;
+&lt;p&gt;The release artefact is built by CI from &lt;code class=&quot;language-text&quot;&gt;sasjs/&lt;/code&gt; on every push to &lt;code class=&quot;language-text&quot;&gt;main&lt;/code&gt;. To build and deploy directly from a checkout (e.g. for SAS 9 or SASjs Server, or to push to Viya without the release script), the targets live in &lt;code class=&quot;language-text&quot;&gt;sasjs/sasjsconfig.json&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;sasjs cbd &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; viya      &lt;span class=&quot;token comment&quot;&gt;# or: sas9 | server&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;sasjs cbd&lt;/code&gt; compiles the macros + services, builds the streaming web bundle, and deploys a service pack to the target’s &lt;code class=&quot;language-text&quot;&gt;appLoc&lt;/code&gt; in one shot. The &lt;code class=&quot;language-text&quot;&gt;serverUrl&lt;/code&gt; is left blank in the shipped config - set it to your own SAS Viya / SASjs Server instance (and adjust &lt;code class=&quot;language-text&quot;&gt;appLoc&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;contextName&lt;/code&gt;, etc.) before deploying. The public game on &lt;a href=&quot;https://dash.sasjs.io&quot;&gt;dash.sasjs.io&lt;/a&gt; is the backend-free GitHub Pages build.&lt;/p&gt;
+&lt;h2&gt;Local development (no SAS required)&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;npm&lt;/span&gt; run devsetup&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;devsetup&lt;/code&gt; downloads the &lt;code class=&quot;language-text&quot;&gt;@sasjs/server&lt;/code&gt; binary for your platform, writes a &lt;code class=&quot;language-text&quot;&gt;.env&lt;/code&gt; (desktop mode, JS runtime - no SAS installation needed), starts the server on port 5000, deploys the app (&lt;code class=&quot;language-text&quot;&gt;sasjs cbd -t local&lt;/code&gt;) and the JS mocks, then prints the URL:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://localhost:5000/AppStream/MacroDash/&quot;&gt;http://localhost:5000/AppStream/MacroDash/&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The four backend services are executable JS mocks that shadow the &lt;code class=&quot;language-text&quot;&gt;.sas&lt;/code&gt; services, so the leaderboard works end-to-end against a local SASjs Drive - no SAS licence required to develop.&lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Macro Dash is a fun way to see what SASjs makes possible. Play it at &lt;a href=&quot;https://dash.sasjs.io&quot;&gt;dash.sasjs.io&lt;/a&gt;, and if you would like to build data-powered apps on your own SAS estate - or partner with us on a project - &lt;a href=&quot;/contact&quot;&gt;get in touch&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;</content:encoded></item><item><title><![CDATA[SASjs CLI Auth Login - Connect to Viya Without a Client/Secret]]></title><description><![CDATA[The new sasjs auth login command lets you authenticate to SAS Viya with just a username and password - no registered OAuth client or secret required.]]></description><link>https://sasapps.io/sasjs-auth-login</link><guid isPermaLink="false">https://sasapps.io/sasjs-auth-login</guid><category><![CDATA[SASjs]]></category><category><![CDATA[SAS]]></category><category><![CDATA[Viya]]></category><category><![CDATA[SAS Admin]]></category><pubDate>Tue, 18 Aug 2026 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 100%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAUABQDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAEEBQL/xAAWAQEBAQAAAAAAAAAAAAAAAAADAQL/2gAMAwEAAhADEAAAAdqldnWMFrGKwAboS//EABsQAAIDAAMAAAAAAAAAAAAAAAACAQMREBIh/9oACAEBAAEFAm0s7DxjHpNCtJnH/8QAGBEAAgMAAAAAAAAAAAAAAAAAAAEQERP/2gAIAQMBAT8Baszc/wD/xAAYEQACAwAAAAAAAAAAAAAAAAAAARARE//aAAgBAgEBPwFOjRT/AP/EABsQAAICAwEAAAAAAAAAAAAAAAABAhEQICEx/9oACAEBAAY/AnR2DkPHg270/8QAGhABAAIDAQAAAAAAAAAAAAAAAQARITFBUf/aAAgBAQABPyFVw3yXK0+ANQBAh4xFbhTiZOy+xCAmp//aAAwDAQACAAMAAAAQ7+//AP/EABgRAAMBAQAAAAAAAAAAAAAAAAABQRAh/9oACAEDAQE/EKBtfC5//8QAGREAAgMBAAAAAAAAAAAAAAAAAAEQIUFR/9oACAECAQE/EOIS1Zkf/8QAGhABAAMBAQEAAAAAAAAAAAAAAQARITFhof/aAAgBAQABPxARJkyj32KnyB641hF851PGK6Cc2KwBHcYtyvZQIptPsr3X2ACjk//Z&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;SASjs CLI Auth Login&quot;
+        title=&quot;&quot;
+        src=&quot;/static/7399692f243327f85fff0a76e28b4a2b/acb04/sasjs-auth-login.jpg&quot;
+        srcset=&quot;/static/7399692f243327f85fff0a76e28b4a2b/bc01b/sasjs-auth-login.jpg 188w,
+/static/7399692f243327f85fff0a76e28b4a2b/bf173/sasjs-auth-login.jpg 375w,
+/static/7399692f243327f85fff0a76e28b4a2b/acb04/sasjs-auth-login.jpg 750w,
+/static/7399692f243327f85fff0a76e28b4a2b/72e01/sasjs-auth-login.jpg 1024w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The SASjs CLI has always required a registered OAuth client and secret to authenticate against SAS Viya. If you are a developer who just wants to run a SAS program from the command line, getting an administrator to register an OAuth client for you is friction you do not need. The new &lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; command removes that barrier - you log in with your regular SAS username and password, and the CLI handles the rest.&lt;/p&gt;
+&lt;h2&gt;What it does&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;sasjs auth login &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; myviyatarget&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That is it. You are prompted for your SAS username and password (the password input is masked), the CLI exchanges them for an access/refresh token pair, verifies the token, and persists it. From that point on, the stored token can be used by any command that accepts an access token - &lt;code class=&quot;language-text&quot;&gt;sasjs run&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs deploy&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs job execute&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs flow&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs fs&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs request&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs context&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs folder&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;sasjs test&lt;/code&gt;. No client or secret is needed for the initial login or for silent token refreshes (the built-in &lt;code class=&quot;language-text&quot;&gt;sas.cli&lt;/code&gt; public client handles those).&lt;/p&gt;
+&lt;h2&gt;Why it matters&lt;/h2&gt;
+&lt;p&gt;Before this feature, authenticating to Viya from the SASjs CLI meant:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Asking a SAS administrator to register an OAuth client in SAS Viya&lt;/li&gt;
+&lt;li&gt;Obtaining the CLIENT ID and CLIENT SECRET&lt;/li&gt;
+&lt;li&gt;Running &lt;code class=&quot;language-text&quot;&gt;sasjs auth&lt;/code&gt; (or &lt;code class=&quot;language-text&quot;&gt;sasjs add cred&lt;/code&gt;), which uses the authorisation code flow - you visit a URL in your browser, sign in, grant access, and paste back an authorisation code&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That is fine for production CI pipelines, but painful for a developer who just wants to test something quickly on a demo Viya instance. The new &lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; command uses the OAuth2 resource owner password grant against the built-in, secret-less &lt;code class=&quot;language-text&quot;&gt;sas.cli&lt;/code&gt; public client - the same client the official SAS Viya CLI uses. No client registration, no secret, no browser redirect.&lt;/p&gt;
+&lt;h2&gt;How it works&lt;/h2&gt;
+&lt;p&gt;Under the hood, &lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; does the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Password grant request&lt;/strong&gt; - sends a POST to &lt;code class=&quot;language-text&quot;&gt;/SASLogon/oauth/token&lt;/code&gt; with &lt;code class=&quot;language-text&quot;&gt;grant_type=password&lt;/code&gt;, your username, and your password, authenticated with a Basic auth header for the &lt;code class=&quot;language-text&quot;&gt;sas.cli&lt;/code&gt; client (which has no secret).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Token verification&lt;/strong&gt; - calls &lt;code class=&quot;language-text&quot;&gt;GET /identities/users/@currentUser&lt;/code&gt; with the access token to confirm it is valid and to identify the logged-in user.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Token persistence&lt;/strong&gt; - saves the access token and refresh token to the same locations as the existing &lt;code class=&quot;language-text&quot;&gt;sasjs auth&lt;/code&gt; flow: &lt;code class=&quot;language-text&quot;&gt;.env.[target name]&lt;/code&gt; for local targets, &lt;code class=&quot;language-text&quot;&gt;~/.sasjsrc&lt;/code&gt; for global targets.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automatic refresh&lt;/strong&gt; - when the access token is close to expiry, the CLI silently refreshes it using the stored refresh token (again via the &lt;code class=&quot;language-text&quot;&gt;sas.cli&lt;/code&gt; client). No client/secret is needed for the refresh either.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Viya refresh tokens are single-use and rotate on every refresh. The CLI persists the rotated pair automatically after every refresh - so the next CLI invocation always reads the latest valid pair, and you never end up with a stale refresh token.&lt;/p&gt;
+&lt;h2&gt;Quick start&lt;/h2&gt;
+&lt;p&gt;First, make sure you have a target configured for your Viya server. If you do not have one yet, create one with the interactive wizard:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;sasjs &lt;span class=&quot;token function&quot;&gt;add&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The command prompts you for the target name, server type (pick SAS Viya), server URL, and app location. You can skip the authentication step at the end - &lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; will handle that separately.&lt;/p&gt;
+&lt;p&gt;Then log in:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;sasjs auth login &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; myviyatarget
+&lt;span class=&quot;token comment&quot;&gt;# Please enter your SAS username: viyademo01&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# Please enter your SAS password: ********&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# Logged in as viyademo01 (Viya Demo User) on https://your-viya-server.com.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now run any command:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;sasjs run myprogram.sas &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; myviyatarget&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When the access token expires (12 hours by default, though some estates configure shorter TTLs for the &lt;code class=&quot;language-text&quot;&gt;sas.cli&lt;/code&gt; client), the CLI will silently refresh it. If the refresh token itself expires, just run &lt;code class=&quot;language-text&quot;&gt;sasjs auth login -t myviyatarget&lt;/code&gt; again.&lt;/p&gt;
+&lt;h2&gt;Security notes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;The password is never persisted.&lt;/strong&gt; It is used only to mint the token pair and is not written to any file. The password stays in memory for the lifetime of the short-lived CLI process, which exits within seconds.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No &lt;code class=&quot;language-text&quot;&gt;--password&lt;/code&gt; command-line flag exists.&lt;/strong&gt; Passing a password as a command-line argument would leak it via shell history and process listings (&lt;code class=&quot;language-text&quot;&gt;ps&lt;/code&gt;). The CLI deliberately does not offer this option.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Refresh tokens are rotated and stored.&lt;/strong&gt; Because Viya refresh tokens are single-use, the CLI persists the new pair after every refresh. This is handled automatically.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;--insecure&lt;/code&gt; flag for self-signed certs.&lt;/strong&gt; If your Viya server uses self-signed certificates, pass &lt;code class=&quot;language-text&quot;&gt;--insecure&lt;/code&gt; (or &lt;code class=&quot;language-text&quot;&gt;-i&lt;/code&gt;) to bypass TLS validation: &lt;code class=&quot;language-text&quot;&gt;sasjs auth login -t myviyatarget --insecure&lt;/code&gt;. This is not recommended for production.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Non-interactive usage (CI pipelines and agents)&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; supports both interactive and non-interactive credential input. For CI pipelines and automated environments, there are three non-interactive patterns:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Environment variables:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token assign-left variable&quot;&gt;SAS_USERNAME&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;viyademo01 &lt;span class=&quot;token assign-left variable&quot;&gt;SAS_PASSWORD&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;secret sasjs auth login &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; myviyatarget&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When both &lt;code class=&quot;language-text&quot;&gt;SAS_USERNAME&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;SAS_PASSWORD&lt;/code&gt; are set, the CLI skips the prompts entirely.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Password via stdin (avoids shell history leakage):&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$SAS_PASSWORD&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; sasjs auth login --password-stdin &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; myviyatarget&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When &lt;code class=&quot;language-text&quot;&gt;--password-stdin&lt;/code&gt; is set, the password is read from stdin and the username must come from the &lt;code class=&quot;language-text&quot;&gt;SAS_USERNAME&lt;/code&gt; environment variable (stdin is reserved for the password, so interactive prompting is not possible).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Credential precedence:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Username: &lt;code class=&quot;language-text&quot;&gt;SAS_USERNAME&lt;/code&gt; env var &gt; interactive prompt (TTY only)&lt;/li&gt;
+&lt;li&gt;Password: &lt;code class=&quot;language-text&quot;&gt;--password-stdin&lt;/code&gt; &gt; &lt;code class=&quot;language-text&quot;&gt;SAS_PASSWORD&lt;/code&gt; env var &gt; interactive prompt (TTY only)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If no TTY is available and no env var or stdin flag supplies the credential, the command throws with a clear message pointing at the env vars or &lt;code class=&quot;language-text&quot;&gt;--password-stdin&lt;/code&gt;. This makes it safe to call from CI pipelines and non-interactive agents.&lt;/p&gt;
+&lt;h2&gt;Requirements and limitations&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The password grant must be enabled for the &lt;code class=&quot;language-text&quot;&gt;sas.cli&lt;/code&gt; client. This is the default on most Viya deployments, but administrators can disable it.&lt;/li&gt;
+&lt;li&gt;The account must be a local or LDAP account. &lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; cannot work on SSO/SAML/MFA-only estates - those require the browser-based authorisation code flow.&lt;/li&gt;
+&lt;li&gt;On a cold Viya estate, the first compute session creation can take several minutes while pods spin up. The first &lt;code class=&quot;language-text&quot;&gt;sasjs run&lt;/code&gt; may appear to hang. Subsequent runs are fast.&lt;/li&gt;
+&lt;li&gt;If &lt;code class=&quot;language-text&quot;&gt;sasjs run&lt;/code&gt; fails with a 403 when creating a compute session, your account may not be authorised for the configured compute context. Check the available contexts and update the &lt;code class=&quot;language-text&quot;&gt;contextName&lt;/code&gt; on your target accordingly.&lt;/li&gt;
+&lt;li&gt;The password grant is deprecated in OAuth 2.1. This flow is intended for dev/demo estates where obtaining a registered client/secret is impractical. For CI pipelines and production use, a properly registered client/secret (via &lt;code class=&quot;language-text&quot;&gt;sasjs auth&lt;/code&gt;) remains the recommended approach.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Backward compatibility&lt;/h2&gt;
+&lt;p&gt;The bare &lt;code class=&quot;language-text&quot;&gt;sasjs auth&lt;/code&gt; command (without the &lt;code class=&quot;language-text&quot;&gt;login&lt;/code&gt; subcommand) still works exactly as before - it is an alias for &lt;code class=&quot;language-text&quot;&gt;sasjs add cred&lt;/code&gt; and uses the client/secret authorisation code flow. Nothing changes for existing setups. The &lt;code class=&quot;language-text&quot;&gt;login&lt;/code&gt; subcommand is purely additive.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The &lt;code class=&quot;language-text&quot;&gt;sasjs auth login&lt;/code&gt; command is available in the latest SASjs CLI release. If you have been putting off trying the SASjs CLI because you did not want to deal with OAuth client registration, this is your excuse to give it a go.&lt;/p&gt;
+&lt;!-- Featured image: ~/QubesIncoming/workmodel/proxy.jpeg (provided externally) --&gt;
+&lt;!-- Source LinkedIn post:
+
+Authenticating to SAS Viya from the command line used to mean getting an admin to register an OAuth client, obtaining a secret, and doing a browser redirect dance.
+
+Not anymore.
+
+The new &quot;sasjs auth login&quot; command lets you log in to Viya with just your SAS username and password. No client, no secret, no browser.
+
+Just:
+- sasjs auth login -t yourtarget
+- Enter username and password
+- Done. Run sasjs run, sasjs request, anything.
+
+It uses the built-in sas.cli public client (same one the official SAS Viya CLI uses) with the OAuth2 password grant. The password is never stored. Refresh tokens rotate automatically.
+
+CI pipelines are covered too - set SAS_USERNAME and SAS_PASSWORD env vars, or pipe the password with --password-stdin.
+
+One caveat: it needs a local/LDAP account, so it will not work on SSO/MFA-only estates. For those, the existing client/secret flow is still there.
+
+If you have been holding off on the SASjs CLI because OAuth client registration was too much hassle, this is for you.
+
+#sas #sasjs #sasviya #devops #cli
+--&gt;</content:encoded></item><item><title><![CDATA[SASjs Web Apps on SAS Viya]]></title><description><![CDATA[A review of a typical SASjs Web App on SAS Viya]]></description><link>https://sasapps.io/sasjs-web-apps-on-sas-viya</link><guid isPermaLink="false">https://sasapps.io/sasjs-web-apps-on-sas-viya</guid><category><![CDATA[Viya]]></category><category><![CDATA[SASjs]]></category><category><![CDATA[SAS Admin]]></category><category><![CDATA[SAS]]></category><pubDate>Tue, 19 Aug 2025 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;What is a SASjs Web App and how does it integrate with a SAS Viya data platform?  A reasonable question from a SAS Administration team.  This article delves into the specifics of a typical SASjs Web App, deployed to a standard SAS Viya 2025 instance.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 100%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAACXBIWXMAAAPoAAAD6AG1e1JrAAACwUlEQVR42p2U7U9SURzH/Ss0nK2HF+UDzmqWW2U1m0usjVZTU3tRrtar2lprzOZWbtUsQUEEFJ9AAYGLCiIYJnovyJM5NS9yfcBwqKgZcy3f5Kt+cK9wedGWbZ/9drZzPvd79jvnnqQJ2/x/k/Qvi1Rqa4/qMx2j0RWX7ZjXhuI2DKcqhtNlafeAZ9o3OQMQuM+vR6cFEi0lV78Wnb5Ucex8CUUu1FKuEInJ+mEssLYd2g7v7P5S232cHkzaZYjI2PhccnpB2hl2/s2HDCaLkV0cgcn6wFeTptPhA3kjvGf8ssof8r5S2TndBzI69jU5/TrI5woqSTmVJrtdC1DblEYVRjTrJ+WWGemQW2JwCFt1NPnsbTIzlZSzI7LbSZDhT15wHz+vLy5/mXWlsupZHYwbm5GoPB6Rj0ZkVhRq2wJJH0w77PPOCR8MLJap2jrZU05jh9wcPypShuTUg1gg83Ipt0nrchCOqKnVoTKVWaUbUSKARaH51CBS0xoGyVS3WKfy7uRcLeeLdbGEDpk5EAythXbCuz/XN3/AQG/GEuRYbMbFkpxrFXxxHyRDq11OAmQPHrhVjQx7/PhKyB/cosuwbTYjqyjKDagnc9kCST89eXYhyB0klr/vTa2GN3f3DInJ7JTMwiOZhSlRGMyij3w1ZELDYJHJ5GkQaXlCTR6rquxRDV+MCCS6uBzvNpOq5DmD3K0caZeZgPc8BedNK6BBUKrbGHogM1kU0a/EbphcbV5aCS76g+sbW1vbO258RdBC9TIJfom07CK4YVS3E5MBZNC6FAgR30L7+78xfKNGYWuW9sd/SWmHISP//vELZTFO5N2rb9LEZDibHnSZN+jtGl2s7Z1IkAF0fM46OhNjzDprt3nJqXc8uazXJO7sq+W2dyqMnUqjsKX/EI8BfLrmbdvdB9Wi1oFDvyR/e4b+AJ6A2XORlv18AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;security viya&quot;
+        title=&quot;&quot;
+        src=&quot;/static/df3a6d0e05fcda243975652aeb7c8060/1d69c/security_viya.png&quot;
+        srcset=&quot;/static/df3a6d0e05fcda243975652aeb7c8060/4dcb9/security_viya.png 188w,
+/static/df3a6d0e05fcda243975652aeb7c8060/5ff7e/security_viya.png 375w,
+/static/df3a6d0e05fcda243975652aeb7c8060/1d69c/security_viya.png 750w,
+/static/df3a6d0e05fcda243975652aeb7c8060/2bef9/security_viya.png 1024w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;4GL is a boutique software company with a singular focus on building browser-based applications for SAS platforms. Alongside greenfield development we specialise in the migration of SAS 9 Web Apps to Viya, and modernisation of legacy SAS AF/SCL desktop applications.&lt;/p&gt;
+&lt;p&gt;When not working on customer projects, we are extending our own products - &lt;a href=&quot;https://datacontroller.io&quot;&gt;Data Controller&lt;/a&gt; (a data ingestion tool for SAS) and SASjs.&lt;/p&gt;
+&lt;p&gt;SASjs is both a set of open-source tools as well as an &lt;em&gt;opinionated framework&lt;/em&gt; for the deployment and delivery of web applications on SAS platforms.  The core components are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SASjs &lt;a href=&quot;https://github.com/sasjs/core&quot;&gt;Core&lt;/a&gt; - a SAS macro library&lt;/li&gt;
+&lt;li&gt;SASjs &lt;a href=&quot;https://github.com/sasjs/adapter&quot;&gt;Adapter&lt;/a&gt; - a Javascript library&lt;/li&gt;
+&lt;li&gt;SASjs &lt;a href=&quot;https://github.com/sasjs/cli&quot;&gt;CLI&lt;/a&gt; - a command-line tool for testing, linting, and performing build compilations and deployments&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Our apps capitalise upon the advantages of the SASjs framework to both accelerate and de-risk web app development projects.&lt;/p&gt;
+&lt;h2&gt;Architecture&lt;/h2&gt;
+&lt;p&gt;Our SAS Viya web apps typically comprise of a &lt;em&gt;frontend&lt;/em&gt; (static web content) deployed to SAS Drive, that uses the SASjs &lt;em&gt;adapter&lt;/em&gt; to invoke the &lt;em&gt;backend&lt;/em&gt; (SAS code in Viya Jobs).&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 103.19148936170212%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAIAAADJt1n/AAAACXBIWXMAAAsTAAALEwEAmpwYAAACXUlEQVR42nWU53biMBCFeRR+bH5sMMXBprnKuGGaqdkl2O//GPtJCj3ro6Mjae6duTMaq+F63jSORRTNiuL4+bnZ7aI4lmM6NQyj2Wz6QcA2jKJyu/1zOi2WSzGdQnEcp5FkWRBFE9cFFEYiFAJ3E8eZzefdXg9ylucccuKHITRgY8fRAST5w7I6nQ7QVqvV6XZZ/H5/57ynyCz6tt0yDA2Qs2EMRiOkNaZJwgjCEMdok/GFCIQgMo4gp1kmAUIACCJpApykqZDkOAaXzWar9bqq691+z5qTK5nIGrDd76u6Wm82KYDFgkiSnBdFmufL1fpcVdvdDpvmX8kAkjwvN5uv85kY2p24khlaueN5OHoiZ8pdoNJBLWvw32Q2xWLRNc2eab63WpFy90Tm5KPfN9ptazDQwR4jc0m+/7/IWhrW58gy5yxbleVXVcmCQc7zp5wB0D/nul6XZfqaMw1U1/XheCxUbZ/IbPeHA9eBC729kVmhmWyZuWpdz3uyTkoDuCSst6uipXqqYJZl/Xp784JgvlxemwQhdJVpmrQXGNZYFTlJsJn9fh+ebTuuC8e/J6sSQLNtG8xwNGJd3JpEJUA07pm/gvlVdqhkY/J8X/6C9x2mK3Sigcoy+6nDcjpytQKAIm19qDb7v6cT3ZddfN2TM0UGoMn5jTyfkzkNgBJyRtsrGYCuM3Ocpt/VpvpkPxqPab2eKiac9LFJAPAAtDvy416oTqGrjQ098j0Rgj2Dvxw0h/olISxScScBaugU0NIYjscTz0MtddYD/bxKzASBTEy2k4vVvVgHw+E/X0c+XWWw9BsAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;security architecture&quot;
+        title=&quot;&quot;
+        src=&quot;/static/ab87b8807346a4c857223a4130bef85e/1d69c/security_architecture.png&quot;
+        srcset=&quot;/static/ab87b8807346a4c857223a4130bef85e/4dcb9/security_architecture.png 188w,
+/static/ab87b8807346a4c857223a4130bef85e/5ff7e/security_architecture.png 375w,
+/static/ab87b8807346a4c857223a4130bef85e/1d69c/security_architecture.png 750w,
+/static/ab87b8807346a4c857223a4130bef85e/1b1d5/security_architecture.png 876w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The deployed components consist of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Web content (.html, .css, .js, .png files etc)&lt;/li&gt;
+&lt;li&gt;Jobs (SAS code)&lt;/li&gt;
+&lt;li&gt;Compute Context (under which the jobs run)&lt;/li&gt;
+&lt;li&gt;Filesystem content (.sas7bdat files, logs etc)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 86.70212765957447%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAIAAABSJhvpAAAACXBIWXMAAAsTAAALEwEAmpwYAAAByklEQVR42n2Ty27CQAxF+Q4gMCHv94OQhICQKjZlV4l1mxb+/x96MoYIUVQvEnvm3uuxPTOxLKsoy03ThFFkmqZhGL7vx0mCQ+i47rqqsqIAtlqtwNRNU202QRgqpSaWbedFAV/i+Xye5/l6vRay67pspVkGDHIUx2VZ5mWJykBeLBb8ANm23XVdlmVBEHiet9SGBOs4wPgibWrDIRzIg2QUhWFY13UcxwgNR5jNlkqxixBoIfN1HAc5CW9kVxs5qXC337dtS9lKk1l/JNvansk40+n07Xj8uV6/L5f304kVjv2U+QWZw0hMq2km+ZMkkfOzBVla8B9Zug0UhxYcDge0cABwBCE42kTrObMUCYdFZotQoosfZlYUSOM/d/uRjD+m4itTRIhBcFu63a6qqmic818y0DGkYYSk4vtxPn/1/Wff005Y/5HHUSltnu9ned60bXMf5Guy9NPQRv1oIcHwWZQbNuMKPc4Z3GPNIKhNhscuzi2/542ZJsRA5QLjy62gwyxyz8G5nqfuJpk4iICHV1XV9bbreDFs0BgcXpIMA2a73XJnbg1PU5DUDEaTLSvRJk+SzCRM01QaxntmQkBl5rxEtgS8VOoXVWGVvocmspcAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;security sequence&quot;
+        title=&quot;&quot;
+        src=&quot;/static/ea11506ab9a3d2c37f6ac9b6ad31abcf/1d69c/security_sequence.png&quot;
+        srcset=&quot;/static/ea11506ab9a3d2c37f6ac9b6ad31abcf/4dcb9/security_sequence.png 188w,
+/static/ea11506ab9a3d2c37f6ac9b6ad31abcf/5ff7e/security_sequence.png 375w,
+/static/ea11506ab9a3d2c37f6ac9b6ad31abcf/1d69c/security_sequence.png 750w,
+/static/ea11506ab9a3d2c37f6ac9b6ad31abcf/6295b/security_sequence.png 919w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;SASjs web apps on Viya do NOT require:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Administrator access (except for the Compute Context config)&lt;/li&gt;
+&lt;li&gt;A dedicated web server&lt;/li&gt;
+&lt;li&gt;Filesystem access&lt;/li&gt;
+&lt;li&gt;Terminal access&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Frontend Development&lt;/h2&gt;
+&lt;p&gt;The web app is built locally, on the developer’s machine, often using mocked responses to simulate a real SAS Viya server.  Typically we build using the React framework, over this &lt;a href=&quot;https://github.com/sasjs/react-seed-app&quot;&gt;baseline repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Here are some of the steps taken to improve security at build time:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NPM Audit&lt;/strong&gt;. We &lt;a href=&quot;https://github.com/sasjs/react-seed-app/blob/main/.github/workflows/build.yml#L25&quot;&gt;check dependencies&lt;/a&gt; for CVEs and other issues with every build.  The automated build will fail if there are any critical errors or warnings.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type Safety&lt;/strong&gt;.  Apps are built with TypeScript in Strict mode to prevent mis-allocated variables.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Adapter Input Sanitation&lt;/strong&gt;.  The content that is sent to SAS is normalised into “table format”, so that columns have specific types (char/numeric) and lengths. The adapter does not have the ability to enable “URL variables” so preventing their accidental and potentially dangerous resolution in SAS code.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Semantic Releases&lt;/strong&gt;.  Every release is numbered according to the &lt;a href=&quot;https://www.conventionalcommits.org/en/v1.0.0/&quot;&gt;conventional commit&lt;/a&gt; standard, making it easy to see what was changed on a release by release basis&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Opinionated Framework&lt;/strong&gt;. SASjs is designed to mitigate the risk of code injection by ensuring that all data communication happens through the &lt;a href=&quot;https://github.com/sasjs/adapter&quot;&gt;adapter&lt;/a&gt;, which ensures a specific format of data interchange (see the project &lt;a href=&quot;https://github.com/sasjs/adapter/blob/master/README.md&quot;&gt;README&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Isolated Environment&lt;/strong&gt;.  The build happens locally, or in a pipeline, never on the SAS platform itself.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Backend Development&lt;/h2&gt;
+&lt;p&gt;The backend for a SASjs Viya web app is a series of self-contained Viya Jobs, containing regular SAS code.  These jobs perform the backend logic and data processing needs of the frontend app.&lt;/p&gt;
+&lt;p&gt;The SASjs framework ensures that all jobs are documented (as macros must be listed in the header in order to be compiled) and organised by reference to a central &lt;a href=&quot;https://cli.sasjs.io/sasjsconfig/&quot;&gt;configuration file&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Points to note from a security perspective:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Input sanitation&lt;/strong&gt;.  Standard macros are used to parse the input files and create corresponding datasets in the WORK library for further processing.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Testing suite&lt;/strong&gt;.  &lt;a href=&quot;https://cli.sasjs.io/test/&quot;&gt;Tests&lt;/a&gt; can be created for Jobs, Services and Macros, and test coverage is measured in every compile.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linting&lt;/strong&gt;.  The &lt;a href=&quot;https://cli.sasjs.io/lint/&quot;&gt;lint&lt;/a&gt; feature scans code for non-printable characters, SAS001/2 encoded passwords, nested macros, and other nasties.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Strict Mode&lt;/strong&gt;.  Our &lt;a href=&quot;https://core.sasjs.io/mp__init_8sas.html&quot;&gt;mp_init()&lt;/a&gt; macro, which implements a defensive set of SAS options, is typically used in every callable job&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Build Process&lt;/h2&gt;
+&lt;p&gt;The build / development process may be performed on a laptop, or in a pipeline.  The goal of the build is to prepare the app in such a way that makes it easy to deploy - especially given that this is often done by a completely different individual or team.&lt;/p&gt;
+&lt;p&gt;The flow typically looks like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Build frontend&lt;/li&gt;
+&lt;li&gt;Compile the project (per SASjs Config)&lt;/li&gt;
+&lt;li&gt;Remove tests (eg if a production deploy)&lt;/li&gt;
+&lt;li&gt;Build the project (per SASjs Config) for deployment&lt;/li&gt;
+&lt;li&gt;Share the deployment assets with the administrator&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Deploy Process&lt;/h2&gt;
+&lt;p&gt;There are two ways to deploy a SASjs app on SAS Viya:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Using the SASjs CLI directly&lt;/li&gt;
+&lt;li&gt;Using a SAS Deployment Program (generated using the CLI)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;To use the &lt;strong&gt;CLI approach&lt;/strong&gt;, run the &lt;a href=&quot;https://cli.sasjs.io/auth/&quot;&gt;authenticate&lt;/a&gt; and the &lt;a href=&quot;https://cli.sasjs.io/servicepack&quot;&gt;deploy&lt;/a&gt; commands.  This will require a client/secret pair, and is performed from a laptop or an isolated pipeline.  The deploy process makes exclusive use of standard Viya APIs, and will create the necessary folders / deploy the Jobs and frontend Files.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;SAS Program Deployment approach&lt;/strong&gt; simply means, running the SAS code in SAS Studio.  The program can be very big, as it will contain the entire frontend, as well as all the SAS Services and Jobs (and if no production, Tests).  Each Job and frontend File are deployed one by one using the Viya APIs, invoked by SAS code.  &lt;strong&gt;No client/secret is required&lt;/strong&gt;, as the SAS session will make use of the &lt;code class=&quot;language-text&quot;&gt;oauth_bearer=sas_services&lt;/code&gt; setting in &lt;code class=&quot;language-text&quot;&gt;proc http&lt;/code&gt;.  The deployment macros are listed &lt;a href=&quot;https://core.sasjs.io/dir_f3c9615c6d389fd64e9075885fcd8e6e.html&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Production Environment&lt;/h2&gt;
+&lt;p&gt;Once in Production, a SASjs app benefits from a number of protections:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Uses &lt;strong&gt;standard SASLogon&lt;/strong&gt; (corporate auth)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Static Content&lt;/strong&gt;.  The frontend (html, css, js, png) is deployed entirely to SAS Drive (files service).  There are zero “running services” to deploy outside of SAS.&lt;/li&gt;
+&lt;li&gt;The frontend is ONLY &lt;strong&gt;visible once authenticated&lt;/strong&gt; and authorised.&lt;/li&gt;
+&lt;li&gt;Strict &lt;strong&gt;Content Security Policy&lt;/strong&gt;.  By default, Viya enforces a very tight ruleset on web content and this cannot be bypassed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NOXCMD&lt;/strong&gt; by default&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No filesystem dependency for SAS code&lt;/strong&gt;. The SASjs compilation process ensures that every job is fully self-contained - so is not vulnerable to code changes on the filesystem.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No internet dependency&lt;/strong&gt;.  Apps are always designed to work without external dependencies such as fonts, images, JS libraries etc.&lt;/li&gt;
+&lt;li&gt;The SASjs Adapter makes exclusive use of &lt;strong&gt;SAS Viya APIs&lt;/strong&gt;.  These include:
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;DELETE /compute/sessions/${id}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GET /compute/contexts&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GET /compute/sessions/${id}/jobs/${id}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GET /compute/sessions/${id}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GET /folders/folders/@item&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GET /identities/users/@currentUser&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GET /jobExecution/jobs/${id}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;POST /compute/contexts/${id}/sessions&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;POST /compute/sessions/${id}/jobs&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;POST /jobExecution/jobs&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;The SASjs web apps we produce are always:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Appropriately licenced - no copyleft components&lt;/li&gt;
+&lt;li&gt;Contained entirely in a standard Viya install&lt;/li&gt;
+&lt;li&gt;Version controlled&lt;/li&gt;
+&lt;li&gt;Easy to deploy&lt;/li&gt;
+&lt;li&gt;Documented&lt;/li&gt;
+&lt;li&gt;Accessible&lt;/li&gt;
+&lt;li&gt;Tested&lt;/li&gt;
+&lt;li&gt;Secure&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Do &lt;a href=&quot;/contact&quot;&gt;reach out&lt;/a&gt; for further information, or clarifications on the build / deployment process.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SASjs Server on CentOS]]></title><description><![CDATA[Installation of SASjs Server on a CentOS 7 machine]]></description><link>https://sasapps.io/sasjs-server-on-centos</link><guid isPermaLink="false">https://sasapps.io/sasjs-server-on-centos</guid><category><![CDATA[SASjs]]></category><category><![CDATA[SASjs Server]]></category><category><![CDATA[SAS Admin]]></category><category><![CDATA[SAS]]></category><pubDate>Thu, 01 Sep 2022 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;SAS 9 on Centos may not be officially supported by SAS Institute, but it is supported by the SAS Apps team!  At least, we can support the SASjs Server component.&lt;/p&gt;
+&lt;p&gt;This is a complete guide to setting up SASjs Server on CentOS 7.  A SAS runtime is a prerequisite, and a guide to installing that is available &lt;a href=&quot;https://rawsas.com/sas-centos/&quot;&gt;here&lt;/a&gt;.  A guide to installing SASjs Server on Debian / Ubuntu type images is available &lt;a href=&quot;https://sasapps.io/sasjs-server-on-vps&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 65.95744680851064%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAAsTAAALEwEAmpwYAAADcUlEQVR42k2Ta0zbZRTG/5GIokZJBm6LQ3qh5bJugi0jMs2YQIHSUjquGxtmE4F0MyAdu7hpCMgmA3qFQkvLREZA3HAwB4tOwRszIbjEzJn4weyrn/xW9cv/5/tHEvnw5OQ9583zPs95z5HSbG50FT7SbD609lF0lQHSHX4Bn8h70JQP/g+rB21pL+nFLnSvd6AtaEd7sB190TuyznwRtWUgJmUeCrCvYZgSZ4SPxvppOh8l/2iEnPogu6uH0Nu9aK1uQTiA2uonw9zJjuREnk54QiCepxISeO6ZJ2W9sUw86ItJ2vIRmkf7iPxxhPXVN1k+MUb4zDTGxhDZtUEyD/lRXGgsgtDmR1d4mhd2bicpKYmEhGfJM8VTuF+SNTklgtAfk/LrooxEfXz2eysr34aYc84RavsEy8kJjEdGMdQoKoVVoVBTEUB1oI1X8kx0uM7R2uzAViJRb5dkndGsOIhJpSeieNonuOAcZ25xkV+/6Ob2aA/VbdPsOzbK3toh0iu9/1kWCvVFnSRtSyRVpSH7JT311XpKC3PkNKNNKPTGJEPdMG+cmaLt1Cyh2W542Mhvy33sb5oQvVUIh9ErhMKyZpPQYMiiuLiYnJdzMeXmo1WnyjrTZg+z64KYm8c5fv46geUuPhz3U9ceEepC5B0Ls0cozHB40Yk+ppT5BKELQ5ae5Od3EP94HHFxjyFJkrwzvQBVuSBUepRzOIhJEBS0RHntrQmaeuYpdU6QanGLS4MkH7zMtgO97K0JsKuwm1z7ORrevkKWuYNMs4uqlsuyw+kn0yEIlf4otpQxyTsaYur2Gu7Jb3B0XKPx4ixVrklOXrrJ4bPThK+v0hO+S2T+J7rCK1y78zPf3X/E1YV1+VTfAul2T0xSRkIh1do8FLaMc2vlF7YX9dHae5O1B4/ojdwlOHuP0I0fmV5cZ3hmlaGZH0h8tZvPVx7wgXjgvaEleen7h9R2TsUkZQOUwdVVuFGLn+wa+ZKxG/douzLP4McruNwLNLw7s4EL/iWOv/8plyJfM3lrjbO+RWpOT4nzV/LMnfuYW6NisJV12oKU0gEyKn1ijZRVc2/8sKI+TdTU5W7SKry8WDbI7io/u0oGNgZ/T82QrBK1lJL+mCRU/b0VGutm3DyrLFtqm1FrVfL9G1Hsr8gP/iXwjxj+P/8FwiIyBUz1338AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;sasjs centos&quot;
+        title=&quot;&quot;
+        src=&quot;/static/b21c900cf0752b9c48b2895b1b9318f1/1d69c/sasjs_centos.png&quot;
+        srcset=&quot;/static/b21c900cf0752b9c48b2895b1b9318f1/4dcb9/sasjs_centos.png 188w,
+/static/b21c900cf0752b9c48b2895b1b9318f1/5ff7e/sasjs_centos.png 375w,
+/static/b21c900cf0752b9c48b2895b1b9318f1/1d69c/sasjs_centos.png 750w,
+/static/b21c900cf0752b9c48b2895b1b9318f1/9f82e/sasjs_centos.png 820w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+&lt;p&gt;Before you get started, be sure you can obtain the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The IP address of your VPS, with root SSH access, eg: &lt;code class=&quot;language-text&quot;&gt;167.44.44.44&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;A working installation of SAS (or WPS)&lt;/li&gt;
+&lt;li&gt;A domain (and access to the DNS panel), eg &lt;code class=&quot;language-text&quot;&gt;mysas.mycompany.com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;A MongoDB connection string (you can provision one locally or use a free cloud instance)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Server Setup&lt;/h2&gt;
+&lt;p&gt;Let’s get this machine configured! First we log in as root, eg:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Enter as sudo-enabled user using YOUR new server IP address&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;ssh&lt;/span&gt; user@167.44.44.44&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, we create a unix group (&lt;code class=&quot;language-text&quot;&gt;sas&lt;/code&gt;) and create the system user account / home directory:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Create a sas group&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; addgroup sas
+&lt;span class=&quot;token comment&quot;&gt;# Make the user account (eg sasjssrv) and add to sas group&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; adduser sasjssrv &lt;span class=&quot;token parameter variable&quot;&gt;-G&lt;/span&gt; sas&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;TLS / SSL&lt;/h2&gt;
+&lt;p&gt;We can generate https certificates using &lt;code class=&quot;language-text&quot;&gt;certbot&lt;/code&gt;.  Since &lt;code class=&quot;language-text&quot;&gt;certbot&lt;/code&gt; is packaged as a snap, we’ll also install &lt;code class=&quot;language-text&quot;&gt;snapd&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Add EPEL repository&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; yum &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; epel-release
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; yum upgrade
+&lt;span class=&quot;token comment&quot;&gt;# Install snapd&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; yum &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; snapd
+&lt;span class=&quot;token comment&quot;&gt;# Enable snap communication socket&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; systemctl &lt;span class=&quot;token builtin class-name&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;--now&lt;/span&gt; snapd.socket
+&lt;span class=&quot;token comment&quot;&gt;# Create symbolic link&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-s&lt;/span&gt; /var/lib/snapd/snap /snap
+&lt;span class=&quot;token comment&quot;&gt;# Now, log out of the session and log back in&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now we are back in the session we can install certbot:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;# Remove any previous installation
+sudo yum remove certbot
+# Install Certbot.
+sudo snap install --classic certbot
+# Make symlink
+sudo ln -s /snap/bin/certbot /usr/bin/certbot&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Before proceeding further, it is necessary to first update your DNS and add an “A record” pointing to your server IP.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 40.42553191489361%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAABYlAAAWJQFJUiTwAAABCUlEQVR42qVRy07EMAzMP/MvXDnyBdz5Aq4cOADtLiVpadr0kTZpOmRSyq4QWiFhxbJiO+MZR2RZhqIoQFvXFf81YYyB1hrDMCRvmgbW2u8Bf/HAGPu99xDzPKNtW9R1jXEc0XUdmLtk4YeQXZhzDoIgBCQ7Ai3LkiaxyEhnzjkfnyx4zA2ubp7x8FTjLX9BludQesS7nqDNCEGgsizR931iKaVMTGnn4JRFKs4HfBgX4xprbhu8BMQTCX0x3PeolErAO1BVVWkA67yHEHCIjKpSJUXTNG393p8ks4mLpVyC82FadMzvfv5B2wq2/H63doBsZrzK4QR42X/vodlpRq2OuL0/4PouwycEN3AX7PJUpAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;sasjs server dns&quot;
+        title=&quot;&quot;
+        src=&quot;/static/3f359fdd06abf3c58f48a9b8a727986c/1d69c/sasjs_server_dns.png&quot;
+        srcset=&quot;/static/3f359fdd06abf3c58f48a9b8a727986c/4dcb9/sasjs_server_dns.png 188w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/5ff7e/sasjs_server_dns.png 375w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/1d69c/sasjs_server_dns.png 750w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/78797/sasjs_server_dns.png 1125w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/aa440/sasjs_server_dns.png 1500w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/bfe41/sasjs_server_dns.png 2082w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Once this is done, we can launch certbot.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;# provide domain to prompt WITHOUT https prefix, eg mysas.mycompany.com
+sudo certbot certonly --standalone
+
+# ensure members of the sas group can access the certs
+# update the paths below according to the actual domain!
+mkdir /opt/certificates
+cd /etc/letsencrypt/live/YOURDOMAIN.com
+cp fullchain.pem /opt/certificates/fullchain.pem
+cp privkey.pem /opt/certificates/privkey.pem
+chgrp -R sas /opt/certificates
+chmod -R 755 /opt/certificates&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;SASjs Installation &amp;#x26; Configuration&lt;/h2&gt;
+&lt;p&gt;The rest of the installation is exactly as described in &lt;a href=&quot;https://sasapps.io/sasjs-server-on-vps&quot;&gt;this article&lt;/a&gt; (from “SASjs Installation &amp;#x26; Configuration” onwards).&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Load Balancing with SASjs Server]]></title><description><![CDATA[Configuring an nginx Load Balancer with multiple SASjs Server Instances]]></description><link>https://sasapps.io/load-balancing-sasjs-server</link><guid isPermaLink="false">https://sasapps.io/load-balancing-sasjs-server</guid><category><![CDATA[SASjs]]></category><category><![CDATA[SASjs Server]]></category><category><![CDATA[SAS Admin]]></category><category><![CDATA[SAS IntrNet]]></category><category><![CDATA[SAS]]></category><pubDate>Thu, 28 Jul 2022 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;a href=&quot;https://server.sasjs.io&quot;&gt;SASjs Server&lt;/a&gt; does not ship with a load balancer.  However it does “play nicely” with existing load balancers - such as nginx.  This enables deployment in a similar topology to that of legacy SAS/IntrNet servers or Stored Process Web Apps.&lt;/p&gt;
+&lt;p&gt;In this guide we will demonstrate how to configure nginx against three backend instances of SASjs Server.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 463px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 107.4468085106383%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAYAAABG1c6oAAAACXBIWXMAAAsTAAALEwEAmpwYAAADs0lEQVR42nVUW09TWRQ+MY5REaJgNaCoJJ1wsVCSwWiNOD7MPIwxZmrUoGgyv8HbmxoT0Yw/gF+h4SpP1AE0kiEFCqUUWmgrLbRyp9By7+f6tj2lSrqTdfY+a6/97XX51tYgo6urC9nZh7B37y84fDgHWVn70NjYhNbWVmiahv37DyIvNwfZhw7C4RhAXV2d0h84kIUjR7Jw5sxphMMRQkHjp729HZWVZlgsl3H54j78btHw9l0DWlqaUVxcjKqq8/jzyh5Yzmmw2x148+ZflJWZUPWbCVf/0OTMUUwEfwIsKSnBX1ev4Z/aIlyyGNDY1IqmpkacOnUaVus13K85iQvn8mHvdeDVqzqUna2A9e8ruHf7OC5dNAng5A5gR0cHCgsLUVpairOmCuTmGtDQ0IDm5mbk5eWhvLwCJtHn5OSir69PAF/j2DGD6M0wGotRVGREeGpqB7C7uxvV1dVyyCTAJ2EwHEVbWxtsNpukolLCK8OJEwUi+XA6naivr4fZbMavRiMKCvJlXY7p6ekdwEQigY2NDcTjcczPz0MfW1tbam92dhbLy8tKt729rWbaz8zMqH1dUoD64CF6MDQ0hEgkoox4s9vthsfjUZetra1hcHBQycDAgPrXndoFuLq6qrwJh8MpTxcWFuDz+RAMBhGNRpWOnlG/srKiokgfPwDqg2HFYrHUrfScl3Fsbm6qvUxjF+DS0pLyhF7QS4JxnpubU0DUc1+XzID0hp4JwOzXrwiMjcEjufOPj2PY5VK0GJHZOzICp8OByOQk4hIyzyAZyQ+AVDEbMal0QArSKUn/0N8Px+gouux29Mv8UYBsvb34IFwMiacxScNW8mwKMJGkQfTzZ7ivX4frxg2M3LwJb00N/LW1+O/OHbyXuUX+++7eRUDWY6IbvXXru63VipiwQjklWBqSgPHhYQSfP4dPJPTyJcafPsXggwf49Pgx2h89gk3k/ydPMPTwobIJio3v2TMEX7zAmt+fos6uougEnhZadEuYrokJeCRf/V4v3DI7vnzBInPHqJJzxqIkhFPRxUVEpdLLrKKsVyWnLiG7V8AD4olTyKz2yAaRjEVJ5yCF7uuk7ezsVG/jhHjLzvi53TJ2ij5IXvbq+vo69Ae4p6cn1d/c0yUdNAXIW0lathJzyEeCa7YXiU5ic60TnHvsHNrxHG30nlaANPJLfnij/prQkCGyr6eE1JxDoRACgYCySw+Tl3Gfek3PG5V8GChsL16S3mLpsijFoj3t9DO0J+A3nDSJsosxBPIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;loadbalance1&quot;
+        title=&quot;&quot;
+        src=&quot;/static/2231a88e4a9492cde687c77c874447a5/71ce0/loadbalance1.png&quot;
+        srcset=&quot;/static/2231a88e4a9492cde687c77c874447a5/4dcb9/loadbalance1.png 188w,
+/static/2231a88e4a9492cde687c77c874447a5/5ff7e/loadbalance1.png 375w,
+/static/2231a88e4a9492cde687c77c874447a5/71ce0/loadbalance1.png 463w&quot;
+        sizes=&quot;(max-width: 463px) 100vw, 463px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The guidance below should considered just that - a guide.  In reality, your implementation may cross managerial boundaries - eg infrastructure for firewall and load balancer activities, and the BI team for SASjs Server setup and configuration.&lt;/p&gt;
+&lt;p&gt;Also, you may have formal approval processes to install software such as nginx (or existing software that does the same job), hoops to jump through to open up ports, and so on.&lt;/p&gt;
+&lt;p&gt;Finally, your configuration may differ according to the nature of your application(s), load profile, server specs etc.&lt;/p&gt;
+&lt;p&gt;With that out of the way - let’s proceed!&lt;/p&gt;
+&lt;p&gt;The assumptions are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You are a sysadmin and you have all necessary access rights&lt;/li&gt;
+&lt;li&gt;You do not have a load balancer already configured&lt;/li&gt;
+&lt;li&gt;You have the experience and authority to do all this stuff.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The prerequisites are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;3 functional and identical instances of SASjs Server (setup steps &lt;a href=&quot;/sasjs-server-on-vps&quot;&gt;here&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;A linux VPS for the load balancer, with root access&lt;/li&gt;
+&lt;li&gt;A domain with corresponding TLS certificates&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;NGINX Basic Setup&lt;/h2&gt;
+&lt;p&gt;SSH onto the load balancing server.  If nginx is not installed, install as follows:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; nginx&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, open the configuration ( eg &lt;code class=&quot;language-text&quot;&gt;/etc/nginx/sites-available/default&lt;/code&gt;) and using your preferred editor (&lt;code class=&quot;language-text&quot;&gt;nano&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;vim&lt;/code&gt;) and adjust the contents usuing the sample config below.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;# List of backend SASjs server instances
+#  (internal/private IP + port)
+upstream mysasgrid {
+  server 10.110.0.8:5000;
+  server 10.110.0.11:5000;
+  server 10.110.0.10:5000;
+}
+
+server {
+  listen 80;
+  location / {
+    proxy_pass http://mysasgrid;
+  }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally, restart nginx:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;sudo service nginx restart&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That’s it! 🚀🚀🚀&lt;/p&gt;
+&lt;hr/&gt;
+&lt;p&gt;You should now be able to access the SASjs Server instances from the domain of the load balancer.  Simply run &lt;code class=&quot;language-text&quot;&gt;%put &amp;amp;=syshostname;&lt;/code&gt; in Studio to see the domain of each node:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2b54b1d7377d3f4585cdcdf0d2fe043d/loadbalance.gif&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you are having troubles be sure to check the log file at &lt;code class=&quot;language-text&quot;&gt;/var/log/nginx/error.log&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;NGINX Setup with TLS&lt;/h2&gt;
+&lt;p&gt;To enable TLS (https) on the load balancer, you need to create a certificate and key.  The easiest way to do this is to use the Let’s Encrypt service - an example is provided in &lt;a href=&quot;/sasjs-server-on-vps&quot;&gt;this article&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Once you have your &lt;code class=&quot;language-text&quot;&gt;fullchain.pem&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;privkey.pem&lt;/code&gt;, update the text below and use to replace the contents of &lt;code class=&quot;language-text&quot;&gt;/etc/nginx/sites-available/default&lt;/code&gt; as follows:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;upstream mysasgrid {
+  server 10.110.0.8:5000;
+  server 10.110.0.11:5000;
+  server 10.110.0.10:5000;
+}
+
+server {
+  listen              443 ssl;
+  # domain of your load balancer
+  server_name          demo.4gl.io;
+  # location of your certificates
+  ssl_certificate     /opt/certificates/fullchain.pem;
+  ssl_certificate_key /opt/certificates/privkey.pem;
+
+  location / {
+    proxy_pass http://mysasgrid;
+  }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Save, re-run &lt;code class=&quot;language-text&quot;&gt;sudo service nginx restart&lt;/code&gt; and voila - your load balancer is configured to use TLS 🔒🔒🔒&lt;/p&gt;
+&lt;p&gt;Note that the SSL encryption terminates here at the load balancer - the node traffic runs over http. If you do not trust your internal network, or you are using external nodes, you may wish to configure SSL Passthrough - an article on that is &lt;a href=&quot;https://www.cyberciti.biz/faq/configure-nginx-ssltls-passthru-with-tcp-load-balancing/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;NGINX Load Balancing Algorithms&lt;/h2&gt;
+&lt;p&gt;By default, nginx will send traffic to each server sequentially (Round Robin).  However there may be reasons to use a different algorithm - for example, if you have servers with varying capacity, or reliability.&lt;/p&gt;
+&lt;p&gt;Below are some examples of load balancing algorithms on nginx.&lt;/p&gt;
+&lt;h3&gt;Weight&lt;/h3&gt;
+&lt;p&gt;You can assign specific weights to each node, to allow more traffic to be sent to the servers with higher capacity.&lt;/p&gt;
+&lt;p&gt;For instance:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;upstream mysasgrid {
+  server 10.110.0.8:5000 weight=1;
+  server 10.110.0.11:5000 weight=2;
+  server 10.110.0.10:5000 weight=6;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this case, the second server will receive twice as much traffic as the first.  The third will receive six times more traffic than the first.&lt;/p&gt;
+&lt;h3&gt;Hash&lt;/h3&gt;
+&lt;p&gt;By taking a hash of the IP of the request, you can route the requests for each visitor to the same SAS instance.  This is useful when your SAS app makes use of node-specific features, eg for session management.&lt;/p&gt;
+&lt;p&gt;Note that if a server is down, it may be marked as such in order to redirect the requests.&lt;/p&gt;
+&lt;p&gt;Example config:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;upstream mysasgrid {
+  ip_hash;
+  server 10.110.0.8:5000;
+  server 10.110.0.11:5000 down;
+  server 10.110.0.10:5000;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this example the second server is marked as down.&lt;/p&gt;
+&lt;h3&gt;Max Fails&lt;/h3&gt;
+&lt;p&gt;By default (Round Robin) requests are blindly forwarded to servers that are down / unresponsive.  The Max Fails algorithm deals with this using two parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://nginx.org/en/docs/http/ngx_http_upstream_module.html#max_fails&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;max_fails&lt;/code&gt;&lt;/a&gt; - the number of consecutive failures before the server is marked as down.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://nginx.org/en/docs/http/ngx_http_upstream_module.html#fail_timeout&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;fail_timeout&lt;/code&gt;&lt;/a&gt; - how long to wait before the server is assumed to be back up.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can mix and match “Max Fails” with “Weight” and “Hash” algorithms.  Example:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;upstream mysasgrid {
+  ip_hash;
+  server 10.110.0.8:5000 weight=1 max_fails=1 fail_timeout=10s;
+  server 10.110.0.11:5000 max_fails=1 fail_timeout=1s;
+  server 10.110.0.10:5000 weight=6 max_fails=2 fail_timeout=1h;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this config:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We are using IP hashing (each visitor will continue to use the same machine)&lt;/li&gt;
+&lt;li&gt;The third server will get six times as much traffic as the other two (default weight is 1)&lt;/li&gt;
+&lt;li&gt;If the third server fails twice, it will be out of action for 1 hour&lt;/li&gt;
+&lt;li&gt;If the first server fails once, it is out of action for 10 seconds&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As you can see, NGINX is highly configurable.  Further options / algorithms (such as &lt;a href=&quot;https://nginx.org/en/docs/http/ngx_http_upstream_module.html#least_time&quot;&gt;least_time&lt;/a&gt; or &lt;a href=&quot;https://nginx.org/en/docs/http/ngx_http_upstream_module.html#least_conn&quot;&gt;least_conn&lt;/a&gt;) are available if you take out a commercial subscription with nginx.&lt;/p&gt;
+&lt;h2&gt;Deploying SAS Apps on Load Balanced Platforms&lt;/h2&gt;
+&lt;p&gt;The key thing to remember is that the load balancer config above does not differentiate between web requests and SAS requests.  Therefore your app must be deployed to ALL the nodes in the cluster.&lt;/p&gt;
+&lt;p&gt;If you would like to take security one step further, you could consider deploying the load balancer BEHIND the frontend application.  In this way, you can prevent end users from calling SAS services directly - by whitelisting the IP of the web server.  A topology for this is shown below:&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 463px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 165.4255319148936%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAhCAYAAADZPosTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEwElEQVR42o1WW0hcVxS9qaaNLbSOFSo27UedMSSpqRhtQiVNoA2tQSdVMlZT8DcUIkJIS/KRQB6/dUoI0h9DQbAfRkGKD4rGgqDio4ro1Mf4HN86vt+jru516pE7iaM5sL3nntln7bWfVwOytre3kZycDMMw8O57oQgJeRspKXYsLi4gNjYWQUFBCA214OjRt5CdnYOhoSFYLBYcOxaCsLD3ERz8JnKdvxIKBv/4fD6kpn6H6OiTiLZG4NIXBtIdlzE9PYcLFxLl/BSsn4QiMcHAzz/9CLd7ACdO2GC1nsTZz97B2RgDTucv/oBpaan46uskZKYnwHE1GBnfpwqgFxcvfolvvrXLeQyuXDZw584t9PS4ceZMjNxx4If0j3ApMRi5uSaGdNlutyMyMhLnPk/A6dOncO1aOubm5hAfH4+oqCicP58Aq82KnJxb6O/vx/HjH4rep0hMPCf7jwXQ6c8wKysL0TYbPoiIwBtHjuBKUpICTJKn1WpFeHi4inH2zZsYGBhAXFwcbGLAYglT506nCZBrZGREXOlBU1MTent7MTMzg62tLXg8HnR3d6OtrRXj42MShmlsbm5ieHgYLS0tcHV2qiTNinE/QL0I4vV6MT8/j+XlZayurioDBOXFtbU1xZw6U1NT2NnZ8btvmIH448LCAtrb24VRG/r6+rCxsYGJiQmMjY0pIBro6OhAV1eXEhplDij7MuQiMBVWVlaUIcaYey66yz11XmYXEHB2dlZZJiO62draqmJLIVMCLi0tKW8OBaRVguns19fXo6qqCuXl5UomJyehS03rHQrIODU3N6Ourk4x7JRM8p1ZbWxsRG1trUoUExQwKWZAKlZUVKCkpAQ1NTWorq5WLHlWWVmpzph1Gj6YITPFZEh8NgTUJxnm0yu19/eLF2q/LiCb6+tYlzhS1B0TSz/ALZNsimzsKs4vLqJCWGL3nOIz6W77Mdy9tC1s+m/fhistDV2Zmfg3IwM9Ik2yL3Y48EdKCv6SfZec7cn16+iU89EnT/4Pl7DdA9yR+hrPy8PwvXvwPHoEz8OHGBHpE6m/fx+lN27gnwcPMCTvHi2PH2Po7l14nz83Ab6clH3qkt3SIp2zxWI+RP+VpExLnc1Jny5IUfP5+7NnSvKePsVv4sGfpaVYkoKel+KflQFCCZgULt2v65JJdgOnzeDgoCoVzkH2NRlTh8IhcmAdsvp1sS5Kdl0ulypidozb7VZDgy3I9uSi0UMBzUWuwdklBGxoaFDdE6j9XgFk47NfOevIkMIhwFHGSU1mDAufo6Ojey5rw/sCciozhkVFRcjPz0dhYaFixtYrLi5GQUGBMsghq10/EJCBJysOUD1t6DIHK4XJoascZa8FyEBTUTc/Q8Apw8Uz6lDoOkPy2lnmJcaN8aPL/DARnHOSXpgneUBAusoxzwySKQGZXU5tJoFfRs5GXY/7MjQPSSZDFy3nIheLu6ysbK82KWRHHYIGZEhgKmqhMj9SdJOdomuPZ/SCOnzy3Q+QbtI9HXAy4zs/9rruWG90mf8Q8Dd6Qj0aNSfQ0G4wNuaRzj0ByI7x0sVOQLIye8S6ZcIIbpi/dGRCVlSgVTKn6P8gKNzzN4JTj3fImELw/wCh2hK/9/a4xQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;loadbalance2&quot;
+        title=&quot;&quot;
+        src=&quot;/static/c0f0ecb448f2f8289977bd9c970cf5c0/71ce0/loadbalance2.png&quot;
+        srcset=&quot;/static/c0f0ecb448f2f8289977bd9c970cf5c0/4dcb9/loadbalance2.png 188w,
+/static/c0f0ecb448f2f8289977bd9c970cf5c0/5ff7e/loadbalance2.png 375w,
+/static/c0f0ecb448f2f8289977bd9c970cf5c0/71ce0/loadbalance2.png 463w&quot;
+        sizes=&quot;(max-width: 463px) 100vw, 463px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This approach will only work if you are running an actual web server (eg NodeJS application) and frontend.  It won’t work for single page applications.&lt;/p&gt;
+&lt;p&gt;If you’re interested to deploy such a solution, or you would like to partner with our team to deliver SAS Apps in other configurations, do &lt;a href=&quot;/contact/&quot;&gt;get in touch&lt;/a&gt;!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SASjs Server on Cloud VPS]]></title><description><![CDATA[A complete guide to Installation & Configuration of SASjs Server on a VPS (Digital Ocean)]]></description><link>https://sasapps.io/sasjs-server-on-vps</link><guid isPermaLink="false">https://sasapps.io/sasjs-server-on-vps</guid><category><![CDATA[SASjs]]></category><category><![CDATA[SASjs Server]]></category><category><![CDATA[SAS Admin]]></category><category><![CDATA[SAS]]></category><pubDate>Mon, 18 Jul 2022 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;a href=&quot;https://server.sasjs.io&quot;&gt;SASjs Server&lt;/a&gt; is the latest addition to the &lt;a href=&quot;https://sasjs.io&quot;&gt;SASjs&lt;/a&gt; product family, and closes an important gap - namely, the ability to perform DevOps and launch applications on regular Foundation (desktop or server, windows or linux) SAS.&lt;/p&gt;
+&lt;p&gt;This guide will show you how to install and configure SASjs on a VPS (Virtual Private Server), such as a Digital Ocean droplet.&lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Like all &lt;a href=&quot;https://github.com/sasjs&quot;&gt;SASjs tools&lt;/a&gt;, SASjs Server is MIT open source and hence completely free for commercial use.  The latest release is always available on the &lt;a href=&quot;https://github.com/sasjs/server/releases&quot;&gt;github releases&lt;/a&gt; page.  The major features are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Portal for 3rd Party Apps (AppStream)&lt;/li&gt;
+&lt;li&gt;Permissions by User or Group&lt;/li&gt;
+&lt;li&gt;Multiple runtimes (SAS, JS)&lt;/li&gt;
+&lt;li&gt;Online IDE (Studio)&lt;/li&gt;
+&lt;li&gt;Stored Programs&lt;/li&gt;
+&lt;li&gt;REST API&lt;/li&gt;
+&lt;li&gt;TLS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One of the (many) nice things about SASjs Server is that it is extremely lightweight!  You can even run it on a $6 VPS, as shown here::&lt;/p&gt;
+&lt;div class=&quot;gatsby-resp-iframe-wrapper&quot; style=&quot;padding-bottom: 56.25%; position: relative; height: 0; overflow: hidden; margin-bottom: 1.0725rem&quot; &gt; &lt;iframe src=&quot;https://www.youtube.com/embed/aYufNmHLmBs&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot; style=&quot; position: absolute; top: 0; left: 0; width: 100%; height: 100%; &quot;&gt;&lt;/iframe&gt; &lt;/div&gt;
+&lt;p&gt;In this guide we show you exactly how to create a server image like the one above.  If you are planning multiple users, you might want to consider a slightly higher spec!  We have a dozen or so users on our $28 per month image, plus all our test suites, and the performance has been great.&lt;/p&gt;
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+&lt;p&gt;Before you get started, be sure you can obtain the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The IP address of your VPS, with root SSH access, eg: &lt;code class=&quot;language-text&quot;&gt;167.44.44.44&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;A copy of SAS (or WPS) and the corresponding licence key&lt;/li&gt;
+&lt;li&gt;A domain (and access to the DNS panel), eg &lt;code class=&quot;language-text&quot;&gt;mysas.mycompany.com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;A MongoDB connection string (you can provision one locally or use a free cloud instance)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Server Setup&lt;/h2&gt;
+&lt;p&gt;Let’s get this machine configured! First we log in as root, eg:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Enter as root using YOUR new server IP address&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;ssh&lt;/span&gt; root@167.44.44.44&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, we create a unix group (&lt;code class=&quot;language-text&quot;&gt;sas&lt;/code&gt;) and create the system user account / home directory:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Create a sas group&lt;/span&gt;
+addgroup sas
+&lt;span class=&quot;token comment&quot;&gt;# Make the user account (eg sasjssrv)&lt;/span&gt;
+adduser --disabled-password &lt;span class=&quot;token parameter variable&quot;&gt;--gecos&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&quot;&lt;/span&gt; sasjssrv
+&lt;span class=&quot;token comment&quot;&gt;# Add to `sas` group&lt;/span&gt;
+adduser sasjssrv sas&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;SAS Installation&lt;/h2&gt;
+&lt;p&gt;This part will vary depending on your service provider.  Follow the necessary instructions to install the basic software suite. You do NOT need any products beyond the basic SAS executable (&lt;code class=&quot;language-text&quot;&gt;sas.exe&lt;/code&gt; / &lt;code class=&quot;language-text&quot;&gt;sas.sh&lt;/code&gt;).&lt;/p&gt;
+&lt;h2&gt;TLS&lt;/h2&gt;
+&lt;p&gt;Before proceeding with TLS (SSL) it is necessary to first update your DNS and add an “A record” pointing to your server IP.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 40.42553191489361%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAABYlAAAWJQFJUiTwAAABCUlEQVR42qVRy07EMAzMP/MvXDnyBdz5Aq4cOADtLiVpadr0kTZpOmRSyq4QWiFhxbJiO+MZR2RZhqIoQFvXFf81YYyB1hrDMCRvmgbW2u8Bf/HAGPu99xDzPKNtW9R1jXEc0XUdmLtk4YeQXZhzDoIgBCQ7Ai3LkiaxyEhnzjkfnyx4zA2ubp7x8FTjLX9BludQesS7nqDNCEGgsizR931iKaVMTGnn4JRFKs4HfBgX4xprbhu8BMQTCX0x3PeolErAO1BVVWkA67yHEHCIjKpSJUXTNG393p8ks4mLpVyC82FadMzvfv5B2wq2/H63doBsZrzK4QR42X/vodlpRq2OuL0/4PouwycEN3AX7PJUpAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;sasjs server dns&quot;
+        title=&quot;&quot;
+        src=&quot;/static/3f359fdd06abf3c58f48a9b8a727986c/1d69c/sasjs_server_dns.png&quot;
+        srcset=&quot;/static/3f359fdd06abf3c58f48a9b8a727986c/4dcb9/sasjs_server_dns.png 188w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/5ff7e/sasjs_server_dns.png 375w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/1d69c/sasjs_server_dns.png 750w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/78797/sasjs_server_dns.png 1125w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/aa440/sasjs_server_dns.png 1500w,
+/static/3f359fdd06abf3c58f48a9b8a727986c/bfe41/sasjs_server_dns.png 2082w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Once this is done, we can generate https certificates using &lt;code class=&quot;language-text&quot;&gt;certbot&lt;/code&gt; as follows:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;snap &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; core&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; snap refresh core
+snap &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;--classic&lt;/span&gt; certbot
+&lt;span class=&quot;token function&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-s&lt;/span&gt; /snap/bin/certbot /usr/bin/certbot
+&lt;span class=&quot;token comment&quot;&gt;# provide domain to terminal prompt WITHOUT https prefix, eg mysas.mycompany.com&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; certbot certonly &lt;span class=&quot;token parameter variable&quot;&gt;--standalone&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# ensure members of the sas group can access the certs&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# update the paths below according to the actual domain!&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;mkdir&lt;/span&gt; /opt/certificates
+&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; /etc/letsencrypt/live/YOURDOMAIN.com
+&lt;span class=&quot;token function&quot;&gt;cp&lt;/span&gt; fullchain.pem /opt/certificates/fullchain.pem
+&lt;span class=&quot;token function&quot;&gt;cp&lt;/span&gt; privkey.pem /opt/certificates/privkey.pem
+&lt;span class=&quot;token function&quot;&gt;chgrp&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-R&lt;/span&gt; sas /opt/certificates
+&lt;span class=&quot;token function&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-R&lt;/span&gt; g+r /opt/certificates&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;SASjs Installation &amp;#x26; Configuration&lt;/h2&gt;
+&lt;p&gt;Here’s the exciting part - the SASjs config!  The instructions below provide a FULL deployment, including TLS / server mode / JS runtime option.  If any part of this is not relevant for your use case, you can simply omit it.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# change into the folder.  Remain as root to keep files protected.&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; /home/sasjssrv
+
+&lt;span class=&quot;token comment&quot;&gt;# grab latest api server&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-L&lt;/span&gt; https://github.com/sasjs/server/releases/latest/download/linux.zip &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; linux.zip
+&lt;span class=&quot;token comment&quot;&gt;# unzip can be installed with `apt install unzip`&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;unzip&lt;/span&gt; linux.zip
+
+&lt;span class=&quot;token comment&quot;&gt;# Tell SASjs the location of your SAS executable&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;SAS_PATH=/path/to/your/sas.sh&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token comment&quot;&gt;# At this point you can already stop, and you&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# will have SASjs Server in desktop mode!&lt;/span&gt;
+
+
+&lt;span class=&quot;token comment&quot;&gt;# If you would also like the option of a JS runtime, follow these steps:&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;bash&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;NVM_DIR&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token environment constant&quot;&gt;$HOME&lt;/span&gt;/.nvm&quot;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$NVM_DIR&lt;/span&gt;/nvm.sh&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;. &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$NVM_DIR&lt;/span&gt;/nvm.sh&quot;&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# This loads nvm&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$NVM_DIR&lt;/span&gt;/bash_completion&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;. &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$NVM_DIR&lt;/span&gt;/bash_completion&quot;&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;# This loads nvm bash_completion&lt;/span&gt;
+nvm &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;--lts&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;NODE_PATH=&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;which&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;PYTHON_PATH=&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;which&lt;/span&gt; python3&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;RUN_TIMES=sas,js,py&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+
+&lt;span class=&quot;token comment&quot;&gt;# Server Mode enables Users, Groups &amp;amp; Permissions&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# But requires a Mongo DB connx string&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;MODE=server&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token comment&quot;&gt;# DB connection string&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;DB_CONNECT=mongodb+srv://admin:admin@cluster0.YOURINSTANCE.mongodb.net/sasjs?retryWrites=true&amp;amp;w=majority&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+
+&lt;span class=&quot;token comment&quot;&gt;# For https, point at the certs generated previously&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;PORT=443&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;PROTOCOL=https&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;CERT_CHAIN=/opt/certificates/fullchain.pem&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;PRIVATE_KEY=/opt/certificates/privkey.pem&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; .env
+
+&lt;span class=&quot;token comment&quot;&gt;# enable api-linux to run on port 443&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# re-run whenever SASjs Server is re-installed&lt;/span&gt;
+setcap &lt;span class=&quot;token string&quot;&gt;&apos;cap_net_bind_service=+ep&apos;&lt;/span&gt; /home/sasjssrv/api-linux
+
+&lt;span class=&quot;token comment&quot;&gt;# Create a handy refresh script to update SASjs Server&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; refreshSASjs.sh &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;EOL
+#bin/bash
+curl -L https://github.com/sasjs/server/releases/latest/download/linux.zip &gt; linux.zip
+unzip -o linux.zip
+setcap &apos;cap_net_bind_service=+ep&apos; /home/sasjssrv/api-linux
+EOL&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;774&lt;/span&gt; refreshSASjs.sh
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That’s the setup. Now, the launch - using the designated system account.  Be aware that anyone running code or Stored Programs will be executing under this OS identity.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# switch to system user&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;su&lt;/span&gt; - sasjssrv
+&lt;span class=&quot;token comment&quot;&gt;# launch SASjs Server&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;nohup&lt;/span&gt; ./api-linux &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; server.log &lt;span class=&quot;token operator&quot;&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;2&lt;/span&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;&amp;amp;1&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You should now be able to access SASjs Server at your domain, eg &lt;code class=&quot;language-text&quot;&gt;mysas.mycompany.com&lt;/code&gt; using the default credentials (&lt;code class=&quot;language-text&quot;&gt;secretuser&lt;/code&gt;/&lt;code class=&quot;language-text&quot;&gt;secretpassword&lt;/code&gt;).  If there are problems connecting, check out the logs in the &lt;code class=&quot;language-text&quot;&gt;/home/sasjssrv/sasjs_root/logs&lt;/code&gt; directory.&lt;/p&gt;
+&lt;h2&gt;Create the SASjs Users&lt;/h2&gt;
+&lt;p&gt;Users can be added manually using the rest api, or in bulk using SASjs Studio - here is some sample code!&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sas&quot;&gt;&lt;pre class=&quot;language-sas&quot;&gt;&lt;code class=&quot;language-sas&quot;&gt;&lt;span class=&quot;token step keyword&quot;&gt;data&lt;/span&gt; work&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;users&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;infile&lt;/span&gt; cards dsd&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  input username:&lt;span class=&quot;token punctuation&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt; displayname:&lt;span class=&quot;token punctuation&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  putlog _all_&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;call&lt;/span&gt; &lt;span class=&quot;token function keyword&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token string&quot;&gt;&apos;%nrstr(%ms_createuser(&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!!&lt;/span&gt;username&lt;span class=&quot;token operator&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;,demo123,displayname=&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!!&lt;/span&gt;displayname&lt;span class=&quot;token operator&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;))&apos;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+cards4&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+sylvester&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;Sylvester Stallone
+rocky&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;Rocky Balboa
+john&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;John Johnston
+&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token step keyword&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token function keyword&quot;&gt;%ms_getusers&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;outds&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;work&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;users&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token function keyword&quot;&gt;%mp_ds2md&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;work&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;users&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally - don’t forget to change the password for the secretuser, and request that other users do the same for theirs.&lt;/p&gt;
+&lt;p&gt;If you’d like to perform additional configuration, just update the &lt;a href=&quot;https://server.sasjs.io/settings/&quot;&gt;name / value pairs&lt;/a&gt; in the &lt;code class=&quot;language-text&quot;&gt;/home/sasjssrv/.env&lt;/code&gt; file and restart the server.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SAS Streamed Apps]]></title><description><![CDATA[SAS Streamed Web Apps - SAS Apps, without the Web Server!]]></description><link>https://sasapps.io/sas-streamed-apps</link><guid isPermaLink="false">https://sasapps.io/sas-streamed-apps</guid><category><![CDATA[SAS]]></category><category><![CDATA[Apps]]></category><category><![CDATA[SASjs]]></category><pubDate>Fri, 19 Feb 2021 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;SAS Streamed Apps are served directly from the SAS logical folder tree - ie SAS Drive in Viya or the Metadata BIP folder in SAS 9.  This is highly convenient - there’s no need for web server access, nor even a filesystem, and they can be deployed easily in a few lines of code.&lt;/p&gt;
+&lt;p&gt;This article will demonstrate the concept of a SAS-Streamed app using a Nintendo classic - Super Mario.  The app will work on both SAS 9 or Viya.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 97.8723404255319%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAABYlAAAWJQFJUiTwAAADUElEQVR42o1UTUwTURDeswbURCCe1MTEs4lBBBRbFqg/0cRED1rCTzT8FtrutrvbFqRQQDAQRAhQwIMYVIwaNAaBRGNURA+eBH9PHjyIaNBY+en2c/ZtLf+Ew5eZNzPvm5n35j3OyJuQmp7KYOANMKYZmc5n8Exqax2k88aIP8WQgn2JCUhI2h9BfMJ+cO/fTaO35y9u3/yLvhvrx60bAdzq1dFHem9PAEOPAuBGngFF5wGxFBAsi2FfaV2y3C6SzZIHNDcC3KuXOplHBtzOhQhFdJcDUMRpkn8gCxQrLY7V1k4r0N5ChKMjekaXU9ukQ9vkFObXDusMnj7/jg+fvqFMmWJ+RQxF/FpCrcq2K8sIQ5Ao2CtPodE9znS2SZhD59UfuNP/DVXlv6maObKrKxAGlxNqlfmUSbSWjcJpn69ELFFhLw6yJG7l/zEsJZxZX8sMDhVuOiu5dAIFpmIIhV/0PYK6VssLsi44Ix0qi3EWf4X5wAnY8j+zC1k34VpYveVVCSmrMLeYiCrRLkfWYJ9lUmFYT4Wky9KS0ZD0ytyueelx6fY1CFXI2rCeewjfydNwCNpZBvUE2ddh5ZORm2yE/fBh5B3kUXgoEXJWNyPVpmABYYgItWqCjFDJH0X5GS9keh1KmFDMGUDhkXxk8jYUHbMiN8OOc+nnIWT3s9sXIoQvQ/QetZEgUgdBnIOTCCrEMXRYJJZAFvQbdsvhdsNSa9ktqWxfpOWRZ0FYCiZo7iYhWklaA/BQq6JtHDn5TXCW/IGbzSZdhH0mDKrcFoSj5CfF/2J+wRJEW7NKn8PHJ5Ae7ELF4B5ceLwDil8h4lmYpSLE+DjsLcui6lR42CcQCkMb9GmU3T0KV4+ZulIh0atqbw2Be/uiG02FUWi1bYNfjEVz8XbUn4lHy9mdqM/dDSknBk2ZKbiceRxNZhMumzNIP4EGcxI6hBhcKd1GfgMaThlw0+sA9+ZeN7zxG1FzKA6XDFtRY4xDPR+NutRNqE+LZbbG9GjUpm3GRT4KdfwGXMzYgmrjJuarNcShLn0LfMkcrllN4L6MvcZAuwuDXZUY7ionVGLQX4mhjgvMNuCvwJDfi+HOGrJXkZ30rmqmD3eG4zt9GGj14PX9a/gH3lBSJiy74N8AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;mario&quot;
+        title=&quot;&quot;
+        src=&quot;/static/22305492b67e7dfe7d27801ca0ec182e/1d69c/mario.png&quot;
+        srcset=&quot;/static/22305492b67e7dfe7d27801ca0ec182e/4dcb9/mario.png 188w,
+/static/22305492b67e7dfe7d27801ca0ec182e/5ff7e/mario.png 375w,
+/static/22305492b67e7dfe7d27801ca0ec182e/1d69c/mario.png 750w,
+/static/22305492b67e7dfe7d27801ca0ec182e/78797/mario.png 1125w,
+/static/22305492b67e7dfe7d27801ca0ec182e/aa440/mario.png 1500w,
+/static/22305492b67e7dfe7d27801ca0ec182e/3faba/mario.png 1625w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Before we begin - lets take a look at some of the &lt;em&gt;disadvantages&lt;/em&gt; of SAS-Streamed apps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Performance.  Because every asset is served from the SAS folder tree (App Server), response times are slow.  However, assets are also cached so subsequent requests are fast.&lt;/li&gt;
+&lt;li&gt;Complexity.  In order to ‘convert’ a regular app into a streamed app, there is a compilation process.  It works well but it’s not 100% perfect (yet).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The main reasons for using this approach would be:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You don’t have web server access&lt;/li&gt;
+&lt;li&gt;You would like to create apps that can be &lt;em&gt;very&lt;/em&gt; easily deployed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Right - lets get started!&lt;/p&gt;
+&lt;p&gt;## Prerequisites&lt;/p&gt;
+&lt;p&gt;Our demo will make use of the tools below - these need to be installed locally (on your desktop / laptop).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://sasjs.io/windows/#git&quot;&gt;GIT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The &lt;a href=&quot;https://cli.sasjs.io/installation&quot;&gt;SASjs CLI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://sasjs.io/windows/#vscode&quot;&gt;VS Code&lt;/a&gt; (optional - but recommended)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Setup&lt;/h2&gt;
+&lt;p&gt;The first thing to do is clone the &lt;a href=&quot;https://github.com/sasjs/mario&quot;&gt;example project&lt;/a&gt; from github, as follows:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;git clone git@github.com:sasjs/mario.git
+cd mario&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The next step is configuration.  This is always found in the &lt;code class=&quot;language-text&quot;&gt;sasjs/sasjsconfig.json&lt;/code&gt; file.  The following items should be changed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;defaultTarget&lt;/code&gt; - either “sas9” or “viya” depending on your SAS server type&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;appLoc&lt;/code&gt; - for your chosen target (sas9 or viya), this represents the &lt;em&gt;root&lt;/em&gt; folder to which the app is deployed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Compilation&lt;/h2&gt;
+&lt;p&gt;Compilation is the process of taking all the source files (ie your web frontend, and any SAS-powered web services) and preparing them for deployment.  For SAS 9, all content is served through self-contained Stored Processes - so any binary content must be base-64 encoded.  Also, prior to the build for both Viya and SAS 9, all file references (eg to images, css, js etc) must be converted from relative paths, to fully qualified paths - ie to the relevant location in the SAS logical folder tree.&lt;/p&gt;
+&lt;p&gt;Fortunately you don’t have to do any of this!  It can be achieved with a single command:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;sasjs compile&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The exact settings for this process (source / target folder path, index.html rename, etc) can all be adjusted.  More information &lt;a href=&quot;https://sasjs.io/frontend-deployment/#streaming-app-configuration&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For the Mario game you can see all the files under the &lt;code class=&quot;language-text&quot;&gt;src&lt;/code&gt; folder.  If you are building your own streamed app, you’d place your own content in this folder instead.  Ensure all file paths are relative, all web content is in the same folder, and that your app starts from a file called &lt;code class=&quot;language-text&quot;&gt;index.html&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Build&lt;/h2&gt;
+&lt;p&gt;The build part involves taking all the compiled assets and preparing a single file for deployment.  Two file types are always prepared:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JSON - used in Viya for deployment with REST APIs (client/secret required)&lt;/li&gt;
+&lt;li&gt;SAS - can be executed in both SAS 9 and Viya&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The great thing about the generated SAS program is that it can be executed by ANY user of SAS to create the app.  To adjust the target location, simply configure the &lt;code class=&quot;language-text&quot;&gt;appLoc&lt;/code&gt; macro variable at the start of the program, eg:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sas&quot;&gt;&lt;pre class=&quot;language-sas&quot;&gt;&lt;code class=&quot;language-sas&quot;&gt;&lt;span class=&quot;token macro-keyword keyword&quot;&gt;%let&lt;/span&gt; apploc&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;folder&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;location&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;app&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;my_amazing_app&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This does require that you have the “write” permissions on the target folder.&lt;/p&gt;
+&lt;h2&gt;Deploy&lt;/h2&gt;
+&lt;p&gt;For manual deployment, you can just execute the aforementioned SAS program from &lt;code class=&quot;language-text&quot;&gt;sasjs build&lt;/code&gt; by copy pasting into SAS Studio or Enterprise Guide.  For automated deployment, authentication is required.  For this, simply run the below and follow the prompts:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;sasjs auth&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you are deploying to Viya, you will need a Client and Secret.  If you are deploying to SAS 9, you will need a runner in your home folder.  If you’d like to use SAS encoded passwords, there is also a server change required.  For more information, see docs for &lt;a href=&quot;https://cli.sasjs.io/auth&quot;&gt;sasjs auth&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Once you’re authenticated, you’re ready to auto-deploy!&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;sasjs deploy&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When the &lt;code class=&quot;language-text&quot;&gt;deployServicePack&lt;/code&gt; attribute in the &lt;code class=&quot;language-text&quot;&gt;sasjsconfig.json&lt;/code&gt; file is &lt;code class=&quot;language-text&quot;&gt;true&lt;/code&gt;, the above command will deploy all the services using either the JSON file (if Viya) or the SAS program (if SAS 9).&lt;/p&gt;
+&lt;p&gt;The URL for the app will also be printed to the console window.&lt;/p&gt;
+&lt;h2&gt;Video Walkthrough&lt;/h2&gt;
+&lt;p&gt;If you’d like to see this app deployed to both SAS 9 and Viya in just 5 minutes, check out the video below!&lt;/p&gt;
+&lt;p&gt;&lt;div class=&quot;gatsby-resp-iframe-wrapper&quot; style=&quot;padding-bottom: 56.53333333333334%; position: relative; height: 0; overflow: hidden; margin-bottom: 1.0725rem&quot; &gt; &lt;div class=&quot;embedVideo-container&quot;&gt; &lt;iframe title=&quot;&quot; src=&quot;https://www.youtube.com/embed/y03eACD-XhU?rel=0&quot; class=&quot;embedVideo-iframe&quot; style=&quot;border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; &quot; loading=&quot;eager&quot; allowfullscreen=&quot;&quot; sandbox=&quot;allow-same-origin allow-scripts allow-popups&quot;&gt;&lt;/iframe&gt; &lt;/div&gt; &lt;/div&gt;&lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;In this walkthrough we installed some prerequisites, cloned an open source GIT repo, and deployed to our SAS server.  The compile/build/deploy process will work for almost any SAS app, and is optimised for macro-driven SAS web services also.&lt;/p&gt;
+&lt;p&gt;If you’d like to support building web apps on SAS, and especially if you’d like to partner with us on a project to deliver apps on SAS, do &lt;a href=&quot;/contact&quot;&gt;get in touch&lt;/a&gt;!&lt;/p&gt;</content:encoded></item><item><title><![CDATA[GIT + SAS]]></title><description><![CDATA[Using GIT Workflows when building apps with SAS]]></description><link>https://sasapps.io/using-git-with-sas</link><guid isPermaLink="false">https://sasapps.io/using-git-with-sas</guid><category><![CDATA[SAS]]></category><category><![CDATA[GIT]]></category><category><![CDATA[SASjs]]></category><pubDate>Fri, 19 Feb 2021 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Since 9.4m6 there are GIT functions in SAS, with further integration in DI Studio and SAS StudioV.&lt;/p&gt;
+&lt;p&gt;These all solve particular use cases, but perhaps not the most compelling one - how do I, as a SAS developer, collaborate with my team mates so that I can build my feature branch, test it, make a pull request, have it reviewed, run it automatically on merge to development, and onwards to the production branch?&lt;/p&gt;
+&lt;p&gt;The answer is - the same way as every other language.&lt;/p&gt;
+&lt;p&gt;Develop LOCALLY and execute (test) in the appropriate runtime (eg, the SAS server).&lt;/p&gt;
+&lt;p&gt;“That’s great Allan,” I hear you say, “but - how am I supposed to do all that? I don’t want to import or copy paste all my files up to SAS each time I add back a missing semicolon”&lt;/p&gt;
+&lt;p&gt;We know - we built &lt;a href=&quot;https://datacontroller.io&quot;&gt;Data Controller for SAS®&lt;/a&gt; with 51 macros, 39 backend services, and deploy once to SAS 9 and 3 times to SAS Viya with every merge.&lt;/p&gt;
+&lt;p&gt;How?&lt;/p&gt;
+&lt;p&gt;Using SASjs.&lt;/p&gt;
+&lt;p&gt;With this framework you can enjoy all the flexibility of a modern IDE such as VS Code, and the raw execution grunt of a high powered SAS server with a few simple commands:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;sasjs create yourProject &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;jobs&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;# create a project&lt;/span&gt;
+sasjs &lt;span class=&quot;token function&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;# add deployment target&lt;/span&gt;
+sasjs cbd &lt;span class=&quot;token parameter variable&quot;&gt;-t&lt;/span&gt; yourTarget &lt;span class=&quot;token comment&quot;&gt;# compile, build &amp;amp; deploy to Viya or SAS 9&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you don’t want to wait for your entire project to build &amp;#x26; deploy each time, you can compile and &lt;code class=&quot;language-text&quot;&gt;sasjs run&lt;/code&gt; individual jobs, or use the SASjs &lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=SASjs.sasjs-for-vscode&quot;&gt;VS Code Plugin&lt;/a&gt; to execute code.&lt;/p&gt;
+&lt;p&gt;Once your code is tested and ready you can commit (ideally using the &lt;a href=&quot;https://www.conventionalcommits.org/en/v1.0.0/&quot;&gt;conventional commit&lt;/a&gt; standard), push, and have your pull request reviewed following standard GIT workflow practices.&lt;/p&gt;
+&lt;p&gt;Docs: &lt;a href=&quot;https://cli.sasjs.io&quot;&gt;https://cli.sasjs.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;¬&lt;a href=&quot;https://i.imgur.com/gIYp5OG.png&quot;&gt;&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SASjs Workshops]]></title><description><![CDATA[Learn to rapidly build and deploy SAS-Powered Web Applications on both SAS 9 and Viya using the SASjs framework]]></description><link>https://sasapps.io/sasjs-workshops</link><guid isPermaLink="false">https://sasapps.io/sasjs-workshops</guid><category><![CDATA[SAS]]></category><pubDate>Mon, 14 Sep 2020 09:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;SAS is a fantastic platform for enterprise app development, due to a number of features that SAS delivers “out of the box”:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Web Server (Apache on Viya)&lt;/li&gt;
+&lt;li&gt;App Server (STP or Compute)&lt;/li&gt;
+&lt;li&gt;Integrated Authentication (eg LDAP)&lt;/li&gt;
+&lt;li&gt;Enterprise grade security&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In summary - to build an app on a default SAS installation, you can just start coding. There is nothing more to provision!&lt;/p&gt;
+&lt;p&gt;The caveat - there are a few things to consider if you’d like to build something that’s automated, maintainable, and scalable. For instance:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;How will you deploy your services?&lt;/li&gt;
+&lt;li&gt;How can you avoid a file system dependency?&lt;/li&gt;
+&lt;li&gt;Is there a code injection risk?&lt;/li&gt;
+&lt;li&gt;Avoiding “spaghetti code” and put statements&lt;/li&gt;
+&lt;li&gt;Numerical Precision and Special Characters&lt;/li&gt;
+&lt;li&gt;What if you don’t have access to the web server?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To address these points, and many more, we built &lt;a href=&quot;https://sasjs.io&quot;&gt;SASjs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 240px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 50%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAAsTAAALEwEAmpwYAAABlklEQVR42mNQVVVVU1NTUVFhZmZmQAKMIABiiIkyOdmzKikwMWACDg4OTjBgYgJJS0pKRkVFCQoKSkhICAnxA0UCfdk6GrmSYthtLFmBXCZshjBANDs6Ovb19bGwsNTU1MTHJwBFygt5nB1YI0PZU1M4gFwWZmyaIa4E2pyRkVFWVrZ+/ZoZM5ZkpXAV53CEBLE31XFJSzKBlWHTCbFZU1MzMTExPj7e3NzUwdG7MEc1JIAxN53TSB/iZpAyRnh4AAEkqOD62cAA6HKgGDMzo6Mtm54O0MGMEJWMyFYDNXh4eFhYWHh6empoaCgrKzs7O7u6uoaEhBgbG8vISElJKbm4Bvl4+4uLS+jq6rq5udnb22tra0NNkZaWlpeXV1BQAAYyNzc3kA10vK2tjYGBsbg4j5W5sIuTclCAsaioKA8Pj6mpqYmJCVALI6bvgUJ6enrAMLewMLezc1ZVZivMZivKZgkPAvmIn59fXFwcaAowIuXk5ODpAREGEI8BATs7OzAQODkYOTmBbJAsLy+vpKQU0P0QBAB4KD55NeJEcwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;SASjs&quot;
+        title=&quot;&quot;
+        src=&quot;/static/b0875b4e990aaefd7647b515c392a871/8ff5a/sasjs_240x120.png&quot;
+        srcset=&quot;/static/b0875b4e990aaefd7647b515c392a871/4dcb9/sasjs_240x120.png 188w,
+/static/b0875b4e990aaefd7647b515c392a871/8ff5a/sasjs_240x120.png 240w&quot;
+        sizes=&quot;(max-width: 240px) 100vw, 240px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;Background&lt;/h2&gt;
+&lt;p&gt;Launched in early 2020, the SASjs framework provides a set of tools that can be used either individually (for particular use cases) or together - for maximum scale and performance when it comes to building &amp;#x26; deploying SAS-Powered Web Applications.&lt;/p&gt;
+&lt;p&gt;All the code is MIT open-source (free for commercial use), and is actively maintained by the &lt;a href=&quot;https://sasapps.io/about&quot;&gt;SAS Apps Team&lt;/a&gt;. It powers commercial apps such as &lt;a href=&quot;https://datacontroller.io&quot;&gt;Data Controller for SAS&lt;/a&gt; and hence - heavily tested in real-world, production environments.&lt;/p&gt;
+&lt;h2&gt;Framework&lt;/h2&gt;
+&lt;p&gt;There are three major parts to the framework:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/sasjs/core&quot;&gt;@sasjs/core&lt;/a&gt; - a SAS Macro library for backend SAS Application Developers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/sasjs/adapter&quot;&gt;@sasjs/adapter&lt;/a&gt; - a JavaScript library aimed at frontend web developers&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/sasjs/cli&quot;&gt;@sasjs/cli&lt;/a&gt; - a command line interface providing build and deployment tooling as well as consistent project setup&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Another great thing about the SASjs approach is that anything you build with it on SAS 9 can be &lt;em&gt;easily&lt;/em&gt; ported to SAS Viya. It’s also very FAST. Here’s a demo of building and deploying an app on SAS Viya in just one minute!&lt;/p&gt;
+&lt;div class=&quot;gatsby-resp-iframe-wrapper&quot; style=&quot;padding-bottom: 56.25%; position: relative; height: 0; overflow: hidden; margin-bottom: 1.0725rem&quot; &gt; &lt;iframe src=&quot;https://www.youtube.com/embed/WwGptgvSqSw&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot; style=&quot; position: absolute; top: 0; left: 0; width: 100%; height: 100%; &quot;&gt;&lt;/iframe&gt; &lt;/div&gt;
+&lt;h2&gt;Workshop&lt;/h2&gt;
+&lt;p&gt;We would like to support the SAS community and help more SAS Users build awesome web applications on SAS 9 and Viya. For this reason we are running regular workshops during the rest of 2020.&lt;/p&gt;
+&lt;p&gt;The duration is 1 hour, and will cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;5 mins - get to know attendee objectives&lt;/li&gt;
+&lt;li&gt;15 mins - slides with generic advice for building apps on SAS&lt;/li&gt;
+&lt;li&gt;15 mins - Demo of building / deploying web apps using the framework&lt;/li&gt;
+&lt;li&gt;15 mins - Deep dive into SASjs CLI functionality&lt;/li&gt;
+&lt;li&gt;10 mins - Questions and discussion&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To reserve your spot, visit the SASjs page on linkedin, and select an event from the bottom right hand side of the page.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.linkedin.com/company/sasjs&quot;&gt;https://www.linkedin.com/company/sasjs&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Workshops are open to SAS Partners and Consultants as well as Customers and End Users. Contact &lt;a href=&quot;https://www.linkedin.com/in/allanbowe/&quot;&gt;Allan Bowe&lt;/a&gt; directly if you would like a dedicated internal session (4 or more people).&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Data Controller for SAS® Now Available in the Microsoft Azure Marketplace]]></title><description><![CDATA[Microsoft Azure customers worldwide now gain access to Data Controller for SAS®]]></description><link>https://sasapps.io/datacontroller-on-azure</link><guid isPermaLink="false">https://sasapps.io/datacontroller-on-azure</guid><category><![CDATA[SAS]]></category><category><![CDATA[Microsoft Azure]]></category><category><![CDATA[Data Governance]]></category><pubDate>Mon, 27 Jul 2020 09:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;em&gt;Microsoft Azure customers worldwide now gain access to Data Controller for SAS® to take advantage of the scalability, reliability, and agility of Azure to drive self-serve data management and data governance for regulated business environments.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 750px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 27.659574468085108%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBElEQVR42q2QyU7CUBSGb7m3VTuQ4kCLIwVNJGKlKI2oCxNjSBuMMRHc27Uv4MIX8KE/63XEsHTx5Uw5w3+EEIK/GIYxw09+Pr9rYslTbHVc3JqpC67rIqWcWaCsCou2ZN7yr2HfcacX8fQyZTDawK95ZFlOHMckSUKapkTNFjtdj819j0bb0ewd+0RHVerbtvY7w2XClkMQ2YhRds3z6yP9812qvst4fEOe5xRFwWRyz3TyoJvbic8gD+herNC7WiO+XOWg9E+ygOFtg7O7dZqHVUQQ1Bmc9gnDUJ/sOA6WZaGUwjRNlCxtKXmhlCxNg0ql/OsnUpWxMrTk97z4kC74T94AmmqQ4G42K0EAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;Data Controller&quot;
+        title=&quot;&quot;
+        src=&quot;/static/868097839670d46b3de222aa69cb7fe1/1d69c/datacontroller.png&quot;
+        srcset=&quot;/static/868097839670d46b3de222aa69cb7fe1/4dcb9/datacontroller.png 188w,
+/static/868097839670d46b3de222aa69cb7fe1/5ff7e/datacontroller.png 375w,
+/static/868097839670d46b3de222aa69cb7fe1/1d69c/datacontroller.png 750w,
+/static/868097839670d46b3de222aa69cb7fe1/78797/datacontroller.png 1125w,
+/static/868097839670d46b3de222aa69cb7fe1/aa440/datacontroller.png 1500w,
+/static/868097839670d46b3de222aa69cb7fe1/7de21/datacontroller.png 1839w&quot;
+        sizes=&quot;(max-width: 750px) 100vw, 750px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;London, UK - July 27, 2020&lt;/h2&gt;
+&lt;p&gt;Analytium Group today announced the availability of Data Controller for SAS® in the Microsoft Azure Marketplace, an online store providing applications and services for use on Azure. &lt;a href=&quot;https://datacontroller.io&quot;&gt;Data Controller for SAS&lt;/a&gt; is an enterprise data governance and data workflow solution, maintained by Analytium Group, specialists in analytics and data-driven app development. Analytium Group customers can now take advantage of the productive and trusted Azure cloud platform, with streamlined deployment and management.&lt;/p&gt;
+&lt;h2&gt;Why Data Controller?&lt;/h2&gt;
+&lt;p&gt;With data arriving from all directions in a fast-moving business environment, it’s not always practical (or possible) to build automated, real-time processes for loading data into secure SAS environments. Data Controller for SAS enables business users in regulated cloud environments to self-serve their data uploads, and make safe and controlled updates to target tables with full data quality, approval step, and audit trail along the way.&lt;/p&gt;
+&lt;p&gt;Data Controller for SAS® has a web-based interface that allows nominated data owners to review all manual changes to data before they are applied, to maintain their data dictionary, and to set up data alerts and workflows. Other features include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Catalog&lt;/li&gt;
+&lt;li&gt;Data Lineage&lt;/li&gt;
+&lt;li&gt;Data Alerts&lt;/li&gt;
+&lt;li&gt;DDL Export&lt;/li&gt;
+&lt;li&gt;Data Quality Rules&lt;/li&gt;
+&lt;li&gt;Excel / CSV Uploads&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Data Controller leverages the access engines of SAS to provide native engine support, such as MS SQL Server, as well as regular SAS datasets and SAS Viya in-memory CAS Tables.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&quot;gatsby-resp-iframe-wrapper&quot; style=&quot;padding-bottom: 56.53333333333334%; position: relative; height: 0; overflow: hidden; margin-bottom: 1.0725rem&quot; &gt; &lt;div class=&quot;embedVideo-container&quot;&gt; &lt;iframe title=&quot;&quot; src=&quot;https://player.vimeo.com/video/277472582&quot; class=&quot;embedVideo-iframe&quot; style=&quot;border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; &quot; loading=&quot;eager&quot; allowfullscreen=&quot;&quot; sandbox=&quot;allow-same-origin allow-scripts allow-popups&quot;&gt;&lt;/iframe&gt; &lt;/div&gt; &lt;/div&gt;&lt;/p&gt;
+&lt;h2&gt;Data Controller on Azure&lt;/h2&gt;
+&lt;p&gt;By running Data Controller for SAS® on Azure, it is easier for users to get started and deploy due to the power of the combined technologies providing even greater flexibility and scalability.&lt;/p&gt;
+&lt;p&gt;“We are excited to be both a SAS and a Microsoft partner and to help business users self-manage their cloud-based reference data” stated &lt;a rel=&quot;me&quot; href=&quot;https://social.4gl.io/@allan&quot;&gt;Allan Bowe&lt;/a&gt;, Head of SAS Apps at Analytium Group.&lt;/p&gt;
+&lt;p&gt;“Through Microsoft Azure Marketplace, customers around the world can easily find, buy, and deploy partner solutions they can trust, all certified and optimized to run on Azure,” said Sajan Parihar, Senior Director, Microsoft Azure Platform at Microsoft Corp. “We’re happy to welcome Analytium Group’s solution to the growing Azure Marketplace ecosystem.”&lt;/p&gt;
+&lt;p&gt;The Azure Marketplace is an online market for buying and selling cloud solutions certified to run on Azure. The Azure Marketplace helps connect companies seeking innovative, cloud-based solutions with partners who have developed solutions that are ready to use.&lt;/p&gt;
+&lt;p&gt;Learn more about Data Controller for SAS at its &lt;a href=&quot;https://azuremarketplace.microsoft.com/en-us/marketplace/apps/analytiumltd1582389146376.datacontrollerforsas?ocid=GTMRewards_PR_datacontrollerforsas_138d&quot;&gt;page&lt;/a&gt; in the Azure Marketplace.&lt;/p&gt;
+&lt;h2&gt;About Analytium Group&lt;/h2&gt;
+&lt;p&gt;Analytium Group works with leaders in the analytics industry, offering customer service that combines industry-leading technologies, proprietary products and open source technologies to create unique solutions on the SAS platform. Analytium Group’s expertise and agility helps clients to grow and be successful with their analytical goals and aspirations.&lt;/p&gt;
+&lt;p&gt;For more information, press only:&lt;/p&gt;
+&lt;address&gt;
+  &lt;a href=&quot;mailto:contact@analytium.co.uk&quot;&gt;contact@analytium.co.uk&lt;/a&gt;&lt;br&gt;
+  &lt;a href=&quot;tel:+442039949849&quot;&gt;+44 (0) 203 9949 849&lt;/a&gt;&lt;br&gt;
+  📮 86-90 4th Floor, Paul Street, London, EC2A 4NE
+&lt;/address&gt;</content:encoded></item><item><title><![CDATA[Modernising Legacy SAS SCL / AF Applications]]></title><description><![CDATA[Modernise legacy AF/SCL desktop applications into modern SAS-Powered HTML5 Web Applications with 4GL Ltd]]></description><link>https://sasapps.io/modernising-legacy-sas-scl-af-applications</link><guid isPermaLink="false">https://sasapps.io/modernising-legacy-sas-scl-af-applications</guid><category><![CDATA[SAS]]></category><category><![CDATA[AF/SCL]]></category><pubDate>Fri, 17 Jul 2020 17:29:47 GMT</pubDate><content:encoded>&lt;p&gt;Before SAS Studio, and even EG (but after display manager), there was a desktop application used exclusively for accessing SAS. It was known as Base SAS, and within it there was an application development facility known as SAS/AF.&lt;/p&gt;
+&lt;p&gt;This enabled point and click development of user interfaces, in a similar way to User Forms in VBA Excel. The application logic was driven by an object-orientated language known as SCL. SCL code was compiled, saved in catalogs, and the resulting application was often stored on a network drive and launched by end users.&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 664px; margin-bottom: 1.0725rem;&quot;
+    &gt;
+      &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 73.40425531914893%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAIAAABr+ngCAAAACXBIWXMAAXcAAAF3AAHmAuEvAAACi0lEQVR42mWSaW/aQBiE+f9Spaa/oVI/VGrVNK1SyMEVDAQDxifGxvdtbOxdH+CrS2iTplmNVq9W+8ysxm4tmM3DbDVe0GOC6c/IAU4NF8xwyQ8JHqOkES11iW2XlAaMNmAN1Qubpqnqqm5qpNZaMa/H5D0h3Mz5CSu38U17xqGTu8Xmarjozjk3jIIImH641l0/Aq9gybAn+HyxokhB+THlPvyY383oKb7QvdDehUuaK8sKAXGa07IN0vQJrv/AquWsVgTLMqqmjxj14vt0Sm84jtvD5FCUW1ktqvIMs5obJ69hzXY5lqYpUtP1Eau+v5yMKQSvQ5Ckh6MoK88wozr/w4xifulin++wNs4+MMrF5SNG8izLhSDNjsUJLp+T38Cy5RI0+7hcyZaNseq7r9iY5GmGCeIEwYIkvzz7bbKgmX1sOsGXc2bTp6RPPRJntzS39iO4h+lGUpFFWdcBTEUTnSV105RVXdYVMm3ZQYxqXBv+fC0rtr9PMpAfo/Swhxl6+WmHaZRkhh/uongPIEqua9Q/MmlaMD8go6IsYghiEHGq+7G3+obzPwn5mtI6jPGLNjqs3Re8ruDfrt2eEPTEsEOqVxOmleR5lCDv1A1CLwhwir267ZG8gAZRt3UvEHUL9bI1HEE1dzCL8jLMCpgfu4TQav6u9OkHkFWt3W5rqiJLW8c2AYiOhzzPsixN8iytyrIoisMhP910wta5NyQAAbqy2cqDEeb5nizLoijqhu44jmmZmq5ZthXuQ3/noyFLUyuIX+DqVEODvk3n5sZzHJQMIUBpSQKRIADnASmO4yyFyr/JZ1h3d5f92QMpjqgtLphz0dC8vRkAcxcjGUFsBrGxi60A3C/531Z7LDCxkZ/0AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;SAS AF SCL&quot;
+        title=&quot;&quot;
+        src=&quot;/static/48967c26cb67d4a943c48b5ba875b84c/31493/sas_scl.png&quot;
+        srcset=&quot;/static/48967c26cb67d4a943c48b5ba875b84c/4dcb9/sas_scl.png 188w,
+/static/48967c26cb67d4a943c48b5ba875b84c/5ff7e/sas_scl.png 375w,
+/static/48967c26cb67d4a943c48b5ba875b84c/31493/sas_scl.png 664w&quot;
+        sizes=&quot;(max-width: 664px) 100vw, 664px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;Legacy SAS/AF SCL Apps&lt;/h2&gt;
+&lt;p&gt;It’s fair to say these applications were a massive success, as many of them are still alive today - surviving decades of technological evolution! Still, as organisations have matured, the following challenges transpired:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Security&lt;/strong&gt;. Especially of source files, and password management.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scalability&lt;/strong&gt;. Deploying SCL apps to each client machine is non-trivial.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Support&lt;/strong&gt;. The original developers are usually long gone, and SCL resources are few and far between.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;User Experience&lt;/strong&gt;. This was an 80s product and.. it shows.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, what to do about it? These applications are often complex, business critical, and heavily embedded in the SAS infrastructure. Well, as it happens, there is a tidy solution, quick to implement, and keeps everything within SAS. So what is it?&lt;/p&gt;
+&lt;h2&gt;HTML5 SAS Web Apps&lt;/h2&gt;
+&lt;p&gt;Web apps are a natural migration for legacy AF. Secured by your existing enterprise authorisation mechanism (SASLogon), they are highly scalable, easy to support, quick to build, and very user friendly.&lt;/p&gt;
+&lt;p&gt;When building web apps on SAS, it’s super important to separate the frontend logic (the domain of a web developer) from the backend (idempotent, stateless SAS programs). A typical modernisation project will begin by creating UX diagrams, wireframes, and screenshots to mockup the visuals and diagramming the application logic. This means that the gory details of the AF part, ie all the &lt;code class=&quot;language-text&quot;&gt;call display()&lt;/code&gt; and &lt;code class=&quot;language-text&quot;&gt;call next()&lt;/code&gt; routines (and associated catalog entries) are effectively disregarded, and completely rebuilt using modern design methods and javascript frameworks.&lt;/p&gt;
+&lt;p&gt;But what about the data logic? All the SLISTS, SCL programs, subroutines and methods? The good news is that &lt;strong&gt;much of this can be re-used&lt;/strong&gt;. The fact is that SCL is based on, and works very similarly to, good old base SAS. This led to the development of the SCL Transcoding Kit, a framework / approach that lets you migrate SCL entries directly over to SAS (eg to run in a SAS 9 Stored Process or Job Execution Service on Viya), without the need for an AF License.&lt;/p&gt;
+&lt;h2&gt;Running SCL in SAS Studio&lt;/h2&gt;
+&lt;p&gt;&lt;div class=&quot;gatsby-resp-iframe-wrapper&quot; style=&quot;padding-bottom: 56.53333333333334%; position: relative; height: 0; overflow: hidden; margin-bottom: 1.0725rem&quot; &gt; &lt;div class=&quot;embedVideo-container&quot;&gt; &lt;iframe title=&quot;&quot; src=&quot;https://player.vimeo.com/video/367240430&quot; class=&quot;embedVideo-iframe&quot; style=&quot;border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; &quot; loading=&quot;eager&quot; allowfullscreen=&quot;&quot; sandbox=&quot;allow-same-origin allow-scripts allow-popups&quot;&gt;&lt;/iframe&gt; &lt;/div&gt; &lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;The full list of supported functions includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;clearlist()&lt;/code&gt; Empty a list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;copylist()&lt;/code&gt; Copy a list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;delitem()&lt;/code&gt; Deletes an item from an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;dellist()&lt;/code&gt; Deletes a list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;delnitem()&lt;/code&gt; Deletes a named item from an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;format()&lt;/code&gt; Verifies that the specified format is valid&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;getitemc()&lt;/code&gt; Returns a value identified by its position in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;getiteml()&lt;/code&gt; Returns a value identified by its position in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;getitemn()&lt;/code&gt; Returns a value identified by its position in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;getnitemc()&lt;/code&gt; Return a value identified by name in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;getniteml()&lt;/code&gt; Return a value identified by name in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;getnitemn()&lt;/code&gt; Return a value identified by name in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;insertc()&lt;/code&gt; Insert a value into an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;insertl()&lt;/code&gt; Insert a value into an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;insertn()&lt;/code&gt; Insert a value into an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;itemtype()&lt;/code&gt; Returns the type of an item in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;listlen()&lt;/code&gt; Returns the length of an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;lvarlevel()&lt;/code&gt; Fills a list with unique values from a table column&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;makelist()&lt;/code&gt; Creates an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;nameditem()&lt;/code&gt; Returns the index of a named item in a list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;nameitem()&lt;/code&gt; Returns the name of an item in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;putlist()&lt;/code&gt; Displays the contents of an SCL list in the LOG window&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;savelist()&lt;/code&gt; Stores SCL list items in a dataset&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;searchc()&lt;/code&gt; Search for a value in an SCL list and return its position&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;searchn()&lt;/code&gt; Search for a value in an SCL list and return its position&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;setitemc()&lt;/code&gt; Store a value at an indexed position in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;setitemn()&lt;/code&gt; Store a value at an indexed position in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;setnitemc()&lt;/code&gt; Assign a value to a named item in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;setniteml()&lt;/code&gt; Assign a value to a named item in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;setnitemn()&lt;/code&gt; Assign a value to a named item in an SCL list&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;sortlist()&lt;/code&gt; Sorts the items in an SCL list by value or by name&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Other than the &lt;code class=&quot;language-text&quot;&gt;fcmp&lt;/code&gt; library (referenced in the video above), this kit also lays out the process for exporting all the lists into a database, handling methods (with overloadable signatures), and migrating SCL entries into SAS code (hence, eradicating the use of catalogs).&lt;/p&gt;
+&lt;p&gt;Do you have legacy AF / SCL you’d like modernised? We’d love to help. Do &lt;a href=&quot;https://sasapps.io/contact-us&quot;&gt;get in touch&lt;/a&gt; for a no-obligation chat.&lt;/p&gt;
+&lt;h2&gt;Additional resources&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;LinkedIn &lt;a href=&quot;https://www.linkedin.com/pulse/easy-af-scl-modernisation-html5-sas-allan-bowe&quot;&gt;Article&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SAS AF/SCL &lt;a href=&quot;https://slides.sasjs.io/af-scl/&quot;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SAS UK Forum &lt;a href=&quot;https://drive.google.com/file/d/1RMLxFccaXYh35IGnbcFjISFmZUIdetUO/view&quot;&gt;presentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Info on &lt;a href=&quot;https://www.rawsas.com/slists-scl-lists-an-overview&quot;&gt;SLISTS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item></channel></rss>
