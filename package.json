@@ -60,7 +60,6 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "font-awesome": "^4.7.0",
     "gh-pages": "^6.3.0",
-    "husky": "^9.1.4",
     "jquery": "^3.7.1",
     "lint-staged": "^15.2.7",
     "modern-normalize": "^2.0.0",
@@ -85,11 +84,6 @@
     "*.md": [
       "npm run lint:textfix"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "overrides": {
     "graphql": "^16.7.1",
