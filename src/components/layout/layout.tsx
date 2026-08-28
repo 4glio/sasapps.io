@@ -44,7 +44,7 @@ const Layout: React.FC<Props> = ({ children, location }: Props) => {
   })
 
   return (
-    <div>
+    <div className="site-wrapper">
       <div className="header">
         {/*<Topbar />*/}
         <Navibar title={siteMetadata.title} location={location} />

@@ -11,4 +11,10 @@ body {
 .body-content {
   z-index: 5;
   box-shadow: 1px 2px 4px rgba(43, 55, 66, 0.2);
+  flex: 1 0 auto;
+}
+.site-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
