@@ -2726,14 +2726,14 @@ export type FeedListQueryQueryVariables = Exact<{
 }>;
 
 
-export type FeedListQueryQuery = { remark: { posts: Array<{ post: { frontmatter?: { title?: string | null, path?: string | null, description?: string | null, date?: any | null } | null } }> } };
+export type FeedListQueryQuery = { remark: { posts: Array<{ post: { frontmatter?: { title?: string | null, path?: string | null, description?: string | null, date?: any | null, featuredImage?: { childImageSharp?: { gatsbyImageData: any } | null } | null } | null } }> } };
 
 export type FeedPostByPathQueryVariables = Exact<{
   path: Scalars['String'];
 }>;
 
 
-export type FeedPostByPathQuery = { post?: { id: string, html?: string | null, frontmatter?: { title?: string | null, path?: string | null, category?: string | null, tags?: Array<string | null> | null, description?: string | null, date?: any | null } | null } | null };
+export type FeedPostByPathQuery = { post?: { id: string, html?: string | null, frontmatter?: { title?: string | null, path?: string | null, category?: string | null, tags?: Array<string | null> | null, description?: string | null, date?: any | null, featuredImage?: { childImageSharp?: { gatsbyImageData: any } | null } | null } | null } | null };
 
 export type MdPageByPathQueryVariables = Exact<{
   path: Scalars['String'];

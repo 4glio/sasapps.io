@@ -1,14 +1,20 @@
 @import 'scss/colors.scss';
 @import 'scss/fonts.scss';
 
+.feed-post-img {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 .feed-list-item {
-  border-bottom: 1px solid $gray-200;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   margin-bottom: 20px;
   padding-bottom: 20px;
 
   .feed-list-title {
     display: block;
-    color: $gray-900;
+    color: $white;
     font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: -0.5px;
@@ -16,25 +22,31 @@
 
     &:hover {
       text-decoration: none;
-      color: $gray-700;
+      color: $yellowGreen;
     }
   }
 
   time {
     font-size: $font-size-xs;
-    color: $gray-500;
+    color: $gray-400;
     display: inline;
     margin-right: 10px;
   }
 
-  p {
-    font-weight: lighter;
-    margin: 10px 0;
+  .feed-list-img {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   .feed-read-more {
     font-size: $font-size-sm;
     font-weight: 500;
+    color: $yellowGreen;
+
+    &:hover {
+      color: $yellowGreen;
+    }
   }
 }
 
@@ -43,22 +55,27 @@
 
   .feed-page-link {
     display: inline-block;
-    border: 1px solid $gray-300;
+    border: 1px solid $gray-400;
     border-radius: 50%;
     padding: 0.375rem 0.75rem;
     margin: 0.25rem;
     font-size: $font-size-sm;
-    color: $gray-700;
+    color: $white;
     text-decoration: none;
 
     &:hover {
-      background-color: $gray-100;
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     &.active {
-      background-color: $gray-800;
-      border-color: $gray-800;
-      color: #fff;
+      background-color: $yellowGreen;
+      border-color: $yellowGreen;
+      color: $white;
     }
+  }
+
+  .feed-pagination-info {
+    color: $gray-400;
+    font-size: $font-size-sm;
   }
 }

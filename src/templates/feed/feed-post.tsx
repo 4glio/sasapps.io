@@ -1,6 +1,7 @@
 import { graphql, Link } from 'gatsby'
 import React from 'react'
 import kebabCase from 'lodash/kebabCase'
+import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import { siteMetadata } from '../../../gatsby-config'
 import Meta from '../../components/meta/meta'
@@ -27,6 +28,9 @@ const FeedPostTemplate: React.FC<Props> = ({
   const title = frontmatter?.title || ''
   const description = frontmatter?.description || ''
   const path = frontmatter?.path || ''
+  const featuredImage = frontmatter?.featuredImage
+    ? getImage(frontmatter.featuredImage)
+    : undefined
 
   const meta = { ...siteMetadata, location }
 
@@ -64,6 +68,11 @@ const FeedPostTemplate: React.FC<Props> = ({
                   </Link>
                 ))}
               </div>
+              {featuredImage && (
+                <div className="feed-post-img">
+                  <GatsbyImage image={featuredImage} alt={title} />
+                </div>
+              )}
               <div
                 className="content"
                 dangerouslySetInnerHTML={{
@@ -94,6 +103,11 @@ export const pageQuery = graphql`
         category
         tags
         description
+        featuredImage {
+          childImageSharp {
+            gatsbyImageData(width: 760)
+          }
+        }
         date(formatString: "YYYY/MM/DD")
       }
     }
