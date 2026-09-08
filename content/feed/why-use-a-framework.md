@@ -13,7 +13,7 @@ tags:
   - Project Management
 ---
 
-![For real?](../assets/why-use-a-framework.jpeg)
+Frameworks are standard practice in every other language, yet plenty of SAS projects are still built without one. Below are the reasons teams adopt a framework, the symptoms that suggest your project is running without one, and - if you're a project manager or sponsor - what you should expect to see in your developers' git repo.
 
 Reasons to use a framework:
 
@@ -41,8 +41,6 @@ As a project manager or sponsor of a SAS project, you should absolutely expect y
 * Updates to tests with every sprint
 * Linting rules / lint fixes
 * CI/CD pipelines
-
-#sasviya #devops #sashackathon
 
 <!--
 LinkedIn version (paste as first comment under the LinkedIn post):
