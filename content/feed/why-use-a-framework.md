@@ -42,16 +42,6 @@ As a project manager or sponsor of a SAS project, you should absolutely expect y
 * Linting rules / lint fixes
 * CI/CD pipelines
 
-If this isn't the case, they're probably building everything manually in SAS Drive / SAS Studio - which is worth a conversation. There are some excellent reasons teams end up there (tooling constraints, legacy process, or simply no framework in place) - and [SASjs](https://sasjs.io) exists precisely so that adopting one is a few commands, not a rewrite:
-
-* [SASjs CLI](https://cli.sasjs.io) - DevOps, Documentation & Testing
-* [SASjs Core](https://core.sasjs.io) - Macros for all flavours of SAS
-* [SASjs Lint](https://cli.sasjs.io/lint) - Quality check your SAS code
-* [SASjs Adapter](https://adapter.sasjs.io) - JS connectivity library
-* [SASjs Server](https://server.sasjs.io) - Build Apps on Base SAS
-
-Plus [Seed Apps](https://cli.sasjs.io/create) to quick start your development journey.
-
 #sasviya #devops #sashackathon
 
 <!--
@@ -83,8 +73,6 @@ As a project manager or sponsor of a SAS project, you should absolutely expect y
 * Updates to tests with every sprint
 * Linting rules / lint fixes
 * CI/CD pipelines
-
-If this isn't the case, they're probably building everything manually in SAS Drive / SAS Studio - which is worth a conversation. There are some excellent reasons teams end up there (tooling constraints, legacy process, or simply no framework in place) - and SASjs exists precisely so that adopting one is a few commands, not a rewrite.
 
 #sasviya #devops #sashackathon
 -->
