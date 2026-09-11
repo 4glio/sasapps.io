@@ -21,7 +21,7 @@ const MarkdownPageTemplate: React.FC<Props> = ({ data, location }: Props) => {
       <Layout location={location}>
         <Meta
           title={title}
-          site={data.site?.meta}
+          site={{ ...(data.site?.meta || {}), location }}
           prependtitle={false}
           customDescription={description}
         />
@@ -43,6 +43,16 @@ export default MarkdownPageTemplate
 
 export const pageQuery = graphql`
   query MDPageByPath($path: String!) {
+    site {
+      meta: siteMetadata {
+        title
+        description
+        siteUrl
+        author
+        twitter
+        adsense
+      }
+    }
     markdownRemark(frontmatter: { path: { eq: $path } }) {
       html
       frontmatter {

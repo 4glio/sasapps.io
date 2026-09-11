@@ -24,6 +24,7 @@ interface Props {
   prependtitle?: boolean
   previewImg?: string
   customDescription?: string
+  publishedTime?: string
 }
 
 const Meta: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const Meta: React.FC<Props> = ({
   prependtitle = true,
   previewImg = '',
   customDescription = '',
+  publishedTime = '',
 }: Props) => {
   const siteTitle = site?.title || ''
   const siteUrl = site?.siteUrl || ''
@@ -87,7 +89,10 @@ const Meta: React.FC<Props> = ({
           content: `${site?.linkedin}`,
         },
         { property: 'og:title', content: pageTitle },
-        { property: 'og:type', content: 'website' },
+        {
+          property: 'og:type',
+          content: publishedTime ? 'article' : 'website',
+        },
         {
           name: 'description',
           property: 'og:description',
@@ -107,6 +112,9 @@ const Meta: React.FC<Props> = ({
           property: 'author',
           content: author,
         },
+        ...(publishedTime
+          ? [{ property: 'article:published_time', content: publishedTime }]
+          : []),
       ]}
     />
   )

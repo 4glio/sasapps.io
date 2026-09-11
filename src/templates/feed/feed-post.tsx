@@ -45,6 +45,7 @@ const FeedPostTemplate: React.FC<Props> = ({
         prependtitle={false}
         previewImg={featuredImgSrc}
         customDescription={description}
+        publishedTime={frontmatter?.isoDate || ''}
       />
       <Breadcrum
         links={[
@@ -61,7 +62,9 @@ const FeedPostTemplate: React.FC<Props> = ({
               <div className="info">
                 <Link style={{ boxShadow: 'none' }} to={path}>
                   <h1>{title}</h1>
-                  <time dateTime={frontmatter?.date}>{frontmatter?.date}</time>
+                  <time dateTime={frontmatter?.isoDate || undefined}>
+                    {frontmatter?.date}
+                  </time>
                 </Link>
                 {frontmatter?.category && (
                   <Badge label={frontmatter.category} primary={true} />
@@ -107,6 +110,7 @@ export const pageQuery = graphql`
         category
         tags
         description
+        isoDate: date
         featuredImage {
           childImageSharp {
             gatsbyImageData(width: 760)
