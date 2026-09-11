@@ -22,7 +22,9 @@ const Post: React.FC<Props> = ({ data }: Props) => {
         <div className="info">
           <Link style={{ boxShadow: 'none' }} to={path}>
             <h1>{frontmatter?.title}</h1>
-            <time dateTime={frontmatter?.date}>{frontmatter?.date}</time>
+            <time dateTime={frontmatter?.isoDate || undefined}>
+              {frontmatter?.date}
+            </time>
           </Link>
           <Badge label={frontmatter?.category || ''} primary={true} />
           {(frontmatter?.tags || []).map((tag, index) => (

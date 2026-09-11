@@ -24,10 +24,11 @@ const Template: React.FC<Props> = ({ data, location }: Props) => {
       <Layout location={location}>
         <Meta
           title={title}
-          site={data.site?.meta}
+          site={{ ...(data.site?.meta || {}), location }}
           prependtitle={false}
           previewImg={featuredImgSrc}
           customDescription={description}
+          publishedTime={data.post?.frontmatter?.isoDate || ''}
         />
         <Breadcrum
           links={[
@@ -72,6 +73,7 @@ export const pageQuery = graphql`
         category
         tags
         description
+        isoDate: date
         date(formatString: "YYYY/MM/DD")
       }
     }
