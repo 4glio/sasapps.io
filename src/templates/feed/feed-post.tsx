@@ -1,7 +1,7 @@
 import { graphql, Link } from 'gatsby'
 import React from 'react'
 import kebabCase from 'lodash/kebabCase'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
+import { GatsbyImage, getImage, getSrc } from 'gatsby-plugin-image'
 
 import { siteMetadata } from '../../../gatsby-config'
 import Meta from '../../components/meta/meta'
@@ -31,6 +31,9 @@ const FeedPostTemplate: React.FC<Props> = ({
   const featuredImage = frontmatter?.featuredImage
     ? getImage(frontmatter.featuredImage)
     : undefined
+  const featuredImgSrc = frontmatter?.featuredImage
+    ? getSrc(frontmatter.featuredImage) || ''
+    : ''
 
   const meta = { ...siteMetadata, location }
 
@@ -40,6 +43,7 @@ const FeedPostTemplate: React.FC<Props> = ({
         title={title}
         site={meta}
         prependtitle={false}
+        previewImg={featuredImgSrc}
         customDescription={description}
       />
       <Breadcrum
