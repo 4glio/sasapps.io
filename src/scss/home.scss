@@ -19,6 +19,30 @@
     margin-bottom: 35px;
     line-height: 1.2;
   }
+  .ce-badge {
+    display: block;
+    width: fit-content;
+    margin: 0 0 30px;
+    padding: 8px 18px;
+    border: 1px solid $yellowGreen;
+    border-radius: 21px;
+    color: $white;
+    font-size: 16px;
+    &:visited {
+      color: $white;
+    }
+    &:hover {
+      background: $yellowGreen;
+      color: $darkJungleGreen;
+    }
+    .fa {
+      margin-right: 8px;
+      color: $yellowGreen;
+    }
+    &:hover .fa {
+      color: $darkJungleGreen;
+    }
+  }
   @include media-breakpoint-up(sm) {
     h4 {
       font-size: 48px;

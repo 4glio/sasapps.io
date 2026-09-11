@@ -37,6 +37,10 @@ const Home: React.FC<Props> = ({ data, location }: Props) => {
             can either maintain yourselves, or allow us to continue to support
             with a transparent range of support packages.
           </p>
+          <a className="ce-badge" href="/cyber-essentials-certified/">
+            <i aria-hidden="true" className="fa fa-shield" />
+            Cyber Essentials Certified
+          </a>
           <LinkButton path={'/products'} label="Our Products" active />
           <br />
           <br />
