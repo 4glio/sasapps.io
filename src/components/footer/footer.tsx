@@ -21,8 +21,6 @@ const Footer: React.FC = () => (
       </p>
       <p>
         <a href="/cyber-essentials-certified/">Cyber Essentials Certified</a>
-        {' - '}
-        <a href="/cyber-essentials.pdf">view certificate</a>
       </p>
     </div>
   </div>
