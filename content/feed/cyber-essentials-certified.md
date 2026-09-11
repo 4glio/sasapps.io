@@ -32,7 +32,7 @@ Our assessment covered the whole organisation - staff devices, cloud accounts, a
 
 ## How we go further to protect client data
 
-Certification sets a baseline, and some of our day-to-day practices go beyond it:
+Certification sets a baseline, and many of our day-to-day practices go beyond it:
 
 * **KasmVNC remote desktops.** Much of the work that touches client environments happens inside centrally managed, containerised remote desktops rather than on personal laptops. Nothing persists locally, sessions can be audited, and access can be revoked centrally.
 * **No phone numbers.** We do not hold or publish a phone number - SMS is notoriously insecure for MFA (SIM swapping, interception, SS7 flaws), so our authentication uses authenticator apps and hardware keys instead, and there is no voice channel to social-engineer.
@@ -64,7 +64,7 @@ The scheme covers five technical controls:
 
 Our thanks go to John McMullan, Cyber Essentials assessor from Juno Information Security Ltd, who conducted the assessment - a pleasure to work with from start to finish.
 
-Certification sets a baseline, and some of our day-to-day practices go beyond it:
+Certification sets a baseline, and many of our day-to-day practices go beyond it:
 * KasmVNC remote desktops - work that touches client environments happens inside centrally managed, containerised remote desktops rather than on personal laptops. Nothing persists locally, sessions can be audited, access can be revoked centrally.
 * No phone numbers - we do not hold or publish a phone number. SMS is notoriously insecure for MFA (SIM swapping, interception, SS7 flaws), so our authentication uses authenticator apps and hardware keys instead, and there is no voice channel to social-engineer.
 * Managed Qubes isolation - staff machines run isolated, managed Qubes VMs, so client work is compartmentalised away from the host OS and from other engagements.
