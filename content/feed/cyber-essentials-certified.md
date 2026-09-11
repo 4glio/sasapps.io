@@ -35,6 +35,7 @@ Our assessment covered the whole organisation - staff devices, cloud accounts, a
 Certification sets a baseline, and some of our day-to-day practices go beyond it:
 
 * **KasmVNC remote desktops.** Much of the work that touches client environments happens inside centrally managed, containerised remote desktops rather than on personal laptops. Nothing persists locally, sessions can be audited, and access can be revoked centrally.
+* **No phone numbers.** We do not hold or publish a phone number - SMS is notoriously insecure for MFA (SIM swapping, interception, SS7 flaws), so our authentication uses authenticator apps and hardware keys instead, and there is no voice channel to social-engineer.
 * **Managed Qubes isolation.** Staff machines run isolated, managed Qubes VMs, so client work is compartmentalised away from the host OS and from other engagements.
 
 These choices make a real difference on the projects we run - the same discipline we apply to our own estate is what we bring to customer deployments, whether that is hardening SASjs Server installations, locking down Viya configurations or building access controls into the apps themselves.
@@ -63,6 +64,7 @@ The scheme covers five technical controls:
 
 Certification sets a baseline, and some of our day-to-day practices go beyond it:
 * KasmVNC remote desktops - work that touches client environments happens inside centrally managed, containerised remote desktops rather than on personal laptops. Nothing persists locally, sessions can be audited, access can be revoked centrally.
+* No phone numbers - we do not hold or publish a phone number. SMS is notoriously insecure for MFA (SIM swapping, interception, SS7 flaws), so our authentication uses authenticator apps and hardware keys instead, and there is no voice channel to social-engineer.
 * Managed Qubes isolation - staff machines run isolated, managed Qubes VMs, so client work is compartmentalised away from the host OS and from other engagements.
 
 And we are not stopping there - we are now working towards ISO 27001, building out a full information security management system to cover risk management, supplier assurance and the processes around the technical controls.
