@@ -28,7 +28,7 @@ The scheme covers five technical controls:
 * User access control - MFA across our accounts, least-privilege permissions, and a documented offboarding process so access ends when engagements do
 * Malware protection - anti-malware enabled and kept current on all in-scope devices
 
-Our assessment covered the whole organisation - staff devices, cloud accounts, and the services we use to build and run SAS applications. Our thanks go to John McMullan, lead auditor from Juno Information Security Ltd, who conducted the assessment - a pleasure to work with from start to finish.
+Our assessment covered the whole organisation - staff devices, cloud accounts, and the services we use to build and run SAS applications. Our thanks go to John McMullan, Cyber Essentials assessor from Juno Information Security Ltd, who conducted the assessment - a pleasure to work with from start to finish.
 
 ## How we go further to protect client data
 
@@ -62,7 +62,7 @@ The scheme covers five technical controls:
 * User access control
 * Malware protection
 
-Our thanks go to John McMullan, lead auditor from Juno Information Security Ltd, who conducted the assessment - a pleasure to work with from start to finish.
+Our thanks go to John McMullan, Cyber Essentials assessor from Juno Information Security Ltd, who conducted the assessment - a pleasure to work with from start to finish.
 
 Certification sets a baseline, and some of our day-to-day practices go beyond it:
 * KasmVNC remote desktops - work that touches client environments happens inside centrally managed, containerised remote desktops rather than on personal laptops. Nothing persists locally, sessions can be audited, access can be revoked centrally.
