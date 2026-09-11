@@ -19,6 +19,11 @@ const Footer: React.FC = () => (
         Bowe IO Ltd (4GL Apps), 29 Oldfield Rd, Windermere, Cumbria, England,
         LA23 2AZ. Company No: 08777171 VAT: 203914240
       </p>
+      <p>
+        <a href="/cyber-essentials-certified/">Cyber Essentials Certified</a>
+        {' - '}
+        <a href="/cyber-essentials.pdf">view certificate</a>
+      </p>
     </div>
   </div>
 )

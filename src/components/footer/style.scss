@@ -23,6 +23,19 @@
     p {
       margin: 0;
     }
+    p + p {
+      margin-top: 10px;
+    }
+    a {
+      color: white;
+      text-decoration: underline;
+      &:visited {
+        color: white;
+      }
+      &:hover {
+        color: $darkJungleGreen;
+      }
+    }
     margin-top: 25px;
   }
 }
