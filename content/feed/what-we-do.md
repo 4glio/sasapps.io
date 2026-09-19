@@ -18,7 +18,7 @@ We build applications on SAS, we migrate SAS 9 interfaces, and we modernise lega
 
 ## What we don't do
 
-**We don't build data pipelines.** Data engineering is a discipline in its own right, and the people who are good at it are specialists in exactly that. Our interest starts once the data is already in SAS.
+**We don't build data pipelines.** Data engineering is a discipline in its own right, and the people who are good at it are specialists in exactly that. Our interest is in the user interfaces to data from SAS.
 
 **We don't manage SAS platforms.** Installing, upgrading and administering SAS 9 or Viya is platform work, normally owned by an internal SAS admin team. We build on top of the platform, and we are happy to leave the day-to-day running of it to the people who own it.
 
