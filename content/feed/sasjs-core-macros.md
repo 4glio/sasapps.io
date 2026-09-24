@@ -3,7 +3,7 @@ title: 'SASjs Core - 250+ Open Source Macros for SAS App Developers'
 date: 2026-09-24T09:00:00.000Z
 layout: POST
 path: /sasjs-core-macros
-description: A tour of SASjs Core - over 250 MIT licensed, fully documented SAS macros covering Base SAS, SAS 9 metadata and SAS Viya. What is in the library, the three ways to install it, and the tooling that tests and lints it.
+description: A tour of SASjs Core - over 250 MIT licensed, fully documented SAS macros covering Base SAS, SAS 9 metadata and SAS Viya. What is in the library, the four ways to install it, and the tooling that tests and lints it.
 category: SAS Apps
 featuredImage: ../assets/sasjs-core-macros.jpeg
 tags:
@@ -13,7 +13,7 @@ tags:
   - Macros
 ---
 
-Every SAS developer eventually writes the same utility macro twice - once because they needed it, and again in the next project because nobody could find the first one. SASjs Core is the library that stops that happening: over 250 fully documented macros covering everything from dataset inspection and metadata lookups to Viya REST calls, all MIT licensed and free for commercial use. This post is a short tour of what is in it, and the three ways to get it into your environment.
+Every SAS developer eventually writes the same utility macro twice - once because they needed it, and again in the next project because nobody could find the first one. SASjs Core is the library that stops that happening: over 250 fully documented macros covering everything from dataset inspection and metadata lookups to Viya REST calls, all MIT licensed and free for commercial use. This post is a short tour of what is in it, and the four ways to get it into your environment.
 
 ## What is in the library
 
@@ -31,7 +31,7 @@ The macros are grouped into nine folders, by the platform they target and the jo
 
 Each macro carries its documentation in the header comment - parameters, return values, and the related macros you probably want next. Those same comments generate the [published documentation](https://core.sasjs.io), so the reference and the code cannot drift apart.
 
-## Three ways to install
+## Four ways to install
 
 **1. Add the folders to your SASAUTOS path.** Clone the repo somewhere your SAS system can read, then:
 
@@ -55,11 +55,25 @@ filename mc url "https://raw.githubusercontent.com/sasjs/core/main/all.sas";
 %inc mc;
 ```
 
-**3. Install it as a package.** JavaScript and CLI projects can pull the macros in from npm and pin them to a version, the same way as any other dependency:
+**3. Install it as an npm package.** JavaScript and CLI projects can pull the macros in from npm and pin them to a version, the same way as any other dependency:
 
 ```bash
 npm install @sasjs/core
 ```
+
+**4. Install it as a SAS package.** SASjs Core is published to [SASPAC, the SAS Packages Archive](https://github.com/SASPAC/sasjscore), as a package for Bartosz Jablonski's [SAS Packages Framework](https://github.com/yabwon/SAS_PACKAGES). The framework is a single file - enable it, then install and load the package:
+
+```sas
+filename packages "%sysfunc(pathname(work))";
+filename SPFinit url "https://bit.ly/SPFinit";
+%include SPFinit;
+
+%installPackage(sasjscore)   /* download and unpack the package */
+%helpPackage(sasjscore)      /* optional: the package help and documentation */
+%loadPackage(sasjscore)      /* compile the macros into the session */
+```
+
+This is a different way of owning the code rather than a different copy of it. The package is one zip holding the macros plus the framework's generated load, unload and help files, so `%loadPackage()` compiles the set into a session and `%unloadPackage()` takes it back out - useful when a job needs the macros but a shared server's SASAUTOS should not carry them. Installation is versioned, and it tracks the source: the archive currently carries [5.2.10](https://github.com/SASPAC/sasjscore/releases/tag/5.2.10), the same version as the npm release, so a build can pin the library the way it pins anything else. For repeated use, point the `packages` fileref at a permanent folder, run `%installPackage(SPFinit)` once to put the framework there, and the two internet-facing lines collapse to `%include packages(SPFinit.sas);` with no network access needed at run time.
 
 ## Tests and quality rules
 
@@ -67,7 +81,7 @@ The macros are tested with [sasjs test](https://cli.sasjs.io/test/) and checked 
 
 ## Where else it turns up
 
-The same macros ship inside [SASjs Server](https://server.sasjs.io), our open source REST API for Desktop SAS, and they are available through the [SAS Packages Framework](https://github.com/yabwon/SAS_PACKAGES) if that is how you prefer to distribute packages.
+The same macros ship inside [SASjs Server](https://server.sasjs.io), our open source REST API for Desktop SAS, and they are a dependency of [Data Controller for SAS](https://datacontroller.io) - the SAS data editing tool with a review and approve workflow and a full audit trail. Data Controller pulls the library in as an npm package in its SAS build, so its SAS-side services run on the same macros described here.
 
 The library lives at [github.com/sasjs/core](https://github.com/sasjs/core). If you have written a macro you think belongs in it, contributions are welcome - the [contributing guide](https://github.com/sasjs/core/blob/main/.github/CONTRIBUTING.md) sets out the house rules.
 
@@ -101,20 +115,31 @@ SASjs Core is a collection of 250+ fully documented macros, split between:
 * VIYA (macros for SPRE)
 * XPLATFORM (for all flavours of SAS)
 
-The relevant parts can be added to your SASAUTOS, or if you have internet access from SAS, you can include the entire set in 2 lines of code:
+Four ways to get them into your environment:
+
+1. Add the relevant parts to your SASAUTOS
+2. Include the entire set in 2 lines of code (needs internet access from SAS):
 
 filename mc url "https://raw.githubusercontent.com/sasjs/core/main/all.sas";
 %inc mc;
 
-If you're a JS developer you can install the macros locally using NPM:
+3. Install as an npm package:
 
 npm install @sasjs/core
+
+4. Install as a SAS package from SASPAC, the SAS Packages Archive (via the SAS Packages Framework by Bartosz Jablonski):
+
+filename packages "%sysfunc(pathname(work))";
+filename SPFinit url "https://bit.ly/SPFinit";
+%include SPFinit;
+%installPackage(sasjscore)
+%loadPackage(sasjscore)
 
 Documentation (using Doxygen): https://core.sasjs.io
 Tests (using sasjs test): https://cli.sasjs.io/test/
 Quality rules (using sasjs lint): https://cli.sasjs.io/lint/
 
-The macros are also in SASjs Server - https://server.sasjs.io - and in the SAS Packages Framework: https://github.com/yabwon/SAS_PACKAGES
+The macros also ship inside SASjs Server - https://server.sasjs.io - and are a dependency of Data Controller for SAS: https://datacontroller.io
 
 All macros are MIT open source / free for commercial use.
 
