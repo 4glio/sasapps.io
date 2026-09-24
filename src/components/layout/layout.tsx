@@ -7,7 +7,7 @@ import Footer from '../footer/footer'
 import { siteMetadata } from '../../../gatsby-config'
 
 import 'modern-normalize/modern-normalize.css'
-import 'prismjs/themes/prism.css'
+import 'scss/prism-dark.scss'
 import 'scss/gatstrap.scss'
 import 'animate.css/animate.css'
 import 'font-awesome/css/font-awesome.css'
