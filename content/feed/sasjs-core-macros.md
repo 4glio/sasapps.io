@@ -72,6 +72,20 @@ The same macros ship inside [SASjs Server](https://server.sasjs.io), our open so
 The library lives at [github.com/sasjs/core](https://github.com/sasjs/core). If you have written a macro you think belongs in it, contributions are welcome - the [contributing guide](https://github.com/sasjs/core/blob/main/.github/CONTRIBUTING.md) sets out the house rules.
 
 <!--
+Image prompt (regenerate with routstr-genimg.py):
+
+Generate a 16:9 landscape illustration for a B2B developer blog cover, 1200x627.
+
+Style: dark charcoal-teal background (#0d1f22), vibrant lime green (#8ac640) as the primary accent, teal-cyan (#00a5d7) for secondary depth. Isometric, flat-shaded 3D with soft diffused shadows and translucent, glass-like panels - the same visual language as the sasapps.io homepage hero. Geometric sans-serif forms, clean and technical, no photorealism, no harsh outlines.
+
+Scene: an orderly wall of small, colour-coded building blocks, each one a reusable component, stacked into a library. Three or four blocks lift out of the stack and snap into place inside a translucent panel floating above it, where they resolve into a finished application screen - a data grid and a pair of charts in green and cyan. The blocks are plain geometry carrying abstract code glyphs rather than readable words.
+
+Minimal text, no logos, no watermarks.
+
+Keep the block wall and the floating panel in the central square (safe for 1:1 crop). Outer left/right thirds croppable background only. Suitable as a blog/feed cover image.
+-->
+
+<!--
 LinkedIn version (paste as first comment under the LinkedIn post):
 
 #SAS Developers - how often have you needed a macro and thought "surely someone has done this before"?
