@@ -1,0 +1,150 @@
+@import 'scss/colors.scss';
+
+// Dark-theme styling for code, replacing `prismjs/themes/prism.css`.
+//
+// That theme paints every code panel a near-white #f5f2f0 with black text,
+// which fights the #0d1f22 page background: the eye has to readjust between
+// dark-on-light code and light-on-dark prose on every block, and the inline
+// code chips read as white highlights across the article.
+//
+// Colours are drawn from the brand palette in colors.scss - the lime is
+// $yellowGreen, the cyan is a lightened $aquamarine - so code sits inside the
+// site's palette rather than on top of it.
+
+$code-bg: #1d3138;
+$code-border: rgba(255, 255, 255, 0.12);
+$code-text: #dfeaec;
+$code-comment: #93a9ae;
+$code-punct: #a9bcc1;
+$code-keyword: #9ad354;
+$code-string: #f2c884;
+$code-function: #6fd2f0;
+$code-number: #ffa987;
+$code-inline-bg: #22383f;
+$code-inline-border: rgba(255, 255, 255, 0.16);
+$code-inline-text: #e6f0f2;
+
+code[class*='language-'],
+pre[class*='language-'],
+:not(pre) > code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  direction: ltr;
+  text-align: left;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  hyphens: none;
+  tab-size: 2;
+  text-shadow: none;
+}
+
+// block code
+pre[class*='language-'] {
+  background: $code-bg;
+  border: 1px solid $code-border;
+  border-radius: 6px;
+  padding: 1em;
+  margin: 0 0 1.5rem;
+  overflow: auto;
+  color: $code-text;
+  white-space: pre;
+}
+
+code[class*='language-'] {
+  color: $code-text;
+  white-space: pre;
+}
+
+.gatsby-highlight {
+  margin-bottom: 1.5rem;
+
+  pre[class*='language-'] {
+    margin: 0;
+  }
+}
+
+// inline code - a quiet chip rather than a white highlight
+:not(pre) > code {
+  background: $code-inline-bg;
+  border: 1px solid $code-inline-border;
+  border-radius: 4px;
+  padding: 0.12em 0.4em;
+  color: $code-inline-text;
+  font-size: 0.875em;
+  white-space: break-spaces;
+}
+
+// ---------------------------------------------------------------------------
+// Prism tokens. The SAS grammar emits keyword, macro-keyword, macro-variable,
+// arg, arg-value, string, number, numeric-constant, operator and punctuation;
+// the rest cover bash and any other language a post fences.
+// ---------------------------------------------------------------------------
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: $code-comment;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: $code-punct;
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted,
+.token.boolean,
+.token.number,
+.token.numeric-constant,
+.token.regex,
+.token.important {
+  color: $code-number;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: $code-string;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword,
+.token.macro-keyword,
+.token.arg,
+.token.arg-value {
+  color: $code-keyword;
+}
+
+.token.function,
+.token.class-name {
+  color: $code-function;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable,
+.token.macro-variable {
+  color: $code-text;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
