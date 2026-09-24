@@ -4,7 +4,7 @@ date: 2026-09-24T09:00:00.000Z
 layout: POST
 path: /sasjs-core-macros
 description: A tour of SASjs Core - over 250 MIT licensed, fully documented SAS macros covering Base SAS, SAS 9 metadata and SAS Viya. What is in the library, the four ways to install it, and the tooling that tests and lints it.
-category: SAS Apps
+category: SASjs
 featuredImage: ../assets/sasjs-core-macros.jpeg
 tags:
   - SAS
