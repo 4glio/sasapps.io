@@ -66,14 +66,16 @@ That writes the library into `node_modules/@sasjs/core` - the same nine folders 
 **4. Install it as a SAS package.** SASjs Core is published to [SASPAC, the SAS Packages Archive](https://github.com/SASPAC/sasjscore), as a package for Bartosz Jablonski's [SAS Packages Framework](https://github.com/yabwon/SAS_PACKAGES). The framework is a single file - enable it, then install and load the package:
 
 ```sas
-filename packages "%sysfunc(pathname(work))";
-filename SPFinit url "https://bit.ly/SPFinit";
-%include SPFinit;
+filename packages "%sysfunc(pathname(work))";  /* the fileref must be named "packages" - SPF looks for the folder here */
+filename SPFinit url "https://bit.ly/SPFinit"; /* the framework is a single file */
+%include SPFinit;                              /* enable the framework */
 
 %installPackage(sasjscore)   /* download and unpack the package */
-%helpPackage(sasjscore)      /* optional: the package help and documentation */
+%helpPackage(sasjscore)      /* optional: print the package help to the log */
 %loadPackage(sasjscore)      /* compile the macros into the session */
 ```
+
+The macro reference for the framework - `%installPackage`, `%helpPackage`, `%loadPackage`, `%unloadPackage` - is in the [SPF documentation](https://github.com/yabwon/SAS_PACKAGES/blob/main/SPF/SPFinit.md).
 
 This is a different way of owning the code rather than a different copy of it. The package is one zip holding the macros plus the framework's generated load, unload and help files, so `%loadPackage()` compiles the set into a session and `%unloadPackage()` takes it back out - useful when a job needs the macros but a shared server's SASAUTOS should not carry them. Installation is versioned, and it tracks the source: the archive currently carries [5.2.10](https://github.com/SASPAC/sasjscore/releases/tag/5.2.10), the same version as the npm release, so a build can pin the library the way it pins anything else. For repeated use, point the `packages` fileref at a permanent folder, run `%installPackage(SPFinit)` once to put the framework there, and the two internet-facing lines collapse to `%include packages(SPFinit.sas);` with no network access needed at run time.
 
