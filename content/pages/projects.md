@@ -7,6 +7,8 @@ previewImg: '../assets/projects.jpeg'
 
 # SAS App Projects
 
+![](../assets/projects.jpeg)
+
 Are you looking to build a SAS Powered App?  Modernise a legacy AF/SCL or SAS/IntrNet application?  Perhaps, migrate an existing SAS 9, Stored Process driven interface to Viya?
 
 ## What we bring
@@ -39,8 +41,6 @@ Sample data is a bonus - if not available, we would look to build up some meanin
 ## Talk to us
 
 For questions, or to book a discovery call, contact [Allan Bowe](https://www.linkedin.com/in/allanbowe/).
-
-![](../assets/projects.jpeg)
 
 <!--
 Image prompt (regenerate with routstr-genimg.py). This file is both the page

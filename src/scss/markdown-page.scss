@@ -13,7 +13,7 @@
   h1 {
     font-size: 40px;
     line-height: 1.25;
-    margin: 0 0 28px;
+    margin: 0 0 40px;
   }
 
   h2 {
@@ -66,10 +66,16 @@
     }
   }
 
+  // gatsby-remark-images puts the image in a span inside a paragraph and
+  // absolutely positions the img, so the img's own margins do nothing - the
+  // spacing has to come from the wrapping paragraph.
+  p:has(> .gatsby-resp-image-wrapper) {
+    margin-bottom: 40px;
+  }
+
   img {
     max-width: 100%;
     height: auto;
-    margin: 10px 0 0;
     border-radius: 8px;
   }
 
