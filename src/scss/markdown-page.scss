@@ -80,4 +80,25 @@
     font-size: 17px;
     line-height: 1.7;
   }
+
+  // GFM tables render with the site-wide lime borders but no padding, so the
+  // text sat against the border. Soften the border and give the cells room.
+  table {
+    width: 100%;
+    margin: 0 0 24px;
+    border-collapse: collapse;
+    border: 1px solid rgba(138, 198, 64, 0.4);
+    font-size: 16px;
+
+    th,
+    td {
+      padding: 10px 14px;
+      border: 1px solid rgba(138, 198, 64, 0.4);
+    }
+
+    th {
+      background: rgba(138, 198, 64, 0.12);
+      font-weight: 600;
+    }
+  }
 }
