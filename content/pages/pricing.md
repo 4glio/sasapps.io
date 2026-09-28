@@ -39,7 +39,7 @@ The price is "per customer", not "per app" - so if a customer has three apps, on
 Details of the support plan (SLAs etc) are available [here](/support).
 
 |Plan|App Source|SASjs|Annual EUR|
-|---|---|---|---|---|
+|---|---|:---:|---:|
 |A|SAS Apps|✅|6k|
 |B|Customer|✅|10k|
 |C|Customer|❌|15k|
