@@ -1,7 +1,7 @@
 ---
 title: Projects
 path: /projects/
-description: Are you looking to build a SAS Powered App?  Modernise a legacy AF/SCL or SAS/IntrNet application?  Perhaps, migrate an existing SAS 9, Stored Process driven interface to Viya?
+description: SAS app development from the team behind SASjs - frontend, backend, docs and CI/CD pipeline, delivered into Viya, SAS 9 EBI or Foundation SAS.
 previewImg: '../assets/projects.jpeg'
 ---
 
@@ -44,8 +44,7 @@ For questions, or to book a discovery call, contact [Allan Bowe](https://www.lin
 
 <!--
 Image prompt (regenerate with routstr-genimg.py). This file is both the page
-illustration and the og:image (previewImg in the front matter), so save the
-generated file at content/assets/projects.jpeg to overwrite the placeholder.
+illustration and the og:image (previewImg in the front matter).
 
 Generate a 16:9 landscape illustration for a B2B software delivery page cover, 1200x627.
 
