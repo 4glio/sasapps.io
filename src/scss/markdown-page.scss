@@ -1,0 +1,110 @@
+@import './colors.scss';
+@import './fonts.scss';
+
+// Long-form markdown pages (content/pages/*.md) render straight into a
+// bootstrap `.container`, which is 1140px wide - at 16px that is roughly 139
+// characters per line, well past the comfortable 45-75 range. Narrow the
+// measure and open up the leading so the pages read like the articles do.
+
+.container.markdown-page {
+  max-width: 660px;
+  padding: 0 20px 50px;
+
+  h1 {
+    font-size: 40px;
+    line-height: 1.25;
+    margin: 0 0 40px;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 1.35;
+    margin: 40px 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(138, 198, 64, 0.4);
+  }
+
+  h3 {
+    font-size: 20px;
+    line-height: 1.4;
+    margin: 32px 0 12px;
+  }
+
+  p {
+    font-size: 17px;
+    line-height: 1.7;
+    margin: 0 0 22px;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 22px;
+    padding-left: 26px;
+  }
+
+  li {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Body links were white with no underline, so they were indistinguishable
+  // from the surrounding text until hover.
+  a {
+    color: $white;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 198, 64, 0.6);
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: $yellowGreen;
+      text-decoration-color: $yellowGreen;
+    }
+  }
+
+  // gatsby-remark-images puts the image in a span inside a paragraph and
+  // absolutely positions the img, so the img's own margins do nothing - the
+  // spacing has to come from the wrapping paragraph.
+  p:has(> .gatsby-resp-image-wrapper) {
+    margin-bottom: 40px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  blockquote {
+    margin: 0 0 22px;
+    padding: 4px 0 4px 20px;
+    border-left: 3px solid $yellowGreen;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  // GFM tables render with the site-wide lime borders but no padding, so the
+  // text sat against the border. Soften the border and give the cells room.
+  table {
+    width: 100%;
+    margin: 0 0 24px;
+    border-collapse: collapse;
+    border: 1px solid rgba(138, 198, 64, 0.4);
+    font-size: 16px;
+
+    th,
+    td {
+      padding: 10px 14px;
+      border: 1px solid rgba(138, 198, 64, 0.4);
+    }
+
+    th {
+      background: rgba(138, 198, 64, 0.12);
+      font-weight: 600;
+    }
+  }
+}
