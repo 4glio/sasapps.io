@@ -13,7 +13,7 @@ tags:
   - Open Source
 ---
 
-[SASjs Lint](https://github.com/sasjs/lint) is the open source linting and formatting engine behind `sasjs lint`, the SASjs VS Code extension and the SASjs Server editor. This week it shipped four releases - 2.6.0 through 4.0.0 - that add macro declaration checks, a libname check, a way for a single file to override the project rules, and a set of default-behaviour fixes. This post walks through each change, with examples you can lift into a project.
+[SASjs Lint](https://github.com/sasjs/lint) is the open source linting and formatting engine behind `sasjs lint`, the SASjs VS Code extension and the SASjs Server editor. This week it shipped five releases - 2.6.0 through 4.1.0 - that add macro declaration checks, a libname check, a way for a single file to override the project rules, and a set of default-behaviour fixes. This post walks through each change, with examples you can lift into a project.
 
 ## Where the linter runs
 
@@ -29,7 +29,7 @@ The headline change is two rules, both on by default, that keep the `<h4> SAS Ma
 
 `noUndeclaredMacros` warns when a file calls a macro it never declares. A macro counts as declared when the file defines it with `%macro`, or lists it under `<h4> SAS Macros </h4>` or `<h4> Other Macros </h4>`:
 
-```sas
+```sas{9}
 /**
   @file
   @brief Loads the settlement feed
@@ -42,13 +42,32 @@ The headline change is two rules, both on by default, that keep the `<h4> SAS Ma
 %mf_trim(&raw)
 ```
 
-The header lists `mf_trim` but not `mf_getuser`, so the second call is reported:
+The header lists `mf_trim` but not `mf_getuser`, so the second call is reported. `sasjs lint` prints one row per diagnostic - the severity, the message, and the `[line, column]` position:
 
-> Macro 'mf_getuser' is not declared - add it to the `<h4> SAS Macros </h4>` or `<h4> Other Macros </h4>` section of the header
+```text
+Warning  [9, 1]  Macro 'mf_getuser' is not declared - add it to the <h4> SAS Macros </h4> or <h4> Other Macros </h4> section of the header
+```
 
 The macros that ship with SAS are always treated as declared - the macro language keywords (`%if`, `%then`, `%do`), the macro functions (`%scan`, `%index`, `%sysfunc`), and the autocall macros. That list is generated from the language data in `@sasjs/sas-language`, so it tracks the language rather than being maintained here. Macros supplied through `SASAUTOS` are not visible to the linter and are reported; declare those in the header, or switch the rule off for the file.
 
-`noUnusedMacros` is the mirror image: a macro listed under `<h4> SAS Macros </h4>` that the file never calls is flagged, which usually means the header is out of date.
+`noUnusedMacros` is the mirror image: a macro listed under `<h4> SAS Macros </h4>` that the file never calls is flagged, which usually means the header is out of date:
+
+```sas{7}
+/**
+  @file
+  @brief Settles the feed
+
+  <h4> SAS Macros </h4>
+  @li mf_used.sas
+  @li mf_unused.sas
+
+**/
+%mf_used()
+```
+
+```text
+Warning  [7, 7]  Macro 'mf_unused' is declared in the <h4> SAS Macros </h4> section but not used in the file
+```
 
 Both rules carry a formatter fix, so `sasjs lint fix` (or format-on-save) rewrites the section to list exactly the macros the file uses - adding the missing ones, de-duplicated and sorted alphabetically, and removing the stale ones.
 
@@ -56,7 +75,12 @@ Both rules carry a formatter fix, so `sasjs lint fix` (or format-on-save) rewrit
 
 `noSingleAsteriskComments` (off by default) reports comment statements that begin with a single asterisk:
 
-```sas
+```sas{6}
+/**
+  @file
+  @brief Tidy up before release
+
+**/
 * tidy this up before release;
 
 data want;
@@ -65,7 +89,11 @@ data want;
 run;
 ```
 
-The first line is a comment statement; the asterisk in `price * qty` is arithmetic. The rule walks the file tracking statement boundaries, so it skips block comments, quoted strings, `%* ... ;` macro comments, `%str()` and `%nrstr()` arguments, `datalines` and `cards` sections, `proc lua` and `proc groovy` submit blocks, and arithmetic. It is worth turning on because a comment statement that loses its terminating semicolon turns the rest of the program into a comment, and it cannot be nested - neither is true of a block comment (`/* ... */`).
+```text
+Warning  [6, 1]  Line contains a single asterisk comment
+```
+
+Line 6 is a comment statement; the asterisk in `price * qty` is arithmetic. The rule walks the file tracking statement boundaries, so it skips block comments, quoted strings, `%* ... ;` macro comments, `%str()` and `%nrstr()` arguments, `datalines` and `cards` sections, `proc lua` and `proc groovy` submit blocks, and arithmetic. It is worth turning on because a comment statement that loses its terminating semicolon turns the rest of the program into a comment, and it cannot be nested - neither is true of a block comment (`/* ... */`).
 
 ```json
 {
@@ -77,7 +105,12 @@ The first line is a comment statement; the asterisk in `price * qty` is arithmet
 
 `noUnusedLibnames` (new in 4.1.0, off by default) reports a libref that a file assigns and never mentions again. Assigning a libref opens a connection, and on a remote engine that costs time, so a `LIBNAME` statement the file never uses is worth knowing about:
 
-```sas
+```sas{6}
+/**
+  @file
+  @brief Loads the remote table
+
+**/
 libname outData "&outdir";
 
 proc sql;
@@ -87,7 +120,9 @@ quit;
 
 `outData` is assigned and then never referenced, so it is reported:
 
-> Libref 'outData' is assigned but never used in this file - remove the LIBNAME statement, or list the libref in 'ignoredLibnames'
+```text
+Warning  [6, 9]  Libref 'outData' is assigned but never used in this file - remove the LIBNAME statement, or list the libref in 'ignoredLibnames'
+```
 
 A libref counts as used when it appears anywhere outside a `LIBNAME` statement - as a two-level name, as a string passed to `pathname()`, as an option value, or as a macro argument. That test is deliberately generous, because SAS takes a libref as a string as often as a two-level name. A narrower version that looked only for `libref.` produced eleven flags over nearly fifteen hundred real SAS files, and every one was a false positive; the generous test produced a single flag, and that one was genuine. The rule is off by default because a file is not a complete job: a libref it assigns may be used by an autoexec, an `%include`, or another file in the same flow. List the ones to leave alone in the project config:
 
@@ -139,7 +174,7 @@ Keep the subject in the central square (safe for 1:1 crop); the outer left and r
 
 Source LinkedIn post:
 
-SASjs Lint shipped four releases this week - new rules to catch problems before code review.
+SASjs Lint shipped five releases this week - new rules to catch problems before code review.
 
 → noUndeclaredMacros: a macro a file calls but never declares
 → noUnusedMacros: a macro in the header the file never calls

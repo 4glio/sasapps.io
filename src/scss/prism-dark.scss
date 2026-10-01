@@ -148,3 +148,19 @@ code[class*='language-'] {
 .token.italic {
   font-style: italic;
 }
+
+// ---------------------------------------------------------------------------
+// Line highlighting. A fence tagged `sas{9}` makes gatsby-remark-prismjs wrap
+// that line in `.gatsby-highlight-code-line`; without a rule here the wrapper
+// is invisible, so the marker a reader asked for never shows. The lime rule
+// matches the site accent and the wash stays faint so the tokens keep their
+// contrast.
+.gatsby-highlight-code-line {
+  background: rgba(138, 198, 64, 0.14);
+  border-left: 3px solid $yellowGreen;
+  display: block;
+  margin-left: -1em;
+  margin-right: -1em;
+  padding-left: calc(1em - 3px);
+  padding-right: 1em;
+}
