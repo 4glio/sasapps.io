@@ -75,7 +75,7 @@ The first line is a comment statement; the asterisk in `price * qty` is arithmet
 
 ## Unused libnames
 
-`noUnusedLibnames` (off by default) reports a libref that a file assigns and never mentions again. Assigning a libref opens a connection, and on a remote engine that costs time, so a `LIBNAME` statement the file never uses is worth knowing about:
+`noUnusedLibnames` (new in 4.1.0, off by default) reports a libref that a file assigns and never mentions again. Assigning a libref opens a connection, and on a remote engine that costs time, so a `LIBNAME` statement the file never uses is worth knowing about:
 
 ```sas
 libname outData "&outdir";
@@ -127,7 +127,7 @@ The block holds a JSON object merged over the resolved `.sasjslint`: scalars rep
 
 ## Upgrading
 
-Everything above except `noUnusedLibnames` ships in `@sasjs/lint` 4.0.0; the libname rule follows in the next release. The CLI, extension and server pick the rules up as they upgrade. If your pipeline keys on the exit code, note that the new macro and libname rules are warnings, so a hook that fails on ERROR still passes. To keep the previous output, set `"noUndeclaredMacros": false` and `"noUnusedMacros": false`.
+All of the above is in `@sasjs/lint` 4.x - `noSingleAsteriskComments` in 2.7.0, the macro rules in 3.0.0, the per-file overrides and default fixes in 4.0.0, and `noUnusedLibnames` in 4.1.0. The CLI, extension and server pick the rules up as they upgrade. If your pipeline keys on the exit code, note that the new macro and libname rules are warnings, so a hook that fails on ERROR still passes. To keep the previous output, set `"noUndeclaredMacros": false` and `"noUnusedMacros": false`.
 
 <!--
 Image prompt (regenerate with routstr-genimg.py):
@@ -136,4 +136,21 @@ Style: isometric, flat-shaded 3D on a dark background (#0d1f22), translucent gla
 Scene: a floating code editor panel showing a few short lines of SAS code, with a lime green tick badge on one line and a small warning triangle on another; a magnifying glass hovers over the panel.
 Minimal text, no logos, no watermarks.
 Keep the subject in the central square (safe for 1:1 crop); the outer left and right thirds are croppable background only.
+
+Source LinkedIn post:
+
+SASjs Lint shipped four releases this week - new rules to catch problems before code review.
+
+→ noUndeclaredMacros: a macro a file calls but never declares
+→ noUnusedMacros: a macro in the header the file never calls
+→ noSingleAsteriskComments: the comment statement that swallows the rest of your program when its semicolon goes missing
+→ noUnusedLibnames: a libref that opens a connection and is never used again
+
+The macro rules are on by default, and sasjs lint fix reconciles the SAS Macros header for you. Any single file can now override the project rules with a @sasjslint block in its Doxygen header.
+
+One engine, three surfaces: the SASjs CLI, the SASjs VS Code extension, and SASjs Server Studio.
+
+Full walkthrough with SAS examples ✅ https://sasapps.io/sasjs-lint-new-rules/
+
+#SAS #SASjs #OpenSource #DataEngineering
 -->
