@@ -13,6 +13,8 @@ tags:
   - Open Source
 ---
 
+![SASjs Lint](../assets/sasjs-lint.jpeg)
+
 [SASjs Lint](https://github.com/sasjs/lint) is the open source linting and formatting engine behind `sasjs lint`, the SASjs VS Code extension and the SASjs Server editor. This week it shipped five releases - 2.6.0 through 4.1.0 - that add macro declaration checks, a libname check, a way for a single file to override the project rules, and a set of default-behaviour fixes. This post walks through each change, with examples you can lift into a project.
 
 ## Where the linter runs
