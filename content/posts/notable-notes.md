@@ -3,7 +3,7 @@ title: 'Notable Notes - Reading a SAS Log for the Lines That Matter'
 date: 2026-11-03T09:00:00.000Z
 layout: POST
 path: /notable-notes
-description: A SAS log is mostly notes, and the few that matter are easy to lose. This is the closed list we use to pick them out, who we took it from, and how it is implemented once in SASjs Utils and reused by sasjs logcheck, SASjs Server and the VS Code extension.
+description: A SAS log is mostly notes, and only some of them mean anything. How the SASjs tools pick out the notes worth reading - and where the list came from.
 category: SAS
 featuredImage: ../assets/notable-notes.png
 tags:
