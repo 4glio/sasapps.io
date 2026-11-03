@@ -17,7 +17,7 @@ tags:
 
 A SAS log is mostly notes. A single evening of `PROC` steps will print thousands of `NOTE:` lines, and almost none of them means anything: how many observations were read, how many were written, how long a step took. Then SAS prints, in exactly the same format and the same colour, a note that says a variable was never initialised, or that a date failed to convert. That line is the bug. It sits between two hundred lines that are not.
 
-This post is about the small idea we added to the SASjs tooling this week: sort the notes into two piles, print one pile, and throw the other away. It covers where the list of "notes worth reading" came from, the other people who have solved this problem, and how the same list is applied in `@sasjs/utils`, `sasjs logcheck`, SASjs Server and the SASjs VS Code extension.
+This post is about a quality-of-life improvement we have just added to the SASjs tooling: sort the notes into two piles, print one pile, and throw the other away. Neither the problem nor the answer is new - SAS programmers have been narrowing a log down to its interesting lines for as long as there have been logs, and the tools that do it are listed below. What is new is that the same list now runs inside our editor, our Studio, our CLI and our CI, from one implementation. This post covers where the list of "notes worth reading" came from, the other people who have solved this problem, and how the same list is applied in `@sasjs/utils`, `sasjs logcheck`, SASjs Server and the SASjs VS Code extension.
 
 ## The idea - a closed list
 
