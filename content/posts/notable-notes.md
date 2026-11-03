@@ -112,6 +112,8 @@ filename packages "/path/to/your/packages";
 
 The list is one thing; the parser is another. We put the parser in one place, because the alternative - an editor plugin, a browser pane and a CI gate each with their own regex - is how a log starts reading differently depending on where you open it.
 
+The examples in each section use the same three log files - written for this post in the shape of a real overnight batch, then run through the actual tools: a clean-looking run whose only findings are seven notable notes, one legacy job that fails on an unresolved libref and two coded syntax errors, and a Python build log that the tools must leave alone.
+
 ### 1. `@sasjs/utils/logs`
 
 The library publishes a `logs` subpath with two pure functions and no imports at all, which is what lets the same code run in Node, in a browser bundle and inside an editor extension:
@@ -194,56 +196,9 @@ The design decision worth stating plainly is the default: `failOn` is `error`, n
 
 The same check rides along with the commands that already receive a log - `run`, `request`, `job execute`, `flow execute` and `fs deploy`/`fs sync`. It prints the issues it finds, and fails the command only when `--logcheck` was passed or `logCheck.autoCheck` is on, because the exit code of a deploy is load-bearing in a pipeline and is not something to change behind a project's back.
 
-### 3. SASjs Server - the Studio log pane
-
-The Studio log pane parses with the same `parseLog`. The log is still handed to the viewer exactly as SAS wrote it - nothing is rewritten and nothing is highlighted by injecting markup, so a doxygen header's `<h4> SAS Macros </h4>` stays text.
-
-What the pane does with the issue list:
-
-* the tab carries an error icon and a warning icon when the log holds either, so a failed run is visible without opening the pane;
-* the issue list for each chunk is built from the same parse, and clicking an entry jumps to its line in the log;
-* notable notes are listed with the errors and warnings, and can be switched off with the eye button on the tab - the same switch, `log.notableNotes`, exists on the settings page. It defaults to on. With it off, the pane carries errors and warnings only.
-
-Large logs are rendered in chunks of 20,000 lines by default, each chunk a substring of the log rather than an array of lines, so the text is held once however long it is. The issue list is then the fast way to find the interesting line rather than a scroll through the whole log.
-
-### 4. The SASjs VS Code extension
-
-Open a `.log` file and the extension gives you the same findings in the editor:
-
-* the error and warning lines are coloured in the log, and the arrows in the editor title bar step between them from the cursor, wrapping at the end;
-* every issue is published to VIEW -> PROBLEMS, next to the lint issues, so F8 and Shift+F8 walk them and a click jumps to the line;
-* notable notes are published as **Information** rather than as problems, so errors stay at the top of the list;
-* the eye button in the title bar toggles them, and writes `sasjs-for-vscode.logNotableNotes` into the project's `.vscode/settings.json` - the setting and the button are the same switch, so a team can commit the choice;
-* a `.log` written by something else is left alone, via the same `isSasLog` test, and a log over 32 MB is not parsed at all. Edits are debounced, so typing in a log does not re-parse on every keystroke.
-
-The log text is untouched in every host. The parse produces positions; the host draws.
-
-## What it looks like in practice
-
-The same three log files are used throughout this section - written for this post in the shape of a real overnight batch, then run through the actual tools: a clean-looking run whose only findings are seven notable notes, one legacy job that fails on an unresolved libref and two coded syntax errors, and a Python build log that the tools must leave alone.
-
-### In the editor
-
-![Notable notes in the Problems panel](../assets/notable-notes-problems.png)
-
-A log with no `ERROR` and no `WARNING` reads as a green run everywhere else, and that is the point of the exercise: the badge on the Problems panel says seven, because seven notes said something a reviewer cares about. Each is published as Information, with the source `SASjs log`, so they sort below any real problem in the same file and F8 still walks them.
-
-Two details in that screenshot come straight out of the parser:
-
-* The conversion note is reported at **80-81**, because SAS wrapped it over two lines - one problem, not two.
-* The note about the `W.D` format is truncated with an ellipsis in the list because the message is long, and the full text is still there on hover and in the diagnostic.
-
-The eye button in the title bar, or `sasjs-for-vscode.logNotableNotes` in `.vscode/settings.json`, switches them off for the whole project:
-
-![Notable notes hidden](../assets/notable-notes-hidden.png)
-
-The log text is unchanged in both cases. Nothing was annotated in the file, and nothing was filtered out of it - the switch only decides what the panel lists, which is what lets one team member work with the notes listed and another work with them hidden.
-
-### From a terminal, or a pipeline
+Point it at the clean-log run and this is what comes back - the `FILE` table is the summary a pipeline wants, and the `LINE:COL` list under it is what a human wants when the table says FAIL:
 
 ![sasjs logcheck](../assets/notable-notes-cli.png)
-
-The `FILE` table is the summary a pipeline wants, and the `LINE:COL` list under it is what a human wants when the table says FAIL:
 
 ```text
 FILE                     ERRORS  WARNINGS  NOTES  STATUS
@@ -279,19 +234,46 @@ One more thing a pipeline gets for free: pointing the command at a folder of mix
   1 file skipped (not a SAS log, or excluded) - rerun with --verbose to list them.
 ```
 
-### In SASjs Server
+### 3. SASjs Server - the Studio log pane
+
+The Studio log pane parses with the same `parseLog`. The log is still handed to the viewer exactly as SAS wrote it - nothing is rewritten and nothing is highlighted by injecting markup, so a doxygen header's `<h4> SAS Macros </h4>` stays text.
 
 ![Notable notes in the SASjs Server log pane](../assets/notable-notes-studio.png)
 
 The Studio flow is the same list at the moment you need it. Run a job, open the log tab in the results pane, and the tab itself tells you what is in there: an error icon if there is an error, a warning icon if there is a warning. Open it and the pane lists the issues for the chunk on screen; clicking one jumps to its line, so a 50 MB log is navigable by its findings instead of by scrolling.
 
-The eye button on the tab hides the notable notes for that view, and the same switch is on the Studio settings page as `log.notableNotes`, so the preference follows the user rather than the run.
+The eye button on the tab hides the notable notes for that view, and the same switch is on the Studio settings page as `log.notableNotes`, so the preference follows the user rather than the run. It defaults to on; with it off, the pane carries errors and warnings only.
 
 ![Notable notes hidden in Studio](../assets/notable-notes-studio-hidden.png)
 
 The download button still hands over the log exactly as SAS wrote it, byte for byte - the parsing is a view over the log, never a rewrite of it.
 
-### Anywhere else, with the parser in hand
+Large logs are rendered in chunks of 20,000 lines by default, each chunk a substring of the log rather than an array of lines, so the text is held once however long it is. The issue list is then the fast way to find the interesting line rather than a scroll through the whole log.
+
+### 4. The SASjs VS Code extension
+
+Open a `.log` file and the extension gives you the same findings in the editor:
+
+* the error and warning lines are coloured in the log, and the arrows in the editor title bar step between them from the cursor, wrapping at the end;
+* every issue is published to VIEW -> PROBLEMS, next to the lint issues, so F8 and Shift+F8 walk them and a click jumps to the line;
+* notable notes are published as **Information** rather than as problems, so errors stay at the top of the list;
+* the eye button in the title bar toggles them, and writes `sasjs-for-vscode.logNotableNotes` into the project's `.vscode/settings.json` - the setting and the button are the same switch, so a team can commit the choice;
+* a `.log` written by something else is left alone, via the same `isSasLog` test, and a log over 32 MB is not parsed at all. Edits are debounced, so typing in a log does not re-parse on every keystroke.
+
+![Notable notes in the Problems panel](../assets/notable-notes-problems.png)
+
+The log in that screenshot has no `ERROR` and no `WARNING`, which reads as a green run everywhere else - and that is the point of the exercise: the badge on the Problems panel says seven, because seven notes said something a reviewer cares about. Each is published as Information, with the source `SASjs log`, so they sort below any real problem in the same file and F8 still walks them.
+
+Two details in that screenshot come straight out of the parser:
+
+* The conversion note is reported at **80-81**, because SAS wrapped it over two lines - one problem, not two.
+* The note about the `W.D` format is truncated with an ellipsis in the list because the message is long, and the full text is still there on hover and in the diagnostic.
+
+![Notable notes hidden](../assets/notable-notes-hidden.png)
+
+The log text is unchanged in both cases, and untouched in every host: nothing was annotated in the file and nothing was filtered out of it - the switch only decides what the panel lists, which is what lets one team member work with the notes listed and another work with them hidden. The parse produces positions; the host draws.
+
+### 5. Anywhere else, with the parser in hand
 
 Because `parseLog` is a pair of pure functions, a team can put the same findings into whatever holds their build output - a release script, a dashboard, a Slack alert:
 
