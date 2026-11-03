@@ -26,7 +26,7 @@ Every log-checking tool arrives at the same compromise:
 * report every `ERROR` and every `WARNING`, because those are unambiguous, and
 * report a `NOTE` only when its text matches one of a small, fixed set of phrases that mean something went quietly wrong.
 
-That fixed set is what we call the **notable notes**. It is deliberately short, deliberately closed, and it is the whole of the idea. The notes that make it are not failures: SAS completed the step, allocated the data set, and returned. The step simply did something the programmer did not ask for, and SAS mentioned it in passing:
+That fixed set is what [Yutaka Morioka](https://github.com/Morioka-Yutaka/SASLogChecker) calls the **notable notes**. It is deliberately short, deliberately closed, and it is the whole of the idea. The notes that make it are not failures: SAS completed the step, allocated the data set, and returned. The step simply did something the programmer did not ask for, and SAS mentioned it in passing:
 
 ```text
 NOTE: Variable amount is uninitialized.
