@@ -114,7 +114,7 @@ The list is one thing; the parser is another. We put the parser in one place, be
 
 ### 1. `@sasjs/utils/logs`
 
-Since `@sasjs/utils` 4.2.0 the library publishes a `logs` subpath with two pure functions and no imports at all, which is what lets the same code run in Node, in a browser bundle and inside an editor extension:
+The library publishes a `logs` subpath with two pure functions and no imports at all, which is what lets the same code run in Node, in a browser bundle and inside an editor extension:
 
 ```ts
 import { parseLog } from '@sasjs/utils/logs'
@@ -164,14 +164,14 @@ The details that matter, and why:
 
 ### 2. `sasjs logcheck` - the CLI
 
-Since `@sasjs/cli` 6.7.0 there is a command that needs no target, no login and no project: a log from Enterprise Guide or from a server somewhere else checks the same way.
+`sasjs logcheck` needs no target, no login and no project: a log from Enterprise Guide or from a server somewhere else checks the same way.
 
 ```bash
 sasjs logcheck                       # every log in sasjsresults, fail on any ERROR
 sasjs logcheck ./logs                # every file under ./logs, skipping non-SAS logs
 sasjs logcheck run.log --fail-on warning
 sasjs logcheck --max-warnings 10
-sasjs logcheck --ignore-code 49-169  # the note about a truncated quoted string
+sasjs logcheck --ignore-code 49-169  # repeatable: a code you have decided to live with
 sasjs logcheck --format annotations  # GitHub Actions annotations
 ```
 
@@ -196,7 +196,7 @@ The same check rides along with the commands that already receive a log - `run`,
 
 ### 3. SASjs Server - the Studio log pane
 
-Since SASjs Server 3.7.0 the Studio log pane parses with the same `parseLog`. The log is still handed to the viewer exactly as SAS wrote it - nothing is rewritten and nothing is highlighted by injecting markup, so a doxygen header's `<h4> SAS Macros </h4>` stays text.
+The Studio log pane parses with the same `parseLog`. The log is still handed to the viewer exactly as SAS wrote it - nothing is rewritten and nothing is highlighted by injecting markup, so a doxygen header's `<h4> SAS Macros </h4>` stays text.
 
 What the pane does with the issue list:
 
@@ -208,7 +208,7 @@ Large logs are rendered in chunks of 20,000 lines by default, each chunk a subst
 
 ### 4. The SASjs VS Code extension
 
-Since SASjs for VS Code 2.12.0, opening a `.log` file gives you the same findings in the editor:
+Open a `.log` file and the extension gives you the same findings in the editor:
 
 * the error and warning lines are coloured in the log, and the arrows in the editor title bar step between them from the cursor, wrapping at the end;
 * every issue is published to VIEW -> PROBLEMS, next to the lint issues, so F8 and Shift+F8 walk them and a click jumps to the line;
@@ -217,6 +217,90 @@ Since SASjs for VS Code 2.12.0, opening a `.log` file gives you the same finding
 * a `.log` written by something else is left alone, via the same `isSasLog` test, and a log over 32 MB is not parsed at all. Edits are debounced, so typing in a log does not re-parse on every keystroke.
 
 The log text is untouched in every host. The parse produces positions; the host draws.
+
+## What it looks like in practice
+
+The same three log files are used throughout this section - written for this post in the shape of a real overnight batch, then run through the actual tools: a clean-looking run whose only findings are seven notable notes, one legacy job that fails on an unresolved libref and two coded syntax errors, and a Python build log that the tools must leave alone.
+
+### In the editor
+
+![Notable notes in the Problems panel](../assets/notable-notes-problems.png)
+
+A log with no `ERROR` and no `WARNING` reads as a green run everywhere else, and that is the point of the exercise: the badge on the Problems panel says seven, because seven notes said something a reviewer cares about. Each is published as Information, with the source `SASjs log`, so they sort below any real problem in the same file and F8 still walks them.
+
+Two details in that screenshot come straight out of the parser:
+
+* The conversion note is reported at **80-81**, because SAS wrapped it over two lines - one problem, not two.
+* The note about the `W.D` format is truncated with an ellipsis in the list because the message is long, and the full text is still there on hover and in the diagnostic.
+
+The eye button in the title bar, or `sasjs-for-vscode.logNotableNotes` in `.vscode/settings.json`, switches them off for the whole project:
+
+![Notable notes hidden](../assets/notable-notes-hidden.png)
+
+The log text is unchanged in both cases. Nothing was annotated in the file, and nothing was filtered out of it - the switch only decides what the panel lists, which is what lets one team member work with the notes listed and another work with them hidden.
+
+### From a terminal, or a pipeline
+
+![sasjs logcheck](../assets/notable-notes-cli.png)
+
+The `FILE` table is the summary a pipeline wants, and the `LINE:COL` list under it is what a human wants when the table says FAIL:
+
+```text
+FILE                          ERRORS  WARNINGS  NOTES  STATUS
+------------------------------  ------  --------  -----  ------
+logs/run-2026-10-30.log             0         0      7  FAIL
+
+  7 notes in 1 log
+  Logcheck failed: 7 notes  (fail-on: note)
+```
+
+That run was asked to fail on a note. Leave the policy at its default and the same log passes with the same seven rows printed, which is the behaviour most projects want while they clear the backlog:
+
+```bash
+sasjs logcheck sasjsresults              # report everything, fail on ERROR only
+sasjs logcheck sasjsresults --fail-on warning
+sasjs logcheck sasjsresults --fail-on note --max-warnings 10
+```
+
+Raising the bar is a one-line change in `sasjsconfig.json` and it can be done in stages: fix the errors, move `failOn` to `warning`, fix those, move it to `note`, then add `maxWarnings` as a ratchet so the count can fall but not rise. Two more knobs keep the gate honest while it is being introduced - `ignoreCodes` for a message the team has formally accepted (keyed on SAS's own message code, e.g. `49-169`, not on wording), and `ignorePaths` for a legacy folder.
+
+For a CI job, `--format annotations` turns each finding into a workflow command, so the issue appears on the pull request and in the run summary:
+
+```text
+::error file=logs/legacy-2026-10-29.log,line=21,col=1,endLine=21,endColumn=73,title=SAS ERROR 22-322::Syntax error, expecting one of the following: a name, *, ;
+::notice file=logs/run-2026-10-30.log,line=49,col=1,endLine=49,endColumn=40,title=SAS NOTE::Variable amount is uninitialized.
+```
+
+GitHub Actions renders those as annotations on the diff; Gitea Actions accepts the same workflow commands. The positions come from the parser, so the annotation underlines the line in the log rather than in the source.
+
+One more thing a pipeline gets for free: pointing the command at a folder of mixed artefacts is safe, because a file that is not obviously a SAS log is skipped rather than parsed:
+
+```text
+  1 file skipped (not a SAS log, or excluded) - rerun with --verbose to list them.
+```
+
+### In SASjs Server
+
+The Studio flow is the same list at the moment you need it. Run a job, open the log tab in the results pane, and the tab itself tells you what is in there: an error icon if there is an error, a warning icon if there is a warning. Open it and the pane lists the issues for the chunk on screen; clicking one jumps to its line, so a 50 MB log is navigable by its findings instead of by scrolling.
+
+The eye button on the tab hides the notable notes for that view, and the same switch is on the Studio settings page as `log.notableNotes`, so the preference follows the user rather than the run. The download button still hands over the log exactly as SAS wrote it, byte for byte - the parsing is a view over the log, never a rewrite of it.
+
+### Anywhere else, with the parser in hand
+
+Because `parseLog` is a pair of pure functions, a team can put the same findings into whatever holds their build output - a release script, a dashboard, a Slack alert:
+
+```ts
+import { parseLog } from '@sasjs/utils/logs'
+import { readFileSync } from 'fs'
+
+const issues = parseLog(readFileSync('overnight.log', 'utf8'))
+const notes = issues.filter((issue) => issue.severity === 'note')
+
+console.log(`${notes.length} notable notes, ${issues.length} issues in total`)
+for (const note of notes) console.log(`${note.line + 1}: ${note.message}`)
+```
+
+That is the same twenty lines the editor, the Studio pane and `sasjs logcheck` are built on, which is the reason a keyword added in one place shows up everywhere.
 
 ## Keeping the list
 
