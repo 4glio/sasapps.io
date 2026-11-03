@@ -246,9 +246,9 @@ The log text is unchanged in both cases. Nothing was annotated in the file, and 
 The `FILE` table is the summary a pipeline wants, and the `LINE:COL` list under it is what a human wants when the table says FAIL:
 
 ```text
-FILE                          ERRORS  WARNINGS  NOTES  STATUS
-------------------------------  ------  --------  -----  ------
-logs/run-2026-10-30.log             0         0      7  FAIL
+FILE                     ERRORS  WARNINGS  NOTES  STATUS
+-----------------------  ------  --------  -----  ------
+logs/run-2026-10-30.log  0       0         7      FAIL
 
   7 notes in 1 log
   Logcheck failed: 7 notes  (fail-on: note)
