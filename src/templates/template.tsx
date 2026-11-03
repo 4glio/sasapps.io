@@ -18,6 +18,10 @@ const Template: React.FC<Props> = ({ data, location }: Props) => {
   const description = data.post?.frontmatter?.description || ''
   const featuredImage = data.post?.frontmatter?.featuredImage
   const featuredImgSrc = featuredImage ? getSrc(featuredImage) || '' : ''
+  // The card image is its own query: the in-page image is a 400px thumbnail,
+  // which is far too small for a link preview (LinkedIn wants 1200px wide).
+  const cardImage = featuredImage?.childImageSharp?.ogImage
+  const cardImgSrc = (cardImage ? getSrc(cardImage) : '') || featuredImgSrc
 
   return (
     <div>
@@ -26,7 +30,7 @@ const Template: React.FC<Props> = ({ data, location }: Props) => {
           title={title}
           site={{ ...(data.site?.meta || {}), location }}
           prependtitle={false}
-          previewImg={featuredImgSrc}
+          previewImg={cardImgSrc}
           customDescription={description}
           publishedTime={data.post?.frontmatter?.isoDate || ''}
         />
@@ -67,6 +71,7 @@ export const pageQuery = graphql`
         featuredImage {
           childImageSharp {
             gatsbyImageData(width: 400)
+            ogImage: gatsbyImageData(width: 1200)
           }
         }
         path

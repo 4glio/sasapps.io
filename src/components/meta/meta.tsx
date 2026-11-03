@@ -59,7 +59,10 @@ const Meta: React.FC<Props> = ({
     <Helmet
       title={pageTitle}
       meta={[
-        { name: 'twitter:card', content: 'summary' },
+        {
+          name: 'twitter:card',
+          content: previewImg ? 'summary_large_image' : 'summary',
+        },
         {
           name: 'twitter:site',
           content: `${site?.twitter}`,
@@ -106,6 +109,13 @@ const Meta: React.FC<Props> = ({
           name: 'image',
           property: 'og:image',
           content: image.og,
+        },
+        ...(previewImg
+          ? [{ property: 'og:image:alt', content: pageTitle }]
+          : []),
+        {
+          property: 'og:site_name',
+          content: siteTitle,
         },
         {
           name: 'author',
