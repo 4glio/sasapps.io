@@ -75,10 +75,10 @@ So the English wording in our list comes from the specification spreadsheet's "M
 
 The SAS user-group literature has solved this problem several times over. All of these were read in full, not skimmed from a search result:
 
-* **SUGI 31, paper 128-31 (2006)** - "You've Got E-Mail: Automatic Log Checking via E-Mail Notification" ([PDF](https://support.sas.com/resources/papers/proceedings/proceedings/sugi31/128-31.pdf)). The oldest. Greps six strings and sets a macro variable when one is found.
-* **SAS Global Forum 2012, paper 042-2012** - "Log Checks Made Easy", Yogesh Pande ([PDF](http://support.sas.com/resources/papers/proceedings12/042-2012.pdf)). A `%log_check` macro over a folder of `.log` files, tabulated with `PROC REPORT`. Its list is ten categories rather than ten strings: errors, warnings, uninitialised variables, format not found, repeated `BY` values in a merge, `DROP`/`KEEP`/`RENAME` lists never referenced, decimal shift, unresolved symbolic reference, overwritten variables, and `LENGTH` not first.
-* **SAS Global Forum 2017, paper 1173-2017** and **MWSUG 2017, paper TT02** - "Check Please: An Automated Approach to Log Checking" ([PDF](https://support.sas.com/resources/papers/proceedings17/1173-2017.pdf), [PDF](https://www.mwsug.org/proceedings/2017/TT/MWSUG-2017-TT02.pdf)). The same paper delivered twice. Lists eight common messages - the recurring core of the vocabulary.
-* **PharmaSUG 2008, paper CC02** - "%LOGCHECK: a Convenient Tool for Checking Multiple Log Files", Suzanne Humphreys. `FILENAME PIPE` over a directory of logs, SAS 9.1.3, Windows, interactive. No additional vocabulary, but the report layout everyone copies.
+* **SUGI 31, paper 128-31 (2006)** - "You've Got E-Mail: Automatic Log Checking via E-Mail Notification", Aaron Augustine and Prasenjit Dutta ([PDF](https://support.sas.com/resources/papers/proceedings/proceedings/sugi31/128-31.pdf)). The oldest. Greps six strings and sets a macro variable when one is found.
+* **SAS Global Forum 2012, paper 042-2012** - "Log Checks Made Easy", Yogesh Pande ([PDF](https://support.sas.com/resources/papers/proceedings12/042-2012.pdf)). A `%log_check` macro over a folder of `.log` files, tabulated with `PROC REPORT`. Its list is ten categories rather than ten strings: errors, warnings, uninitialised variables, format not found, repeated `BY` values in a merge, `DROP`/`KEEP`/`RENAME` lists never referenced, decimal shift, unresolved symbolic reference, overwritten variables, and `LENGTH` not first.
+* **SAS Global Forum 2017, paper 1173-2017** and **MWSUG 2017, paper TT02** - "Check Please: An Automated Approach to Log Checking", Richann Watson ([PDF](https://support.sas.com/resources/papers/proceedings17/1173-2017.pdf), [PDF](https://www.mwsug.org/proceedings/2017/TT/MWSUG-2017-TT02.pdf)). The same paper delivered twice. Lists eight common messages - the recurring core of the vocabulary.
+* **PharmaSUG 2008, paper CC02** - "%LOGCHECK: a Convenient Tool for Checking Multiple Log Files", Suzanne M. Humphreys ([PharmaSUG 2008 index](https://saslexicon.org/PharmaSUG/2008/PharmaSUG_2008.html)). `FILENAME PIPE` over a directory of logs, SAS 9.1.3, Windows, interactive. No additional vocabulary, but the report layout everyone copies.
 
 These are background, not the source: their lists are shorter, worded differently, and none contains the statistical notes. Where we agree with them is on the shape of the answer - every one of them decided that a `NOTE` is worth reporting only when it matches a known phrase.
 
@@ -281,9 +281,15 @@ One more thing a pipeline gets for free: pointing the command at a folder of mix
 
 ### In SASjs Server
 
+![Notable notes in the SASjs Server log pane](../assets/notable-notes-studio.png)
+
 The Studio flow is the same list at the moment you need it. Run a job, open the log tab in the results pane, and the tab itself tells you what is in there: an error icon if there is an error, a warning icon if there is a warning. Open it and the pane lists the issues for the chunk on screen; clicking one jumps to its line, so a 50 MB log is navigable by its findings instead of by scrolling.
 
-The eye button on the tab hides the notable notes for that view, and the same switch is on the Studio settings page as `log.notableNotes`, so the preference follows the user rather than the run. The download button still hands over the log exactly as SAS wrote it, byte for byte - the parsing is a view over the log, never a rewrite of it.
+The eye button on the tab hides the notable notes for that view, and the same switch is on the Studio settings page as `log.notableNotes`, so the preference follows the user rather than the run.
+
+![Notable notes hidden in Studio](../assets/notable-notes-studio-hidden.png)
+
+The download button still hands over the log exactly as SAS wrote it, byte for byte - the parsing is a view over the log, never a rewrite of it.
 
 ### Anywhere else, with the parser in hand
 
