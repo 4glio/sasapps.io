@@ -55,7 +55,7 @@ We did not invent the phrases, and we did not want to. Writing a keyword list by
 
 ### SASLogChecker
 
-The list we ship comes from [SASLogChecker](https://github.com/Morioka-Yutaka/SASLogChecker), by Yutaka Morioka, released under the MIT licence. It is a set of SAS macros that scan a log window or a directory of logs and summarise the `ERROR`, `WARNING` and notable `NOTE` messages they find.
+Most of the list we ship comes from [SASLogChecker](https://github.com/Morioka-Yutaka/SASLogChecker), by Yutaka Morioka, released under the MIT licence. It is a set of SAS macros that scan a log window or a directory of logs and summarise the `ERROR`, `WARNING` and notable `NOTE` messages they find.
 
 Three things made it the source rather than merely a reference:
 
@@ -71,6 +71,8 @@ term="8C8791B9926C82F08ADC82F182BE8C768E5A"x
 
 So the English wording in our list comes from the specification spreadsheet's "Message (English)" column, not from the matcher. The consequence for us is a known limitation: our parser matches English text only, so a Japanese-language SAS log yields no notable notes from it.
 
+Two of the thirty-two entries are not from SASLogChecker. They come from Phil Mason's Log Viewer - [Log Analysis/rules.json](https://github.com/philipmason/Wood-Street-Consultants/blob/main/Log%20Analysis/rules.json) in his Wood Street Consultants repository, February 2023 - which applies a JSON rule set to a log line by line and marks each rule `interesting` or not, so a reviewer can read a short view. Two of its rules caught notes we were missing: a `NOTE: ERROR DETECTED IN ANNOTATE= DATASET` where SAS/GRAPH failed and the step still returned, and the `outside of the axis range` wording, which our single string `outside the axis range` did not match.
+
 ### The conference papers
 
 The SAS user-group literature has solved this problem several times over. All of these were read in full, not skimmed from a search result:
@@ -82,10 +84,11 @@ The SAS user-group literature has solved this problem several times over. All of
 
 These are background, not the source: their lists are shorter, worded differently, and none contains the statistical notes. Where we agree with them is on the shape of the answer - every one of them decided that a `NOTE` is worth reporting only when it matches a known phrase.
 
-### Two implementations worth reading for other reasons
+### Three implementations worth reading for other reasons
 
 * [**vdebbeti/SAS-Log-checker-CLI**](https://github.com/vdebbeti/SAS-Log-checker-CLI) is 89 lines of Python with one regex anchored to the message prefixes, so a `NOTE:` inside a quoted string or a printed data set does not match. It reports every note and has no keyword list at all - but its command line (`--fail-on error|warning|note|none`, JSON output) is a good shape, and we borrowed it for `sasjs logcheck`.
 * [**SAS Institute's own VS Code extension**](https://github.com/sassoftware/vscode-sas-extension) parses `ERROR` and `WARNING` only, and no notes at all - the opposite decision. Its value is elsewhere: `logParser.ts` maps a message back to the source line using the pointer lines SAS prints (a run of dashes, then the column numbers under the token). Two rules we took from it: a pointer line must not be absorbed into the message above it, and a log viewer that is not attached to an editor should still report positions in the log text.
+* [**philipmason/Wood-Street-Consultants**](https://github.com/philipmason/Wood-Street-Consultants) is the Log Viewer: `Log Analysis/rules.json` plus `%filecheckwithrules`, a JSON rule set, a SAS macro that applies it and a browser viewer that colours the matches. Each rule carries a `type`, an `interesting` flag and the HTML to wrap a match in, so one file drives the report in SAS and the colouring in the browser - the `interesting` flag is our notable notes by another name, and it is where two of our keywords came from. Its engine is the reason to keep ours: `prxmatch` runs per physical line and unanchored, so a message SAS wraps is missed and a rule can fire inside a printed data set, and the colouring markup lives in the rule data rather than in the host. Its `WARNING` rule is also more suppressive than ours - a negative lookahead drops product-expiry warnings and any warning line mentioning `MPRINT`, `MLOGIC` or `SYMBOLGEN`. That is a policy choice rather than an oversight, and the opposite of ours: we report every warning.
 
 ### Where to find the papers - saslexicon.org
 
@@ -129,7 +132,7 @@ for (const issue of issues) {
 }
 ```
 
-`parseLog` returns every `ERROR` and `WARNING`, and a `NOTE` only when its message matches `NOTE_KEYWORDS` - thirty patterns, matched case-insensitively against the folded message:
+`parseLog` returns every `ERROR` and `WARNING`, and a `NOTE` only when its message matches `NOTE_KEYWORDS` - thirty-two patterns, matched case-insensitively against the folded message:
 
 ```ts
 const NOTE_KEYWORDS = [
@@ -144,7 +147,7 @@ const NOTE_KEYWORDS = [
   'have been thinned',
   'infinite likelihood',
   'not positive definite'
-  // ...and nineteen more
+  // ...and twenty-one more
 ]
 
 export const isNotableNote = (message: string): boolean =>
@@ -156,7 +159,7 @@ The details that matter, and why:
 * **The match runs on the folded message.** SAS wraps a long note over several physical lines, so a keyword can land on the second line. Wrapped lines are folded into one issue first (up to a limit, so a malformed log cannot run away), and one problem is reported as one issue rather than one per line.
 * **Only the colon form counts for notes.** `NOTE:` is a message; any line beginning `NOTE` is not, and matching the latter would readmit the whole notes stream. A coded note (`NOTE 49-169:`) is a note and keeps its code, because the code is what `--ignore-code` keys on.
 * **`ERROR` and `WARNING` also match without the colon**, in the form SAS writes when it continues a message: `ERROR Libref X is not assigned.`
-* **Thirty keywords are one regex.** Testing thirty `includes` calls per note, over a log holding thousands of notes, was measurably slower than one alternation; the module's other hot path is a fast return from `clean()` when a line carries no markup and no double space.
+* **Thirty-two keywords are one regex.** Testing thirty-two `includes` calls per note, over a log holding thousands of notes, was measurably slower than one alternation; the module's other hot path is a fast return from `clean()` when a line carries no markup and no double space.
 * **Nothing is split into lines.** A 16 MB log becomes millions of strings if you build an array of lines. One global regex pass over the text, with line numbers counted forward from the previous match, costs a fraction of that.
 * **ODS HTML logs parse too.** A tag sequence before the marker is skipped and markup is stripped from the reported message, so the same parse serves a plain log and an HTML one.
 * **`isSasLog` is the guard.** A Python log writes `ERROR:root:boom` and a shell build log writes `ERROR: Command failed with exit code 1`. The marker alone proves nothing, so the test looks for what only SAS prints about itself: the banner, a coded marker, or padded step numbers. A host that publishes diagnostics treats a false answer as "not obviously SAS" rather than "not SAS" - a trimmed excerpt carries none of the three.
@@ -294,7 +297,7 @@ That is the same twenty lines the editor, the Studio pane and `sasjs logcheck` a
 
 Two rules, and they are the reason the list can be maintained at all.
 
-**Credit travels with the data.** Every keyword in `NOTE_KEYWORDS` sits next to a comment saying where the list came from and which message each entry catches. If you add one, say where you got it, at the point of the addition. A list of phrases with no provenance cannot be reviewed, because the next person cannot tell a deliberate choice from a typo.
+**Credit travels with the data.** Provenance sits in the module's docstring, and inline next to any keyword that comes from somewhere new, with the message it catches. If you add one, say where you got it, at the point of the addition. A list of phrases with no provenance cannot be reviewed, because the next person cannot tell a deliberate choice from a typo.
 
 **Keep it short and closed.** Adding a keyword widens what every host reports - the editor, the Studio pane and every pipeline that runs `sasjs logcheck`. A message belongs on the list when a reviewer would want to see it even though SAS called it a note. That test rejects most candidates, which is the point.
 
@@ -304,6 +307,7 @@ Known limitations, stated rather than hidden: the matcher is English-only, so a 
 
 * [SASLogChecker](https://github.com/Morioka-Yutaka/SASLogChecker) - Yutaka Morioka, MIT. The source of the list.
 * [SAS Packages Framework](https://github.com/yabwon/SAS_PACKAGES) and the [SASPAC archive](https://github.com/SASPAC) - how SASLogChecker is distributed.
+* [Wood Street Consultants Log Viewer](https://github.com/philipmason/Wood-Street-Consultants/blob/main/Log%20Analysis/rules.json) - Phil Mason's `rules.json` and `%filecheckwithrules`. Two of the keywords came from here.
 * [SAS LEX.ICON](https://saslexicon.org) - the user-group proceedings archive, 37,396 papers.
 * [sasjs/utils](https://github.com/sasjs/utils) - `src/logs/sasLog.ts`, the parser and the list.
 * [sasjs/cli](https://github.com/sasjs/cli) - `src/commands/logcheck`, the `logcheck` command and the automatic check.
