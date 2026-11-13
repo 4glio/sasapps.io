@@ -64,7 +64,7 @@ All of these are public, and all of them were verified against the live sites.
 | [staging.datacontroller.io](https://staging.datacontroller.io) | The real product. Data Controller's entire front end - editor, approvals, viewer, admin, Excel maps - on 63 JavaScript services over a captured drive of 64 entries, with a shipped licence so it is usable past the free tier. |
 | [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. The public build is the backend-free one (personal bests in localStorage), and the repository ships a `mock` target plus `npm run devsetup`, which stands up a local JS-runtime server where the leaderboard persists end to end. |
 
-The scale is the interesting part of that table. The two seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers.
+The scale is the interesting part of that table. The three seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers.
 
 You can read the delivered configuration for any of them - it is a normal file in the build output:
 
