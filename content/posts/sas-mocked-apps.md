@@ -120,7 +120,7 @@ And a mock that drifts from the service it imitates is worse than no mock, becau
 
 ## Five working examples
 
-All public. Each was checked against the live site at the time of writing, and where the published site is not itself the mocked build, the row says so.
+All public, all verified against the live sites at the time of writing.
 
 | Site | What it demonstrates |
 |---|---|
@@ -128,7 +128,7 @@ All public. Each was checked against the live site at the time of writing, and w
 | [angular.sasjs.io](https://angular.sasjs.io) | An Angular app with a file upload and a SAS log panel - and the mocks report logs too, so the panel has something to show with no SAS behind it. |
 | [react.sasjs.io](https://react.sasjs.io) | The same shape in React, built from `build/` rather than `src/`, which is where `webSourcePath` earns its keep. |
 | [staging.datacontroller.io](https://staging.datacontroller.io) | A commercial product's entire front end - editor, approvals, viewer, admin, Excel maps - on 63 JavaScript services over a captured drive of 64 entries. A visitor can evaluate it without a licence, a VPN or a single credential, and nothing they do reaches a customer estate. |
-| [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. At the time of writing the published site is the bare front end, so personal bests fall back to localStorage; the repository ships a `mock` target that runs the same services in the browser behind a service worker, and `npm run devsetup` stands up a local JS-runtime server where the leaderboard persists end to end. |
+| [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer, published as a mocked build: three JavaScript services over a six-entry drive, running behind a service worker, so a visitor can play and see the leaderboard persist between visits. |
 
 The scale is what makes the point convincing. The three seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers, which is the difference between a demo and an argument.
 
