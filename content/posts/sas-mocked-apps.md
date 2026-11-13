@@ -16,7 +16,7 @@ tags:
 
 ![Mocked backends: same UI, different engine](../assets/sas-mocked-apps.jpeg)
 
-Most SAS estates are protected at the perimeter and then handed out through the front door. To get a web application built, a developer needs a VPN account, a metadata or Viya login, a client secret or personal access token, a writeable location on a running SAS server, and often a copy of the data. Each of those is a route into a system that holds the organisation's sensitive analytics. Mocked backends remove the requirement: the front end is developed against a JavaScript implementation of the same services, so the development loop never touches SAS. This article covers the risk that pattern addresses, the specific things it takes out of circulation, the cases where it pays for itself, the boundary you must not cross, and how to build one.
+Most SAS estates are protected at the perimeter and then handed out through the front door. To get a web application built, a developer needs a VPN account, a SAS login, a client secret or personal access token, a writeable location on a running SAS server, and often a copy of the data. Each of those is a route into a system that holds the organisation's sensitive analytics. Mocked backends remove the requirement: the front end is developed against a JavaScript implementation of the same services, so the development loop never touches SAS. This article covers the risk that pattern addresses, the specific things it takes out of circulation, the cases where it pays for itself, the boundary you must not cross, and how to build one.
 
 ## The risk is not the server, it is everything that touches it
 
@@ -120,7 +120,7 @@ All public, all verified against the live sites.
 | [angular.sasjs.io](https://angular.sasjs.io) | An Angular app with a file upload and a SAS log panel - and the mocks report logs too, so the panel has something to show with no SAS behind it. |
 | [react.sasjs.io](https://react.sasjs.io) | The same shape in React, built from `build/` rather than `src/`, which is where `webSourcePath` earns its keep. |
 | [staging.datacontroller.io](https://staging.datacontroller.io) | A commercial product's entire front end - editor, approvals, viewer, admin, Excel maps - on 63 JavaScript services over a captured drive of 64 entries. A visitor can evaluate it without a licence, a VPN or a single credential, and nothing they do reaches a customer estate. |
-| [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. The public build is the backend-free one (personal bests in localStorage), and the repository ships a `mock` target plus `npm run devsetup`, which stands up a local JS-runtime server where the leaderboard persists end to end. |
+| [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. It ships a `mock` target too, so the game's services run in the browser behind a service worker and the leaderboard persists between visits; served as a bare front end instead, personal bests fall back to localStorage. The repository also ships `npm run devsetup`, which stands up a local JS-runtime server where those same services run outside a browser. |
 
 The scale is the interesting part. The three seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers - which is the difference between a demo and an argument.
 
@@ -133,9 +133,16 @@ https://minimal.sasjs.io/host/mock-config.json
 ```json
 {
   "appLoc": "/Public/app/minimal-seed-app",
+  "seedPath": "host/vfs-seed.json",
   "driveEntries": 5,
   "jsPrograms": 2,
+  "programFolders": [
+    "services",
+    "jobs",
+    "tests"
+  ],
   "snapshot": false,
+  "sasTranscript": false,
   "identity": "default",
   "buildStamp": "96e405daa1",
   "builtAt": "2026-11-12T14:49:49.751Z"
@@ -148,7 +155,7 @@ That stamp is worth having on a site you send to people. "Which build am I looki
 
 The quickest start is one of the seed apps - [minimal](https://github.com/sasjs/minimal-seed-app), [Angular](https://github.com/sasjs/angular-seed-app) or [React](https://github.com/sasjs/react-seed-app) - because each already ships a `mock` target, the mock services and a publishing workflow. Copy that structure into your own project. The steps below are what that structure is.
 
-You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps pin 6.27.x and the current release is 6.29.0, so pin something in that range rather than relying on whatever is installed globally.
+You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps pin 6.27.3 or `^6.28.0` and the current release is 6.29.0, so pin something in that range rather than relying on whatever is installed globally.
 
 ### Step 1 - add a mock target
 
@@ -169,7 +176,7 @@ A target, no more:
 }
 ```
 
-Three things to get right. `webSourcePath` points at the built frontend: `src` for a hand-rolled page or a framework that serves from source, `build` for Create React App, `client/dist` for a CLI-built Angular app. `appLoc` has to match the location the frontend was built with, because the services are resolved from it - if the page asks for `/Public/app/foo` and the build deployed `/Public/app/bar`, every call misses. And the target's services have to be JavaScript: a target that compiles `.sas` cannot be built for the browser, and the build says so rather than producing something broken.
+Three things to get right. `webSourcePath` points at the built frontend: `src` for a hand-rolled page or a framework that serves from source, `build` for Create React App, `client/dist` for a CLI-built Angular app. `appLoc` has to match the location the frontend was built with, because the services are resolved from it - if the page asks for `/Public/app/foo` and the build deployed `/Public/app/bar`, every call misses. And the services you want to answer in the browser have to be JavaScript: a target that also compiles `.sas` still builds, with the compiled SAS programs seeded onto the drive for a visitor to read, and the build warns that they cannot run in a browser.
 
 ### Step 2 - write the twins
 
@@ -193,7 +200,7 @@ Compiled 0 SAS files; 12 files copied through unchanged (not SAS programs).
 Packing 0 SAS services and 12 files.
 ```
 
-Inside the program you get the same verbs the macro offers. Here is the whole of the minimal app's `appinit` twin: it reads a JSON fixture off the drive and answers exactly what `%webout(OBJ, areas)` would have answered.
+Inside the program you get the same verbs the macro offers. Here is the body of the minimal app's `appinit` twin: it reads a JSON fixture off the drive and answers exactly what `%webout(OBJ, areas)` would have answered.
 
 ```js
 const path = require('path')
