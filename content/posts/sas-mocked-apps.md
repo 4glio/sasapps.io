@@ -16,7 +16,7 @@ tags:
 
 ![Mocked backends: same UI, different engine](../assets/sas-mocked-apps.jpeg)
 
-Most SAS estates are protected at the perimeter and then handed out through the front door. To get a web application built, a developer needs a VPN account, a metadata or Viya login, a client secret or personal access token, a writable location on a production server, and often a copy of the data. Each of those is a route into a system that holds the organisation's analysis. Mocked backends remove the requirement: the front end is developed against a JavaScript implementation of the same services, so the development loop never touches SAS. This article covers the risk that pattern addresses, the specific things it takes out of circulation, the cases where it pays for itself, the boundary you must not cross, and how to build one.
+Most SAS estates are protected at the perimeter and then handed out through the front door. To get a web application built, a developer needs a VPN account, a metadata or Viya login, a client secret or personal access token, a writeable location on a running SAS server, and often a copy of the data. Each of those is a route into a system that holds the organisation's sensitive analytics. Mocked backends remove the requirement: the front end is developed against a JavaScript implementation of the same services, so the development loop never touches SAS. This article covers the risk that pattern addresses, the specific things it takes out of circulation, the cases where it pays for itself, the boundary you must not cross, and how to build one.
 
 ## The risk is not the server, it is everything that touches it
 
@@ -39,7 +39,7 @@ It is worth writing down, because the list is longer than it feels:
 1. Network reach to the SAS server, which usually means a VPN.
 2. An identity on that server, with a licence entitlement.
 3. A token or client secret, stored somewhere durable.
-4. A writable location, historically in the same folders production services live in.
+4. A writeable location, historically in the same folders production services live in.
 5. Data that resembles production closely enough to build against.
 6. Compute, during working hours, for test runs and restarts.
 7. Somebody to grant all of the above, and to remove it later.
@@ -273,7 +273,7 @@ Whatever the host, ship `index.html` and `sw.js` together with everything else -
 
 The authoritative references are [sasjs build](https://cli.sasjs.io/build/) (the browser build, snapshots and file responses), [JavaScript services](https://cli.sasjs.io/js-services/) (how non-SAS files travel through compile, build and deploy) and the [server component page](https://sasjs.io/components/server) for the JS runtime and its two modes. The seed app READMEs are the shortest path from reading to running, and their repositories are small enough to read in an afternoon.
 
-The argument, in the end, is not that SAS is unnecessary. It is that a platform holding the organisation's analysis should be reached by as few things as possible - and that a front-end sprint is not one of them.
+The argument, in the end, is not that SAS is unnecessary. It is that a platform holding the organisation's sensitive analytics should be reached by as few things as possible - and that a front-end sprint is not one of them.
 
 <!-- Image prompt (the brief the published cover was generated from):
 Generate a 16:9 landscape illustration for a B2B developer blog cover, 1200x627.
