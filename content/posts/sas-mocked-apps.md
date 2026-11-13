@@ -48,6 +48,8 @@ It is worth writing down, because the list is longer than it feels:
 
 Mocked backends remove items 1 to 4 outright. They replace item 5 with a generated fixture, move item 6 onto the developer's machine or into a pipeline, and reduce item 7 to a grant on a source repository.
 
+![Seven credentials leaving one laptop for a single SAS estate](../assets/sas-mocked-apps-standing-access.jpeg)
+
 ## What changes when the backend is JavaScript
 
 The mechanism is small. SASjs Server chooses a runtime from the file extension, so `services/common/getdata.js` is a service in exactly the same sense as `getdata.sas`. Where the service folder is the contract, the front end cannot tell which one it is talking to. There are two ways to run a backend like that, and both matter here.
@@ -57,6 +59,8 @@ A **JavaScript-runtime server** (`RUN_TIMES=js`) deploys and executes the servic
 The **browser build** goes further. `mockWeb` in `streamConfig` makes `sasjs build` emit a second artefact - your frontend, your compiled services, a service worker and a small runtime - in which the backend runs in the browser. The service worker intercepts the calls the adapter makes, runs the matching program, and resolves `webout`, log and headers back to the app. There is no server.
 
 Whichever of the two you run, the estate drops out of the picture in the same way.
+
+![The same front end on a local JS-runtime server and behind a service worker](../assets/sas-mocked-apps-two-backends.jpeg)
 
 ### The estate is not on the path
 
@@ -83,6 +87,8 @@ Moving development off the estate leaves it carrying the load it was bought for.
 ### The pipeline is faster and safer
 
 A browser-hosted build needs no SAS container, no licence check and no network dependency, so a pull request gets an answer in minutes instead of waiting in a queue behind an environment. It also publishes: the artefact is static files, so a review environment for any branch is a deploy of a folder.
+
+![Commit to build to static files to preview, with the estate untouched](../assets/sas-mocked-apps-pipeline.jpeg)
 
 The safety point is less obvious. A mock cannot be reached from the internet, cannot be left running with production data in it, and cannot be the thing an attacker pivots through. The CI estate stops being a second estate to secure.
 
@@ -288,6 +294,30 @@ The argument, in the end, is not that SAS is unnecessary. It is that a platform 
 Generate a 16:9 landscape illustration for a B2B developer blog cover, 1200x627.
 Style: isometric flat-shaded 3D, translucent glass-like UI panels floating above a dark base, lime (#8AC640) and teal-cyan (#00A5D7) accents, soft diffused shadows, minimal and clean, dark background (#0D1F22 / #114F55), white bold headline with one lime highlight word, Poppins-like geometric sans.
 Scene: two identical glass dashboard panels side by side, the left one connected by a cable to a large server cabinet labelled with a SAS-like logo shape, the right one standing free with a small circular arrow loop beneath it, and a browser window frame around the right panel to signal that it runs in the browser. Both panels show the same bar chart, identical in every respect, to signal that the front end cannot tell them apart. A thin lime dotted line joins the two panels at the top.
+Minimal text, no logos, no watermarks.
+Keep the subject in the central square (safe for a 1:1 crop); the outer left and right thirds are croppable background only.
+-->
+
+<!-- Image prompt for content/assets/sas-mocked-apps-standing-access.jpeg (regenerate at the same filename):
+Generate a 16:9 landscape illustration for a B2B developer blog article, 1200x627.
+Style: isometric flat-shaded 3D, translucent glass-like UI panels floating above a dark base, lime (#8AC640) and teal-cyan (#00A5D7) accents, soft diffused shadows, minimal and clean, dark background (#0D1F22 / #114F55), Poppins-like geometric sans.
+Scene: one open laptop on the left, and from it seven thin glowing cables run to a single large server cabinet on the right. Each cable carries a small glass token at its midpoint - a key, a padlock, a VPN tunnel tube, a scroll of code - to show seven separate grants leaving one machine. The cabinet is lit lime and looks expensive and solid; the laptop's cables are tangled where they leave it. A thin dashed line marks the network boundary the cables cross.
+Minimal text, no logos, no watermarks.
+Keep the subject in the central square (safe for a 1:1 crop); the outer left and right thirds are croppable background only.
+-->
+
+<!-- Image prompt for content/assets/sas-mocked-apps-two-backends.jpeg (regenerate at the same filename):
+Generate a 16:9 landscape illustration for a B2B developer blog article, 1200x627.
+Style: isometric flat-shaded 3D, translucent glass-like UI panels floating above a dark base, lime (#8AC640) and teal-cyan (#00A5D7) accents, soft diffused shadows, minimal and clean, dark background (#0D1F22 / #114F55), Poppins-like geometric sans.
+Scene: two identical glass dashboard panels side by side in the centre. Under the left panel sits a small cube-shaped Node process on the same machine, connected by a short cable - a lightweight local server. Under the right panel sits a browser window frame with a small circular arrow loop, and a thin shield-like layer between the panel and the frame, standing for a service worker intercepting the calls. Both panels show the same bar chart, identical in every respect. On the far right, a server cabinet is drawn in muted grey, cut off by a vertical dashed line, disconnected - present but not on the path.
+Minimal text, no logos, no watermarks.
+Keep the subject in the central square (safe for a 1:1 crop); the outer left and right thirds are croppable background only.
+-->
+
+<!-- Image prompt for content/assets/sas-mocked-apps-pipeline.jpeg (regenerate at the same filename):
+Generate a 16:9 landscape illustration for a B2B developer blog article, 1200x627.
+Style: isometric flat-shaded 3D, translucent glass-like UI panels floating above a dark base, lime (#8AC640) and teal-cyan (#00A5D7) accents, soft diffused shadows, minimal and clean, dark background (#0D1F22 / #114F55), Poppins-like geometric sans.
+Scene: a short left-to-right flow of four glass tiles connected by a lime arrow: a small branch-and-commit icon, a gear turning over a stack of files, a folder of static files marked with a cloud upload, and a browser preview window showing a dashboard. The four tiles sit on a dark base, close together, moving fast. Off to the right and clearly separated by a gap, a large server cabinet stands dormant and unlit, with no cable reaching it - nothing in the flow touches it.
 Minimal text, no logos, no watermarks.
 Keep the subject in the central square (safe for a 1:1 crop); the outer left and right thirds are croppable background only.
 -->
