@@ -22,7 +22,7 @@ Mocked backends take that requirement away. The front end is developed against a
 
 ## The risk is not the server, it is everything that touches it
 
-A hardened server is only as strong as the devices that hold credentials for it. The risk scales with how many there are and how well each is maintained, and a SAS estate can have thousands attached. Breaches that begin on a developer machine are a well documented route into a server estate, and they are not exotic: a phishing link, a malicious package in a dependency tree, a compromised browser extension, a personal project that shares a shell history. The estate is rarely the target; it is what the credentials on that machine unlock.
+A hardened server is only as strong as the devices that hold credentials for it. Breaches that begin on a developer machine are a well documented route into a server estate, and they are not exotic: a phishing link, a malicious package in a dependency tree, a compromised browser extension, a personal project that shares a shell history. The estate is rarely the target; it is what the credentials on that machine unlock.
 
 The problem is structural rather than a matter of discipline, and each requirement compounds the last:
 
