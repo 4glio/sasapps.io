@@ -22,7 +22,7 @@ Mocked backends take that requirement away. The front end is developed against a
 
 ## The risk is not the server, it is everything that touches it
 
-A hardened server is worth little if twenty laptops hold credentials for it. Breaches that begin on a developer machine are a well documented route into a server estate, and they are not exotic: a phishing link, a malicious package in a dependency tree, a compromised browser extension, a personal project that shares a shell history. The estate is rarely the target; it is what the credentials on that machine unlock.
+A hardened server is only as strong as the devices that hold credentials for it. Breaches that begin on a developer machine are a well documented route into a server estate, and they are not exotic: a phishing link, a malicious package in a dependency tree, a compromised browser extension, a personal project that shares a shell history. The estate is rarely the target; it is what the credentials on that machine unlock.
 
 The problem is structural rather than a matter of discipline, and each requirement compounds the last:
 
@@ -172,19 +172,17 @@ A target, no more:
 ```json
 {
   "name": "mock",
-  "serverUrl": "",
   "serverType": "SASJS",
   "appLoc": "/Public/app/minimal-seed-app",
   "streamConfig": {
     "mockWeb": true,
     "mockWebFolder": "sasjsbuild/mock",
-    "streamWeb": false,
     "webSourcePath": "src"
   }
 }
 ```
 
-Three things have to be right. `webSourcePath` points at the built frontend: `src` for a hand-rolled page or a framework that serves from source, `build` for Create React App, `client/dist` for a CLI-built Angular app. `appLoc` has to match the location the frontend was built with, because the services are resolved from it: if the page asks for `/Public/app/foo` and the build deployed `/Public/app/bar`, every call misses. And the services that answer in the browser have to be JavaScript, because a target that also compiles `.sas` still builds - with the compiled SAS programs seeded onto the drive for a visitor to read - and the build warns that they cannot run in a browser.
+`mockWeb` turns the browser build on and `mockWebFolder` is where the output goes: a single-page app with a service worker standing in for the backend. `webSourcePath` points at the built frontend - `src` for a hand-rolled page or a framework that serves from source, `build` for Create React App, `client/dist` for a CLI-built Angular app. `appLoc` is where the app will be deployed in the SASjs folder system. `serverType` is required by the config schema, and the mock build does not use it.
 
 ### Step 2 - write the twins
 
@@ -247,10 +245,10 @@ Determinism is not a nicety either: random data makes a recorded demo unreproduc
 
 ### Step 4 - build and serve it
 
-Two scripts, and the whole mocked workflow:
+Two scripts, and the whole mocked workflow. `sasjs cb` compiles and builds the default target, so set this one as `defaultTarget` and name it what you like:
 
 ```json
-"mock:build": "sasjs compile -t mock && sasjs build -t mock",
+"mock:build": "sasjs cb",
 "mock:start": "npx http-server ./sasjsbuild/mock -p 3001"
 ```
 
@@ -275,14 +273,6 @@ Treat the snapshot as a generated build input rather than something to commit: i
 It is a directory of static files with no server-side requirement, so publish it like one. The seed apps use GitHub Pages: a workflow runs `mock:build` and `test:mock` on every pull request, adds a `CNAME` and `.nojekyll` to the output, and deploys the folder from `main` only. Data Controller publishes to its own instance with Surfer, as a named site on an alias domain, so a failed upload leaves the current site serving.
 
 Whatever the host, ship `index.html` and `sw.js` together with everything else, because those two carry the references. The runtime files under `host/` are requested with a `?v=<hash>` query that changes with their contents, so a redeploy replaces them for returning visitors.
-
-## Five things that will catch you
-
-- **`file://` does not work.** The service worker needs a secure context. `localhost` counts; a file opened from disk does not.
-- **The snapshot is tied to where it was captured.** A licence issued for one origin will not decrypt on another. If an app asks to be licensed or configured after deployment while it worked locally, this is almost always the reason, so capture the snapshot on the domain you deploy to.
-- **Only two response headers are applied**, `Content-type` and `Content-Disposition`. A static host has no cache and no cookie to set. A request made with `_debug` returns the text frame instead, because its body is the webout wrapped in the log.
-- **The drive holds text.** A file a service writes as bytes is stored as base64 and reads back as bytes, which is fine for a CSV or a small xlsx and wrong for a large binary. A filename outside ASCII belongs in RFC 6266 form.
-- **A missing `appLoc` match looks like a broken app, not a configuration error.** The page loads, the adapter calls, and every service 404s.
 
 ## Where to read next
 
