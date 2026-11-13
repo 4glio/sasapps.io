@@ -1,72 +1,130 @@
 ---
-title: SAS Apps Without SAS - the Mocked Build
+title: Develop Without the Keys - Mocked Backends and the SAS Estate
 date: 2026-11-13T10:00:00.000Z
 layout: POST
 path: /sas-mocked-apps
-description: A deep dive into mocked SASjs applications - apps whose services are JavaScript, so the whole stack runs with no SAS licence, no metadata server and no backend. What it is good for, what it cannot do, five working examples, and how to build one.
+description: Every developer who can reach the SAS server is a route into it. Mocked backends take SAS out of the development loop - no VPN, no tokens on laptops, no dev load on Viya - so the estate stays closed and the total cost of owning it goes down.
 category: SASjs
 featuredImage: ../assets/sas-mocked-apps.jpeg
 tags:
   - SASjs
   - SASjs Server
   - SAS
+  - Security
   - SAS Apps
-  - Open Source
 ---
 
-![SAS mocked apps](../assets/sas-mocked-apps.jpeg)
+![Mocked backends: same UI, different engine](../assets/sas-mocked-apps.jpeg)
 
-A mocked SASjs app is an application whose backend services are JavaScript instead of SAS. Nothing else about it changes: the same `@sasjs/adapter` in the browser, the same service names, the same `webout` contract, the same `sasjs` element in the page. What changes is that there is no SAS engine behind it, so the app builds, deploys, boots and answers with no SAS licence, no metadata server and no Viya estate. This article covers what the capability is, what it is genuinely useful for, the five things to know before you rely on it, five working examples, and a step-by-step guide to making one of your own.
+Most SAS estates are protected at the perimeter and then handed out through the front door. To get a web application built, a developer needs a VPN account, a metadata or Viya login, a client secret or personal access token, a writable location on a production server, and often a copy of the data. Each of those is a route into a system that holds the organisation's analysis. Mocked backends remove the requirement: the front end is developed against a JavaScript implementation of the same services, so the development loop never touches SAS. This article covers the risk that pattern addresses, the specific things it takes out of circulation, the cases where it pays for itself, the boundary you must not cross, and how to build one.
 
-## The idea in one sentence
+## The risk is not the server, it is everything that touches it
 
-SASjs Server picks a runtime from the file extension, so `services/common/getdata.js` is a service in exactly the same sense as `getdata.sas`. That single decision is the whole capability: a service folder is a contract, and where the contract is met by JavaScript, the front end cannot tell the difference.
+A hardened server is worth little if twenty laptops hold credentials for it. Breaches that begin on a developer machine are a well documented route into a server estate, and they are not exotic: a phishing link, a malicious package in a dependency tree, a compromised browser extension, a personal project that shares a shell history. The estate is rarely the target. It is what the credentials on that machine unlock.
 
-There are two ways to run such a backend, and the distinction matters.
+The problem is structural rather than a matter of discipline, and it compounds in the obvious direction:
 
-The first is a **JavaScript-runtime server**. `@sasjs/server` started with `RUN_TIMES=js` deploys and executes your `.js` services on a real drive with real sessions, exactly as it would run SAS programs. Nothing is faked at the transport level - it is the same API, the same login, the same `/SASjsApi/...` routes. This is how Data Controller's Cypress suite and its Lighthouse run work, and it is how you would do local full-stack development without a SAS installation.
+- **Each developer needs standing access.** Not one key - a VPN profile, a database login, an OAuth client, a token with a long life, an app location they can write to.
+- **Those credentials have to live somewhere.** On a laptop, in a shell history, in a `.env` file, in a CI secret that someone also uses locally, in a screenshot on a ticket.
+- **Access is broader than the task.** The person adding a dropdown needs the same reach as the person deploying the release, because there is only one door.
+- **Nobody can rotate cleanly.** A leaked token is only discovered after it has been used, and revoking it breaks every other developer at once.
+- **The development loop loads production.** Test runs, sample queries and half-finished services all execute on the box that also runs the reporting the business depends on.
 
-The second is the **browser build**, enabled by `mockWeb` in `streamConfig`. `sasjs build` then emits a second artefact: a static site - your frontend, your compiled services, a service worker, and a small runtime that executes them - in which the backend runs inside the browser. A service worker intercepts the calls the adapter makes, runs the matching JavaScript program, and resolves `webout`, log and headers back to the app. Requests still appear in the network tab. Anything the services write to the drive is kept in IndexedDB, so a refresh does not lose it. It is a directory of files, so it can be hosted anywhere a static site can.
+The result is a hard-to-quantify but real cost: an estate that is expensive to protect because so many people must be trusted with it, and expensive to run because it is doing two jobs - analytics, and standing in for something that could be a static site.
 
-The browser build is the one that changes what a link is worth. `mockWeb` is independent of `streamWeb`, so one config serves both the browser build and a normal `sasjs deploy`; the same repository still ships to Viya, to SAS 9 or to a real server.
+## What the development loop actually asks for today
 
-## What it is good for
+It is worth writing down, because the list is longer than it feels:
 
-**Demos and evaluation without a licence.** A prospect, a conference audience or a new colleague opens a URL and uses the application. No VPN, no credentials, no provisioning. This is why `staging.datacontroller.io` exists: a release branch publishes it automatically, and it is deliberately shipped unconfigured, so a visitor lands on the deployment wizard and can walk the setup themselves.
+1. Network reach to the SAS server, which usually means a VPN.
+2. An identity on that server, with a licence entitlement.
+3. A token or client secret, stored somewhere durable.
+4. A writable location, historically in the same folders production services live in.
+5. Data that resembles production closely enough to build against.
+6. Compute, during working hours, for test runs and restarts.
+7. Somebody to grant all of the above, and to remove it later.
 
-**Review environments per change.** Because the artefact is static files, a pull request can publish its own build. A reviewer clicks a link and looks at the actual UI of the actual commit, instead of reading a diff and imagining it.
+Mocked backends address items 1 to 4 completely, item 5 by a generated fixture, and items 6 and 7 by moving the work off the estate altogether.
 
-**Frontend development that does not wait for the backend.** The service contract is the interface. Once a stub answers the right shape, the Angular or React developer stops blocking on metadata, on a SAS 9 web tier, or on a colleague's availability.
+## What changes when the backend is JavaScript
 
-**End-to-end tests in CI.** A mocked backend is deterministic and free. The suites run on every push without a SAS container, and they exercise the frontend, the adapter, the service contract and the rendering path - which is where most regressions actually live.
+The mechanism is small. SASjs Server chooses a runtime from the file extension, so `services/common/getdata.js` is a service in exactly the same sense as `getdata.sas`. A service folder is a contract, and where JavaScript meets the contract, the front end cannot tell the difference. There are two ways to run such a backend, and both matter here.
 
-**Teaching and documentation.** Screenshots, recordings and tutorials that do not need a licence, and that cannot break because an environment moved.
+A **JavaScript-runtime server** (`RUN_TIMES=js`) deploys and executes the services on a real drive with real sessions. It is a SASjs Server, not a SAS one: a lightweight Node process that can sit on a laptop, in a container, or on a small internal host with nothing else on it.
 
-**Air-gapped and constrained environments.** Two files of build output and a web server. Nothing to install on the estate.
+The **browser build** goes further. `mockWeb` in `streamConfig` makes `sasjs build` emit a second artefact - your frontend, your compiled services, a service worker and a small runtime - in which the backend runs in the browser. The service worker intercepts the calls the adapter makes, runs the matching program, and resolves `webout`, log and headers back to the app. There is no server.
 
-## What it is not
+Either way, what follows is the same.
 
-Be honest about the boundary, because it is a hard one. A browser-hosted build has no SAS engine in it, so a service that reads a SAS table, runs a macro, uses a format or touches CAS cannot work there - the answer is not slow or different, it is absent. Some services are also only meaningful against real data: a row count, a join, an aggregation over a library.
+### The estate is not on the path
 
-Two consequences follow. First, the mocked build is a demo and review artefact; anything that needs SAS gets a real target. Second, when a mock answers a request it is answering with a *fixture*, and a fixture that drifts from the service it imitates is worse than no mock at all. The seed apps solve this by generating the fixture from the model and failing CI when the two disagree - more on that below.
+There is no network route from the developer's machine to SAS, so there is nothing to firewall against and nothing to allow through. The strongest configuration becomes the easiest one: the SAS environment rejects every address outside its own production ranges, and the web tier that serves the application is not in the same subnet. Even a fully compromised laptop finds no SAS endpoint to authenticate to, because the credentials are not there and cannot be guessed.
 
-There is also no authentication. This is a single-user, no-authority build; do not put one somewhere a permission boundary is supposed to exist.
+That is the property worth paying for. It is not that the developer is trusted more; it is that they no longer need to be.
+
+### There are no credentials to distribute
+
+No client secret. No personal access token. No metadata password on a laptop. No service account shared by four people so the tests can run. Nothing to rotate when somebody leaves, because nothing was issued.
+
+What remains is a git account, which the organisation already governs, and a build that produces static files. The token surface of the whole development life cycle collapses to the source repository.
+
+### Nobody needs VPN access to build a front end
+
+VPN membership is a blunt instrument: it grants a foothold in a private network in order to reach one application. Removing that requirement for front-end developers removes them from the account list that has to be reviewed, recertified and deprovisioned. Contractors and agencies can contribute to a front end without being granted anything inside the network at all - and the ones who need it least are usually the ones hardest to justify granting it to.
+
+### Viya does what it was bought for
+
+A Viya environment is an analytics platform. It is sized, licensed and tuned for queries, models and production reporting - not for the sixteen deploys a day that a front end generates during a sprint. Every restart, every test run and every half-built service that lands on it is capacity not available to the work that justifies the licence, and noise in the same logs the platform team uses to diagnose real incidents.
+
+Moving development off the estate leaves it doing one job. It also makes the estate's own change control simpler: nothing arrives there except a release.
+
+### The pipeline is faster and safer
+
+A browser-hosted build is deterministic, free and instant. The suite runs on every push without a SAS container, a licence check or a network dependency, so a pull request gets a real answer in minutes rather than waiting in a queue behind an environment. It also publishes: because the artefact is static files, a review environment for any branch is a deploy of a folder.
+
+The safety point is less obvious. A mock cannot be reached from the internet, cannot be left running with production data in it, and cannot be the thing an attacker pivots through. The CI estate stops being a second estate to secure.
+
+### Work continues when SAS is not running
+
+Plenty of organisations switch Viya off outside working hours, or restrict it to a maintenance window. Development that depends on it inherits that calendar. A mocked backend has no such dependency: tests run at night, a developer in another time zone is not blocked by a licence server, and a release can be cut on a Saturday without anyone asking for an exception.
+
+### And it lowers the total cost of ownership
+
+None of this is free, but the arithmetic is straightforward. Fewer environments to license and operate. Less cloud spend on dev instances. Less platform-team time granting and revoking access, reviewing firewall rules and restarting servers. Fewer credentials to rotate, and a smaller blast radius when something goes wrong - which is the expensive part of any incident. Shorter onboarding, because a new developer clones a repository and runs two scripts instead of waiting for a ticket to clear.
+
+The same repository still deploys to Viya, SAS 9 or a real server. `mockWeb` is independent of `streamWeb`, so one config serves both the browser build and a normal `sasjs deploy`.
+
+## It is still the real contract
+
+This is not a stub left in a drawer. The mocked app uses the same `@sasjs/adapter` in the browser, the same service names, the same `webout` contract, the same `<sasjs>` element and the same `appLoc`. When the time comes to run against a real backend, nothing in the front end changes - only the target the build was made for.
+
+The services are real services too. The same JavaScript programs deploy to a SASjs Server for development, and shadow the SAS ones on a mixed deployment, because a server chooses the runtime per program. That is what makes the mock worth maintaining: it is the second implementation of a contract you already have, not a fixture bolted to the side of it.
+
+## What it does not protect you from
+
+Be honest about the boundary, because it is hard.
+
+There is no SAS engine in the browser, so a service that reads a SAS table, runs a macro, uses a format or touches CAS cannot work there. Fixtures answer in the shape the real service answers, not with its values, so a mocked run cannot validate a join, an aggregation or a format. The mocked build is a development and review vehicle; anything that needs SAS gets a real target, and the release still has to be exercised against the real thing before it ships.
+
+There is also no authentication in a browser-hosted build. It is single-user and has no authority; do not put one where a permission boundary is supposed to exist, and do not treat a green mocked suite as evidence that authorisation works.
+
+And a mock that drifts from the service it imitates is worse than no mock, because it certifies behaviour that does not exist. Generate the fixture, and fail the build when the two disagree.
 
 ## Five working examples
 
-All of these are public, and all of them were verified against the live sites.
+All public, all verified against the live sites.
 
 | Site | What it demonstrates |
 |---|---|
 | [minimal.sasjs.io](https://minimal.sasjs.io) | The smallest complete case: two services (`appinit`, `getdata`), one generated data file, a plain HTML page. The reference implementation to copy. |
 | [angular.sasjs.io](https://angular.sasjs.io) | An Angular app with a file upload and a SAS log panel - and the mocks report logs too, so the panel has something to show with no SAS behind it. |
 | [react.sasjs.io](https://react.sasjs.io) | The same shape in React, built from `build/` rather than `src/`, which is where `webSourcePath` earns its keep. |
-| [staging.datacontroller.io](https://staging.datacontroller.io) | The real product. Data Controller's entire front end - editor, approvals, viewer, admin, Excel maps - on 63 JavaScript services over a captured drive of 64 entries, with a shipped licence so it is usable past the free tier. |
+| [staging.datacontroller.io](https://staging.datacontroller.io) | A commercial product's entire front end - editor, approvals, viewer, admin, Excel maps - on 63 JavaScript services over a captured drive of 64 entries. A visitor can evaluate it without a licence, a VPN or a single credential, and nothing they do reaches a customer estate. |
 | [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. The public build is the backend-free one (personal bests in localStorage), and the repository ships a `mock` target plus `npm run devsetup`, which stands up a local JS-runtime server where the leaderboard persists end to end. |
 
-The scale is the interesting part of that table. The three seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers.
+The scale is the interesting part. The three seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers - which is the difference between a demo and an argument.
 
-You can read the delivered configuration for any of them - it is a normal file in the build output:
+You can read the delivered configuration for any of them. It is a normal file in the build output:
 
 ```
 https://minimal.sasjs.io/host/mock-config.json
@@ -90,7 +148,7 @@ That stamp is worth having on a site you send to people. "Which build am I looki
 
 The quickest start is one of the seed apps - [minimal](https://github.com/sasjs/minimal-seed-app), [Angular](https://github.com/sasjs/angular-seed-app) or [React](https://github.com/sasjs/react-seed-app) - because each already ships a `mock` target, the mock services and a publishing workflow. Copy that structure into your own project. The steps below are what that structure is.
 
-You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps currently pin 6.27.x and the current release is 6.29.0, so pin something in that range rather than reaching for whatever is globally installed.
+You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps pin 6.27.x and the current release is 6.29.0, so pin something in that range rather than relying on whatever is installed globally.
 
 ### Step 1 - add a mock target
 
@@ -119,7 +177,7 @@ Keep the mock services in a folder that mirrors the real service folders, and ad
 
 ```
 sasjs/
-  services/common/getdata.sas     <- the real service
+  services/common/getdata.sas      <- the real service
   mocks/services/common/getdata.js <- the twin
 ```
 
@@ -166,9 +224,9 @@ Tables arrive the way they do on a real server: the adapter serialises an array 
 
 ### Step 3 - keep the fixture honest
 
-This is the step people skip, and it is the one that decides whether the mock is a tool or a liability. Generate the fixture; do not hand-write it, and do not copy the dataset.
+This is the step people skip, and it decides whether the mock is a control or a liability. Generate the fixture; do not hand-write it, and do not copy the dataset - a copy is a data protection problem with a build step.
 
-The seed apps do it in one script: `scripts/springs-data.js` writes `springs.json` from the dataset's model - same columns, same ranges, same nullability - with a fixed seed, so the file is reproducible. A companion check, `npm run check:data`, fails when the committed file is not what the generator produces. The mock and the real service have then agreed on shape, and cannot silently drift.
+The seed apps do it in one script: `scripts/springs-data.js` writes `springs.json` from the dataset's model - same columns, same ranges, same nullability - with a fixed seed, so the file is reproducible. A companion check, `npm run check:data`, fails when the committed file is not what the generator produces. Mock and real service have then agreed on shape, and cannot silently drift.
 
 Determinism is not a nicety either: random data makes a recorded demo unreproducible and turns any UI assertion into a coin flip.
 
@@ -183,7 +241,7 @@ Two scripts, and the whole mocked workflow:
 
 `mock:build` writes the site to `sasjsbuild/mock`: the frontend, the compiled JavaScript services, `sw.js`, and a `host/` folder with the runtime and the seed drive. Serve that folder over http or https - a service worker needs a secure context, so `localhost` and `https` both work and `file://` does not.
 
-The seed apps go one step further and test the artefact rather than the source: `npm run test:mock` boots the built worker and asserts that each service answers. A build that produces files but answers nothing then fails in CI instead of in front of a customer.
+The seed apps test the artefact rather than the source: `npm run test:mock` boots the built worker and asserts that each service answers. A build that produces files but answers nothing then fails in CI instead of in front of a customer.
 
 ### Step 5 - decide what the visitor starts with
 
@@ -207,7 +265,7 @@ Whatever the host, ship `index.html` and `sw.js` together with everything else -
 
 - **`file://` does not work.** The service worker needs a secure context. `localhost` counts; a file opened from disk does not.
 - **The snapshot is tied to where it was captured.** A licence issued for one origin will not decrypt on another. If an app asks to be licensed or configured after deployment while it worked locally, this is almost always the reason - capture the snapshot on the domain you deploy to.
-- **Only two response headers are applied**, `Content-type` and `Content-Disposition`. There is no cache and no cookie to set on a static host. A request made with `_debug` returns the text frame instead, because its body is the webout wrapped in the log.
+- **Only two response headers are applied**, `Content-type` and `Content-Disposition`. A static host has no cache and no cookie to set. A request made with `_debug` returns the text frame instead, because its body is the webout wrapped in the log.
 - **The drive holds text.** A file a service writes as bytes is stored as base64 and reads back as bytes, which is fine for a CSV or a small xlsx and wrong for a large binary. A filename outside ASCII belongs in RFC 6266 form.
 - **A missing `appLoc` match looks like a broken app, not a configuration error.** The page loads, the adapter calls, and every service 404s.
 
@@ -215,7 +273,7 @@ Whatever the host, ship `index.html` and `sw.js` together with everything else -
 
 The authoritative references are [sasjs build](https://cli.sasjs.io/build/) (the browser build, snapshots and file responses), [JavaScript services](https://cli.sasjs.io/js-services/) (how non-SAS files travel through compile, build and deploy) and the [server component page](https://sasjs.io/components/server) for the JS runtime and its two modes. The seed app READMEs are the shortest path from reading to running, and their repositories are small enough to read in an afternoon.
 
-The pattern is worth learning even if you never ship a mocked app. Once the service contract is the interface, every part of the stack becomes testable in isolation - and the demo, the review environment, the CI suite and the production deployment are all built from the same code.
+The argument, in the end, is not that SAS is unnecessary. It is that a platform holding the organisation's analysis should be reached by as few things as possible - and that a front-end sprint is not one of them.
 
 <!-- Image prompt (the brief the published cover was generated from):
 Generate a 16:9 landscape illustration for a B2B developer blog cover, 1200x627.
