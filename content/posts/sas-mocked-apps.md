@@ -28,7 +28,7 @@ The problem is structural rather than a matter of discipline, and each requireme
 
 - **Every developer needs standing access.** Not one key: a VPN profile, a database login, an OAuth client, a long-lived token, an app location they can write to.
 - **Those credentials have to live somewhere.** On a laptop, in a shell history, in a `.env` file, in a CI secret that someone also uses locally, in a screenshot on a ticket.
-- **Access is broader than the task.** The person adding a dropdown needs the same reach as the person deploying the release, because the estate is often configured with one way in for everything.
+- **Access is broader than the task.** Roles are usually granted for the whole job rather than the task - a shortcut on cost or effort - so a developer holds more reach than they need, deliberately or accidentally.
 - **Rotation never catches up.** Each developer having their own credentials is correct practice, and it is also the scale of the problem: every identity is a standing grant with a token that outlives the project it was issued for. Rotation is a project per person, offboarding is only as good as the list, and a leaked credential is usually discovered after it has been used, not before.
 - **The development loop loads production.** Test runs, sample queries and half-finished services all execute on the box that also runs the reporting the business depends on.
 
