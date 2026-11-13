@@ -245,10 +245,10 @@ Determinism is not a nicety either: random data makes a recorded demo unreproduc
 
 ### Step 4 - build and serve it
 
-Two scripts, and the whole mocked workflow:
+Two scripts, and the whole mocked workflow. `sasjs cb` compiles and builds the default target, so set this one as `defaultTarget` and name it what you like:
 
 ```json
-"mock:build": "sasjs compile -t mock && sasjs build -t mock",
+"mock:build": "sasjs cb",
 "mock:start": "npx http-server ./sasjsbuild/mock -p 3001"
 ```
 
@@ -273,14 +273,6 @@ Treat the snapshot as a generated build input rather than something to commit: i
 It is a directory of static files with no server-side requirement, so publish it like one. The seed apps use GitHub Pages: a workflow runs `mock:build` and `test:mock` on every pull request, adds a `CNAME` and `.nojekyll` to the output, and deploys the folder from `main` only. Data Controller publishes to its own instance with Surfer, as a named site on an alias domain, so a failed upload leaves the current site serving.
 
 Whatever the host, ship `index.html` and `sw.js` together with everything else, because those two carry the references. The runtime files under `host/` are requested with a `?v=<hash>` query that changes with their contents, so a redeploy replaces them for returning visitors.
-
-## Five things that will catch you
-
-- **`file://` does not work.** The service worker needs a secure context. `localhost` counts; a file opened from disk does not.
-- **The snapshot is tied to where it was captured.** A licence issued for one origin will not decrypt on another. If an app asks to be licensed or configured after deployment while it worked locally, this is almost always the reason, so capture the snapshot on the domain you deploy to.
-- **Only two response headers are applied**, `Content-type` and `Content-Disposition`. A static host has no cache and no cookie to set. A request made with `_debug` returns the text frame instead, because its body is the webout wrapped in the log.
-- **The drive holds text.** A file a service writes as bytes is stored as base64 and reads back as bytes, which is fine for a CSV or a small xlsx and wrong for a large binary. A filename outside ASCII belongs in RFC 6266 form.
-- **A missing `appLoc` match looks like a broken app, not a configuration error.** The page loads, the adapter calls, and every service 404s.
 
 ## Where to read next
 
