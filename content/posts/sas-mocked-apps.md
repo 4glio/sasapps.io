@@ -217,7 +217,7 @@ The authoritative references are [sasjs build](https://cli.sasjs.io/build/) (the
 
 The pattern is worth learning even if you never ship a mocked app. Once the service contract is the interface, every part of the stack becomes testable in isolation - and the demo, the review environment, the CI suite and the production deployment are all built from the same code.
 
-<!-- Image prompt (regenerate with routstr-genimg.py):
+<!-- Image prompt (the brief the published cover was generated from):
 Generate a 16:9 landscape illustration for a B2B developer blog cover, 1200x627.
 Style: isometric flat-shaded 3D, translucent glass-like UI panels floating above a dark base, lime (#8AC640) and teal-cyan (#00A5D7) accents, soft diffused shadows, minimal and clean, dark background (#0D1F22 / #114F55), white bold headline with one lime highlight word, Poppins-like geometric sans.
 Scene: two identical glass dashboard panels side by side, the left one connected by a cable to a large server cabinet labelled with a SAS-like logo shape, the right one standing free with a small circular arrow loop beneath it, and a browser window frame around the right panel to signal that it runs in the browser. Both panels show the same bar chart, identical in every respect, to signal that the front end cannot tell them apart. A thin lime dotted line joins the two panels at the top.
