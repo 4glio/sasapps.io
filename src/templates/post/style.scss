@@ -13,6 +13,12 @@
 
     h1 {
       letter-spacing: -0.5px;
+
+      // At 48px the title runs to six lines and half the screen on a phone.
+      @media only screen and (max-width: 575.98px) {
+        font-size: 2rem;
+        line-height: 1.2;
+      }
     }
 
     .badge {
@@ -80,8 +86,33 @@
         background: rgba(255, 255, 255, 0.03);
       }
 
-      td:first-child {
-        white-space: nowrap;
+      // The first column is the site name and reads better on one line, but
+      // only when there is room for it - on a phone it starves the second
+      // column, so it wraps there and the padding tightens.
+      @media only screen and (min-width: 768px) {
+        td:first-child {
+          white-space: nowrap;
+        }
+      }
+
+      // Below 768px the first column wraps, so the table is back to natural
+      // widths for a tablet held upright; only under 576px is the space short
+      // enough to need the tighter cell padding as well.
+      @media only screen and (max-width: 575.98px) {
+        th,
+        td {
+          padding: 9px 10px;
+        }
+      }
+    }
+
+    // Code blocks scroll inside themselves on a phone; a slightly smaller face
+    // and tighter box means fewer lines need scrolling at all.
+    pre {
+      @media only screen and (max-width: 575.98px) {
+        font-size: 12.5px;
+        line-height: 1.45;
+        padding: 10px 12px;
       }
     }
   }
