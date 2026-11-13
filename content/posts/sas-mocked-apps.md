@@ -163,7 +163,7 @@ That stamp is worth having on a site you send to people. "Which build am I looki
 
 The quickest start is one of the seed apps - [minimal](https://github.com/sasjs/minimal-seed-app), [Angular](https://github.com/sasjs/angular-seed-app) or [React](https://github.com/sasjs/react-seed-app) - because each already ships a `mock` target, the mock services and a publishing workflow. Copy that structure into your own project. The steps below are what that structure is.
 
-You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps pin 6.27.3 or `^6.28.0`, so pin one of those rather than relying on whatever is installed globally.
+You need Node and a recent SASjs CLI.
 
 ### Step 1 - add a mock target
 
