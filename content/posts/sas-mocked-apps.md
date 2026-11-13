@@ -172,19 +172,17 @@ A target, no more:
 ```json
 {
   "name": "mock",
-  "serverUrl": "",
   "serverType": "SASJS",
   "appLoc": "/Public/app/minimal-seed-app",
   "streamConfig": {
     "mockWeb": true,
     "mockWebFolder": "sasjsbuild/mock",
-    "streamWeb": false,
     "webSourcePath": "src"
   }
 }
 ```
 
-Three things have to be right. `webSourcePath` points at the built frontend: `src` for a hand-rolled page or a framework that serves from source, `build` for Create React App, `client/dist` for a CLI-built Angular app. `appLoc` has to match the location the frontend was built with, because the services are resolved from it: if the page asks for `/Public/app/foo` and the build deployed `/Public/app/bar`, every call misses. And the services that answer in the browser have to be JavaScript, because a target that also compiles `.sas` still builds - with the compiled SAS programs seeded onto the drive for a visitor to read - and the build warns that they cannot run in a browser.
+`mockWeb` turns the browser build on and `mockWebFolder` is where the output goes: a single-page app with a service worker standing in for the backend. `webSourcePath` points at the built frontend - `src` for a hand-rolled page or a framework that serves from source, `build` for Create React App, `client/dist` for a CLI-built Angular app. `appLoc` is where the app will be deployed in the SASjs folder system. `serverType` is required by the config schema, and the mock build does not use it.
 
 ### Step 2 - write the twins
 
