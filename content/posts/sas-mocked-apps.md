@@ -30,7 +30,7 @@ The problem is structural rather than a matter of discipline, and it compounds i
 - **Nobody can rotate cleanly.** A leaked token is only discovered after it has been used, and revoking it breaks every other developer at once.
 - **The development loop loads production.** Test runs, sample queries and half-finished services all execute on the box that also runs the reporting the business depends on.
 
-The result is a hard-to-quantify but real cost: an estate that is expensive to protect because so many people must be trusted with it, and expensive to run because it is doing two jobs - analytics, and standing in for something that could be a static site.
+The result is a hard-to-quantify but real cost: an estate that is expensive to protect because so many people must be trusted with it, and expensive to run because it carries extra load - development and test cycles that could just as well run locally, on a laptop or in a pipeline, instead of on the platform the business depends on.
 
 ## What the development loop actually asks for today
 
@@ -76,7 +76,7 @@ VPN membership is a blunt instrument: it grants a foothold in a private network 
 
 A Viya environment is an analytics platform. It is sized, licensed and tuned for queries, models and production reporting - not for the sixteen deploys a day that a front end generates during a sprint. Every restart, every test run and every half-built service that lands on it is capacity not available to the work that justifies the licence, and noise in the same logs the platform team uses to diagnose real incidents.
 
-Moving development off the estate leaves it doing one job. It also makes the estate's own change control simpler: nothing arrives there except a release.
+Moving development off the estate leaves it carrying the load it was bought for. It also makes the estate's own change control simpler: nothing arrives there except a release.
 
 ### The pipeline is faster and safer
 
