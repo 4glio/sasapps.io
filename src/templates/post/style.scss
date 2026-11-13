@@ -80,8 +80,20 @@
         background: rgba(255, 255, 255, 0.03);
       }
 
-      td:first-child {
-        white-space: nowrap;
+      // The first column is the site name and reads better on one line, but
+      // only when there is room for it - on a phone it starves the second
+      // column, so it wraps there and the padding tightens.
+      @media (min-width: 768px) {
+        td:first-child {
+          white-space: nowrap;
+        }
+      }
+
+      @media (max-width: 575.98px) {
+        th,
+        td {
+          padding: 9px 10px;
+        }
       }
     }
   }
