@@ -120,7 +120,7 @@ All public, all verified against the live sites.
 | [angular.sasjs.io](https://angular.sasjs.io) | An Angular app with a file upload and a SAS log panel - and the mocks report logs too, so the panel has something to show with no SAS behind it. |
 | [react.sasjs.io](https://react.sasjs.io) | The same shape in React, built from `build/` rather than `src/`, which is where `webSourcePath` earns its keep. |
 | [staging.datacontroller.io](https://staging.datacontroller.io) | A commercial product's entire front end - editor, approvals, viewer, admin, Excel maps - on 63 JavaScript services over a captured drive of 64 entries. A visitor can evaluate it without a licence, a VPN or a single credential, and nothing they do reaches a customer estate. |
-| [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. It ships its own `mock` target, so the game's services run in the browser behind a service worker and the leaderboard persists between visits; served as a bare front end instead, personal bests fall back to localStorage. The repository also ships `npm run devsetup`, which stands up a local JS-runtime server where those same services run outside a browser. |
+| [dash.sasjs.io](https://dash.sasjs.io) | Macro Dash, the SASjs platformer. At the time of writing the published site is the bare front end, so personal bests fall back to localStorage; the repository ships a `mock` target that runs the same services in the browser behind a service worker, and `npm run devsetup` stands up a local JS-runtime server where the leaderboard persists end to end. |
 
 The scale is the interesting part. The three seed apps are five to eight drive entries and two or three services each. Data Controller is sixty-odd services and a seeded drive, running the same code that ships to customers - which is the difference between a demo and an argument.
 
@@ -155,7 +155,7 @@ That stamp is worth having on a site you send to people. "Which build am I looki
 
 The quickest start is one of the seed apps - [minimal](https://github.com/sasjs/minimal-seed-app), [Angular](https://github.com/sasjs/angular-seed-app) or [React](https://github.com/sasjs/react-seed-app) - because each already ships a `mock` target, the mock services and a publishing workflow. Copy that structure into your own project. The steps below are what that structure is.
 
-You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps pin 6.27.3 or `^6.28.0` and the current release is 6.29.0, so pin something in that range rather than relying on whatever is installed globally.
+You need Node and a recent SASjs CLI. The browser build landed in CLI 6.1.0; the seed apps pin 6.27.3 or `^6.28.0`, so pin one of those rather than relying on whatever is installed globally.
 
 ### Step 1 - add a mock target
 
