@@ -13,6 +13,12 @@
 
     h1 {
       letter-spacing: -0.5px;
+
+      // At 48px the title runs to six lines and half the screen on a phone.
+      @media (max-width: 575.98px) {
+        font-size: 2rem;
+        line-height: 1.2;
+      }
     }
 
     .badge {
@@ -94,6 +100,16 @@
         td {
           padding: 9px 10px;
         }
+      }
+    }
+
+    // Code blocks scroll inside themselves on a phone; a slightly smaller face
+    // and tighter box means fewer lines need scrolling at all.
+    pre {
+      @media (max-width: 575.98px) {
+        font-size: 12.5px;
+        line-height: 1.45;
+        padding: 10px 12px;
       }
     }
   }
