@@ -48,6 +48,42 @@
         word-break: break-word;
       }
     }
+
+    // GFM tables inherit the site-wide gatstrap grid, which puts a 2px lime
+    // box around the table and the thead and gives cells no padding at all -
+    // the text sat against the border. A quieter grid, a tinted header and
+    // proper cell padding, matching the markdown pages.
+    table {
+      width: 100%;
+      margin: 8px 0 26px;
+      border-collapse: collapse;
+      border: 1px solid rgba($yellowGreen, 0.35);
+      font-size: 0.95rem;
+
+      thead {
+        border: 0;
+      }
+
+      th,
+      td {
+        padding: 11px 16px;
+        border: 1px solid rgba($yellowGreen, 0.28);
+        vertical-align: top;
+      }
+
+      th {
+        background: rgba($yellowGreen, 0.14);
+        font-weight: 600;
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      td:first-child {
+        white-space: nowrap;
+      }
+    }
   }
 }
 
